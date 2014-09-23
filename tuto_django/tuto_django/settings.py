@@ -76,7 +76,10 @@ USE_L10N = True
 
 USE_TZ = True
 
-
+# EMAIL
+EMAIL_HOST = '62.210.239.224'
+EMAIL_HOST_USER = 'contact@esport42.fr'
+EMAIL_HOST_PASSWORD = 'esport42'
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
 

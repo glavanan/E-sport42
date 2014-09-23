@@ -1,6 +1,6 @@
 {{ message }}
-<form action="/register" method="post">{% csrf_token %}
-{{ member_form.as_p  }}
+<form action="/login" method="post">{% csrf_token %}
+{{ login_form.as_p  }}
 <input type="submit" value="Submit" />
 
 <h1>Bienvenue sur mon blog</h1>
