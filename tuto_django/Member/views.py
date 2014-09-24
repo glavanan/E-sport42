@@ -7,6 +7,9 @@ from models import Member
 from django.contrib.auth.models import User
 from django import forms
 from django.template import RequestContext
+from django.contrib.auth import authenticate
+from django.contrib.auth import login as auth_login
+from django.contrib.auth import logout as auth_logout
 
 class MemberForm(ModelForm):
 	class Meta:
@@ -16,13 +19,11 @@ class UserForm(forms.Form):
 	username = forms.CharField(required=True, max_length=30)
 	first_name = forms.CharField(label = 'Nom', required=True, max_length=30)
 	last_name = forms.CharField(label = 'Prenom', required=True, max_length=30)
-	password = forms.CharField(required=True, max_length=255)
+	password = forms.CharField(widget=forms.PasswordInput, required=True, max_length=255)
 	email = forms.EmailField(required=True)
 
 def home(request):
-  text = """<h1>Bienvenue sur mon blog !</h1>
-            <p>Les crêpes bretonnes ça tue des mouettes en plein vol !</p>"""
-  return HttpResponse(text)
+	return render_to_response('Member/home.html')
 
 def register(request):
 	text = ""
@@ -47,22 +48,30 @@ class LoginForm(forms.Form):
 def login(request):
 	text = ""
 	login_form = LoginForm()
-	if request.method == 'POST':
-		username = request.POST['username']
-		password = request.POST['password']
-		user = authenticate(username=username, password=password)
-
-		if User is not None:
-			login(request, user)
-			return HttpResponseRedirect('/success')
-			
+	if not request.user.is_authenticated():
+		if request.method == 'POST':
+			username = request.POST['username']
+			password = request.POST['password']
+			user = authenticate(username=username, password=password)
+	
+			if user is not None:
+				auth_login(request, user)
+				return HttpResponseRedirect('/success')
+				
+			else:
+				text = "mauvais mots de passe ou nom d'utilisateur"
+				return render_to_response('Member/login.html', {'login_form' : login_form, 'message' : text}, context_instance=RequestContext(request))
 		else:
-			text = "mauvais mots de passe ou nom d'utilisateur"
 			return render_to_response('Member/login.html', {'login_form' : login_form, 'message' : text}, context_instance=RequestContext(request))
 	else:
-		return render_to_response('Member/login.html', {'login_form' : login_form, 'message' : text}, context_instance=RequestContext(request))
+		return render_to_response('Member/home.html')
+
+def logout(request):
+	auth_logout(request)
+	login_form = LoginForm()
+	text = ""
+	return render_to_response('Member/login.html', {'login_form' : login_form, 'message' : text}, context_instance=RequestContext(request))
 
 def success(request):
-
-    return HttpResponse('<p>Success</p>')
+	return HttpResponse('<p>Success</p>')
 # Create your views here.
