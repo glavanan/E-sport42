@@ -15,17 +15,24 @@ from django.contrib.auth import logout as auth_logout
 class AccountForm(forms.Form):
 	def __init__(self, *args, **kwargs):
 		request=kwargs.pop("first_name")
+		last_name = kwargs.pop("last_name")
+		email = kwargs.pop("email")
+		ville = kwargs.pop("ville")
+		adresse = kwargs.pop("adresse")
+		pseudo_lol = kwargs.pop("pseudo_lol")
+		duoquadra = kwargs.pop("duoquadra")
 		pays = kwargs.pop("pays")
+		age = kwargs.pop("age")
 		super(AccountForm, self).__init__(*args, **kwargs)
 		self.fields['first_name'] = forms.CharField(label = 'Nom', required=True, max_length=30, initial=request)
-#	last_name = forms.CharField(label = 'Prenom', required=True, max_length=30, value=request.user.last_name)
-#	email = forms.EmailField(required=True, value=str(request.user.email))
-#		self.fields['age'] = forms.IntegerField(initial=age, required=False)
+		self.fields['last_name'] = forms.CharField(label = 'Prenom', required=True, max_length=30, initial=last_name)
+		self.fields['email'] = forms.EmailField(required=True, initial=email)
+		self.fields['age'] = forms.IntegerField(initial=age, required=False)
 	      	self.fields['pays'] = forms.CharField(max_length=30, initial=pays, required=False)
-   #     ville = forms.CharField(max_length=60, value=request.user.ville)
-    #    adresse = forms.TextField(value=request.user.adresse)
-     #   pseudo_lol = forms.CharField(max_length=30, value=request.user.pseudo_lol)
-      #  duoquadra = forms.CharField(max_length=10, value=request.user.duoquadra)
+		self.fields['ville'] = forms.CharField(max_length=60, initial=ville)
+		self.fields['adresse'] = forms.CharField(widget=forms.Textarea, initial=adresse)
+		self.fields['pseudo_lol'] = forms.CharField(max_length=30, initial=pseudo_lol)
+		self.fields['duoquadra'] = forms.CharField(max_length=10, initial=duoquadra)
 	
 class UserForm(forms.Form):
 	username = forms.CharField(required=True, max_length=30)
@@ -86,14 +93,21 @@ def logout(request):
 
 def my_account(request):
 	text = ""
-	member = Member(user=request.user)
-	account_form=AccountForm(first_name = request.user.first_name, pays = request.user.member.pays)
+#	member = Member(user=request.user)
+	account_form=AccountForm(first_name = request.user.first_name, email = request.user.email, last_name = request.user.last_name, pays = request.user.member.pays, age = request.user.member.age, ville = request.user.member.ville, adresse = request.user.member.adresse, pseudo_lol = request.user.member.pseudo_lol, duoquadra = request.user.member.duoquadra)
 	if request.method == 'POST':
+		account_form = AccountForm(request.POST, first_name = request.user.first_name, email = request.user.email, last_name = request.user.last_name, pays = request.user.member.pays, age = request.user.member.age, ville = request.user.member.ville, adresse = request.user.member.adresse, pseudo_lol = request.user.member.pseudo_lol, duoquadra = request.user.member.duoquadra)
 		if account_form.is_valid():
 			text="VALIDE"
-			user.first_name, user.age = account_form.cleaned_data['first_name'], account_form.cleaned_data['pays']
+			request.user.first_name, request.user.member.pays, request.user.member.age, request.user.last_name, request.user.email, request.user.member.ville, request.user.member.adresse, request.user.member.pseudo_lol, request.user.member.duoquadra = account_form.cleaned_data['first_name'], account_form.cleaned_data['pays'], account_form.cleaned_data['age'], account_form.cleaned_data['last_name'], account_form.cleaned_data['email'], account_form.cleaned_data['ville'], account_form.cleaned_data['adresse'], account_form.cleaned_data['pseudo_lol'], account_form.cleaned_data['duoquadra']
+			print request.user.first_name
+			print request.user.member.pays
+			print request.user.member.pays
+			request.user.member.save()
+			return render_to_response('Member/account.html', {'account_form' : account_form, 'message' : text}, context_instance=RequestContext(request))
+
 		else:
-			print account_form.errors
+			print account_form.is_bound
 			text=account_form.errors
 			return render_to_response('Member/account.html', {'account_form' : account_form, 'message' : text}, context_instance=RequestContext(request))
 	else:
