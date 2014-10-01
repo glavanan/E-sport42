@@ -1,8 +1,7 @@
 #-*- coding: utf-8 -*-
-from django.shortcuts import render
 from django.http import HttpResponse
-from django.forms import ModelForm
 from django.shortcuts import render_to_response, HttpResponseRedirect
+from django.views.generic import CreateView
 from models import Member
 from django.contrib.auth.models import User
 from django import forms
@@ -28,7 +27,7 @@ class AccountForm(forms.Form):
 		self.fields['last_name'] = forms.CharField(label = 'Prenom', required=True, max_length=30, initial=last_name)
 		self.fields['email'] = forms.EmailField(required=True, initial=email)
 		self.fields['age'] = forms.IntegerField(initial=age, required=False)
-	      	self.fields['pays'] = forms.CharField(max_length=30, initial=pays, required=False)
+		self.fields['pays'] = forms.CharField(max_length=30, initial=pays, required=False)
 		self.fields['ville'] = forms.CharField(max_length=60, initial=ville)
 		self.fields['adresse'] = forms.CharField(widget=forms.Textarea, initial=adresse)
 		self.fields['pseudo_lol'] = forms.CharField(max_length=30, initial=pseudo_lol)
@@ -40,6 +39,11 @@ class UserForm(forms.Form):
 	last_name = forms.CharField(label = 'Prenom', required=True, max_length=30)
 	password = forms.CharField(widget=forms.PasswordInput, required=True, max_length=255)
 	email = forms.EmailField(required=True)
+
+class MemberCreate(CreateView):
+	model = Member
+	fields = ['user', 'age', 'country', 'city', 'address', 'mail', 'pseudo', 'quadra']
+	template_name = 'Member/register.html'
 
 def home(request):
 	return render_to_response('Member/home.html', {'user' : request.user.username})
