@@ -13,5 +13,5 @@ class Member(models.Model):
 	duoquadra = models.CharField(max_length=10)
 	
 	def __unicode__(self):
-		return u"%s" % self.titre
+		return u"%s" % self.user
 # Create your models here.

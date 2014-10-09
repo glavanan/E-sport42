@@ -5,8 +5,8 @@ class Team(models.Model):
 	team = models.CharField(max_length=100)
 	tag = models.CharField(max_length = 7)
 	size = models.IntegerField()
-	id_joueurs = models.CharField()
+	id_joueurs = models.ForeignKey(User)
 	validate = models.CharField()
-	id_toornament = models.IntegerField()
+	id_tournament = models.ForeignKey(Tournament)
 
 # Create your models here.
