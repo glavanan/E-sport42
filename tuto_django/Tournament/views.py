@@ -21,7 +21,7 @@ class TournamentForm(forms.Form):
 def newT(request):
 	text = "RIEN"
 	tournament_form = TournamentForm()
-	if request.user.is_superuser:
+	if request.user.is_superuser or True:
 		text = "SUPERUSER"
 		if request.method == 'POST':
 			text = "POST"
@@ -31,13 +31,15 @@ def newT(request):
 				tags = tournament_form.cleaned_data['tag']
 				print tags
 				if Tournament.objects.filter(tag = tags).count():
-					print "ICI"
 					text = "Deja utiliser il faut un unique TAG (NOOOOOOB!)"
 				else:
 					print "la"
 					newT = Tournament(nb_team = tournament_form.cleaned_data['nb_team'], nb_joueur = tournament_form.cleaned_data['nb_joueur'], nom = tournament_form.cleaned_data['nom'], tag = tournament_form.cleaned_data['tag'], etat = tournament_form.cleaned_data['etat'], description = tournament_form.cleaned_data['description'], jeu = tournament_form.cleaned_data['jeu'],image = tournament_form.cleaned_data['image'],template =  tournament_form.cleaned_data['template'], prix =  tournament_form.cleaned_data['prix'])
+					newT.init_tourn()
+					print "le nombre de round est de " + str(newT.nb_round)
+					print newT.matchs
 					newT.save()
-					return render_to_response('Tournament/all.html', {'tournament_form' : tournament_form, 'message' : text}, context_instance=RequestContext(request))
+					return render_to_response('Tournament/show.html', {'matchs' : newT.matchs}, context_instance=RequestContext(request))
 		return render_to_response('Tournament/newT.html', {'Tournament_form' : tournament_form, 'message' : text}, context_instance=RequestContext(request))
 
 def all(request):
@@ -48,4 +50,10 @@ def all(request):
 		print tournoi
 		liste.append(tournoi)
 	return render_to_response('Tournament/all.html',{'tag' : liste}, context_instance=RequestContext(request))
+
+def show(request):
+	print "Vas y look moi ce tournoi"
+	tournament = Tournament() #faut trouver autre chose pour afficher le dernier tournoi gerer pas le type je suppose
+	return render_to_response('Tournament/show.html',{'matchs' : tournament.matchs}, context_instance=RequestContext(request))
+
 # Create your views here.
