@@ -1,6 +1,6 @@
 {{ message }}
 <ul>
 {% for ta in tag %}
-    <li>{{ ta }}</li>
+    <li><a href="/show/{{ ta.tag }}">{{ ta }}</a></li>
 {% endfor %}
 </ul>

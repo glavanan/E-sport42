@@ -1,6 +1,7 @@
-<h1>Vas y look moi le premier round de ce tournoi</h1>
+<h1>Vas y look moi le premier round du tournoi {{ tournament.nom }}</h1>
+<p>Son tag est {{ tournament.tag }} </p>
 <ul>
-{% for match in matchs %}
+{% for match in tournament.matchs %}
     <li>{{ match }} match du 1er round</li>
 {% endfor %}
 </ul>

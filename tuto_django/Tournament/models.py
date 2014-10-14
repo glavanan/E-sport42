@@ -54,7 +54,7 @@ class Tournament(models.Model):
 	template = models.CharField(max_length = 30)
 	prix = models.IntegerField()
 	matchs = {}
-	nb_round = 0
+	nb_round = models.IntegerField()
 	
 	def __unicode__(self):
 		return u"%s" % self.nom
@@ -63,11 +63,13 @@ class Tournament(models.Model):
 		self.nb_round = int(math.ceil(math.log(self.nb_team,2)))
 		for i in range(1, pow(2, self.nb_round - 1) + 1) :
 			self.matchs[i] = "Match()"
+		self.save()
 
 	def change_match(self, first, second):
 		save = self.matchs[first]
 		self.matchs[first] = self.matchs[second]
 		self.matchs[second] = save
+		self.save()
 
 	def next_match(self, cur_round, cur_match) :
 		if cur_round != self.nb_round :

@@ -35,10 +35,9 @@ def newT(request):
 					text = "Deja utiliser il faut un unique TAG (NOOOOOOB!)"
 				else:
 					newT = Tournament(nb_team = tournament_form.cleaned_data['nb_team'], nb_joueur = tournament_form.cleaned_data['nb_joueur'], nom = tournament_form.cleaned_data['nom'], tag = tournament_form.cleaned_data['tag'], etat = tournament_form.cleaned_data['etat'], description = tournament_form.cleaned_data['description'], jeu = tournament_form.cleaned_data['jeu'],image = tournament_form.cleaned_data['image'],template =  tournament_form.cleaned_data['template'], prix =  tournament_form.cleaned_data['prix'])
-					newT.save()
 					newT.init_tourn()
 					newT.save()
-					return render_to_response('Tournament/show.html', {'matchs' : newT.matchs}, context_instance=RequestContext(request))
+					return render_to_response('Tournament/show.html', {'tournament' : newT}, context_instance=RequestContext(request))
 		return render_to_response('Tournament/newT.html', {'Tournament_form' : tournament_form, 'message' : text}, context_instance=RequestContext(request))
 
 def all(request):
@@ -53,15 +52,15 @@ def all(request):
 def show(request, name):
 	tournament = Tournament()
 	try :
-		tournament = Tournament.objects.get(nom = name)
+		tournament = Tournament.objects.get(tag = name)
 	except tournament.DoesNotExist :
-		text = "Ce tournoi n'existe pas, renseignez un autre nom"
+		text = "Ce tournoi n'existe pas, renseignez un autre tag"
 		liste = list()
 		liste_tournois = Tournament.objects.all()
 		print liste_tournois
 		for tournoi in liste_tournois:
-			print tournoi
+			print tournoi.tag
 			liste.append(tournoi)
 		return render_to_response('Tournament/all.html',{'tag' : liste, 'message' : text}, context_instance=RequestContext(request))
 	print tournament.matchs
-	return render_to_response('Tournament/show.html',{'matchs' : tournament.matchs}, context_instance=RequestContext(request))
+	return render_to_response('Tournament/show.html',{'tournament' : tournament}, context_instance=RequestContext(request))
