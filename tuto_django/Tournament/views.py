@@ -43,9 +43,7 @@ def newT(request):
 def all(request):
 	liste = list()
 	liste_tournois = Tournament.objects.all()
-	print liste_tournois
 	for tournoi in liste_tournois:
-		print tournoi
 		liste.append(tournoi)
 	return render_to_response('Tournament/all.html',{'tag' : liste}, context_instance=RequestContext(request))
 
@@ -57,10 +55,9 @@ def show(request, name):
 		text = "Ce tournoi n'existe pas, renseignez un autre tag"
 		liste = list()
 		liste_tournois = Tournament.objects.all()
-		print liste_tournois
 		for tournoi in liste_tournois:
-			print tournoi.tag
 			liste.append(tournoi)
 		return render_to_response('Tournament/all.html',{'tag' : liste, 'message' : text}, context_instance=RequestContext(request))
-	print tournament.matchs
+	if tournament.matchs == {} :
+		tournament.load_match()
 	return render_to_response('Tournament/show.html',{'tournament' : tournament}, context_instance=RequestContext(request))
