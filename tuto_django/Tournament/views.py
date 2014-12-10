@@ -18,6 +18,16 @@ class TournamentForm(forms.Form):
 	template = forms.CharField(max_length = 30, required=False)
 	prix = forms.IntegerField(required = True)
 
+def tournoi(request, name):
+	text = "OK"
+	try:
+		info = Tournament.objects.get(nom = name)
+		print type(info)
+		print info.tag
+		return render_to_response('Tournament/tournoi.html', {'info' : info, 'message' : text}, context_instance=RequestContext(request))
+	except:
+		print "ok"
+
 def newT(request):
 	text = "RIEN"
 	tournament_form = TournamentForm()

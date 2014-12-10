@@ -93,7 +93,10 @@ def logout(request):
 
 def my_account(request):
 	text = ""
-#	member = Member(user=request.user)
+	try:
+		request.user.member
+	except:
+		member = Member(user=request.user)
 	account_form=AccountForm(first_name = request.user.first_name, email = request.user.email, last_name = request.user.last_name, pays = request.user.member.pays, age = request.user.member.age, ville = request.user.member.ville, adresse = request.user.member.adresse, pseudo_lol = request.user.member.pseudo_lol, duoquadra = request.user.member.duoquadra)
 	if request.method == 'POST':
 		account_form = AccountForm(request.POST, first_name = request.user.first_name, email = request.user.email, last_name = request.user.last_name, pays = request.user.member.pays, age = request.user.member.age, ville = request.user.member.ville, adresse = request.user.member.adresse, pseudo_lol = request.user.member.pseudo_lol, duoquadra = request.user.member.duoquadra)

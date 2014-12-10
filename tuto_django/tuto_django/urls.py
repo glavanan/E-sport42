@@ -9,5 +9,6 @@ urlpatterns = patterns('',
 
 	url(r'', include('Member.urls')),
 	url(r'', include('Tournament.urls')),
+	url(r'', include('Team.urls')),
 	url(r'^admin/', include(admin.site.urls)),
 )
