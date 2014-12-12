@@ -35,14 +35,27 @@ def newteam(request, name):
 			if team_form.is_valid():
 				index = 0
 				error_list = str()
+				pseudo = list()
+				base = list()
 				while index < tournois.nb_joueur + tournois.nb_remplace:
-					pseudo = request.POST.get("player_" + str(index))
-					print pseudo
-					if User.objects.filter(username=pseudo).count() == 0 and pseudo != "":
-						error_list = pseudo
+					pseudo.append(request.POST.get("player_" + str(index)))
 					index = index+1
-				if len(error_list) > 0:
-					text = "Error : " + error_list + " n'existe pas" 
+				result = list()
+				doublon = list()
+				existe = User.objects.filter(username__in=pseudo).values_list('username')
+				for string in existe:
+					for word in string:
+						base.append(str(word))
+				for string in pseudo:
+					if string not in result and string in base:
+						result.append(string)
+					else:
+						doublon.append(string)
+				
+				print result
+				print doublon
+				if len(doublon) > 0:
+					text = "Error : " + ", ".join(doublon) + " sont des doublon ou ces joueurs n'existe pas"  
 		else:
 			team_form = TeamForm(size = tournois.nb_joueur,supp=tournois.nb_remplace)
 	return render_to_response("Team/newteam.html", {'form' : team_form, 'name' : name, 'text' : text}, context_instance=RequestContext(request))
