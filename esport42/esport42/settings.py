@@ -36,8 +36,9 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-	'django_countries',
-	'base',
+    'django_countries',
+    'base',
+    'djangular',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -69,7 +70,11 @@ DATABASES = {
 # https://docs.djangoproject.com/en/1.7/topics/i18n/
 
 TEMPLATE_DIRS = (
-	os.path.join(BASE_DIR, 'templates'),
+    os.path.join(BASE_DIR, 'templates'),
+)
+
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'assets'),
 )
 
 LANGUAGE_CODE = 'en-us'
@@ -87,3 +92,5 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
 
 STATIC_URL = '/static/'
+#
+STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
