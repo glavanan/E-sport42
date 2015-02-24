@@ -1,0 +1,6 @@
+<form action="/your-name/" method="post">
+	{% csrf_token %}
+	{{ form_user }}
+	{{ form_extend }}
+	<input type="submit" value="Submit" />
+</form>
