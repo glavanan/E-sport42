@@ -33,5 +33,5 @@ def register(request):
 
 
 def endpoint(request):
-	ret = ['je', 'suis', 'des', 'donnees', 'de', 'la', 'BDD', '.']
+	ret = {'return' : ['je', 'suis', 'des', 'donnees', 'de', 'la', 'BDD', '.']}
 	return JsonResponse(ret)
