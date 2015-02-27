@@ -12,4 +12,4 @@
     angular
         .module('esport42.site.controllers', []);
 
-})
+})();

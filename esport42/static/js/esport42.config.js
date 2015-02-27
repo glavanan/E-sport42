@@ -3,12 +3,7 @@
  */
 
 (function () {
-    console.log("SDFSDFDSFSDF");
-})
-
-(function () {
     'use strict';
-    console.log("lol");
     angular
         .module('esport42.config')
         .config(config);
@@ -18,4 +13,4 @@
         $locationProvider.html5Mode(true);
         $locationProvider.hashPrefix('!');
     }
-})
+})();

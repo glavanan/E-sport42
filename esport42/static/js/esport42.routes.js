@@ -3,7 +3,6 @@
  */
 (function () {
     'use strict';
-    console.log("lolol");
     angular
         .module('esport42.routes')
         .config(config);
@@ -12,11 +11,11 @@
 
     function config($routeProvider) {
         $routeProvider
-            .when('/lol', {
+            .when('/kaka/', {
                 controller: 'RegisterController',
                 controllerAs: 'vm',
-                templateUrl: '/templates/site/register.html'
+                templateUrl: '/static/templates/site/register.html'
             })
             .otherwise('/');
     }
-})
+})();

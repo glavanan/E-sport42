@@ -3,7 +3,6 @@
  */
 
 (function () {
-    console.log("wiwiwiw");
     angular
         .module('esport42.site.controllers')
         .controller('RegisterController', RegisterController);
@@ -19,4 +18,4 @@
             console.log('In register function bitch');
         }
     }
-})
+})();
