@@ -5,8 +5,9 @@ from rest_framework import serializers
 from base.models import MyUser
 
 
-class AccountSerializer(serializers.ModelSerializer):
-
+class MyUserSerializer(serializers.ModelSerializer):
+    password1 = serializers.CharField(write_only=True, required=False)
+    password2 = serializers.CharField(write_only=True, required=False)
     class Meta:
         model = MyUser
         fields = ('id', 'email', 'username', 'created_at', 'updated_at',
