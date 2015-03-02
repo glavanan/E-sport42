@@ -1,4 +1,8 @@
 Django==1.7.4
+argparse==1.2.1
 django-countries==3.1.1
+djangorestframework==3.0.5
+djangular==0.2.7
 gnureadline==6.3.3
 ipython==2.4.1
+wsgiref==0.1.2
