@@ -1,5 +1,5 @@
 Django==1.7.4
-argparse==1.2.1
 django-countries==3.1.1
 djangular==0.2.7
-wsgiref==0.1.2
+djangorestframework==3.0.5
+drf-nested-routers==0.9.0

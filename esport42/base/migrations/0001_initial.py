@@ -2,28 +2,35 @@
 from __future__ import unicode_literals
 
 from django.db import models, migrations
-from django.conf import settings
+import django.utils.timezone
 import django_countries.fields
 
 
 class Migration(migrations.Migration):
 
     dependencies = [
-        migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Extend',
+            name='MyUser',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('nickname', models.CharField(max_length=50)),
-                ('address', models.CharField(max_length=255, blank=True)),
+                ('password', models.CharField(max_length=128, verbose_name='password')),
+                ('last_login', models.DateTimeField(default=django.utils.timezone.now, verbose_name='last login')),
+                ('username', models.CharField(unique=True, max_length=30)),
+                ('email', models.EmailField(unique=True, max_length=75)),
+                ('first_name', models.CharField(max_length=40, blank=True)),
+                ('last_name', models.CharField(max_length=40, blank=True)),
+                ('address', models.TextField(blank=True)),
                 ('birth_date', models.DateField()),
                 ('nationality', django_countries.fields.CountryField(max_length=2)),
-                ('phone', models.IntegerField()),
+                ('phone', models.CharField(max_length=14, blank=True)),
+                ('created_at', models.DateTimeField(auto_now_add=True)),
+                ('updated_at', models.DateTimeField(auto_now=True)),
             ],
             options={
+                'abstract': False,
             },
             bases=(models.Model,),
         ),
@@ -38,15 +45,9 @@ class Migration(migrations.Migration):
             bases=(models.Model,),
         ),
         migrations.AddField(
-            model_name='extend',
+            model_name='myuser',
             name='teams',
             field=models.ManyToManyField(to='base.Teams'),
-            preserve_default=True,
-        ),
-        migrations.AddField(
-            model_name='extend',
-            name='user',
-            field=models.OneToOneField(to=settings.AUTH_USER_MODEL),
             preserve_default=True,
         ),
     ]
