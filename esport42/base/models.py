@@ -31,7 +31,7 @@ class MyUser(AbstractBaseUser):
     last_name = models.CharField(max_length=40, blank=True)
     address = models.TextField(blank = True)
     birth_date = models.DateField(blank=True, null=True)
-    nationality = CountryField(null=True, blank=True)
+    nationality = CountryField(blank=True, default='FR')
     phone = models.CharField(max_length = 14, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

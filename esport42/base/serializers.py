@@ -6,35 +6,33 @@ from base.models import MyUser
 
 
 class MyUserSerializer(serializers.ModelSerializer):
-    password1 = serializers.CharField(write_only=True, required=False)
-    password2 = serializers.CharField(write_only=True, required=False)
-    class Meta:
-        model = MyUser
-        fields = ('id', 'email', 'username', 'created_at', 'updated_at',
-                  'first_name', 'last_name', 'address', 'password1',
-                  'password2', 'birth_date', 'nationality', 'phone')
-        read_only_fields = ('created_at', 'updated_at',)
+	password1 = serializers.CharField(write_only=True, required=False)
+	password2 = serializers.CharField(write_only=True, required=False)
+	class Meta:
+		model = MyUser
+		fields = ('id', 'email', 'username', 'created_at', 'updated_at',
+				  'first_name', 'last_name', 'address', 'password1',
+				  'password2', 'birth_date', 'nationality', 'phone')
+		read_only_fields = ('created_at', 'updated_at',)
 
-        def create(self, validated_data):
-            return MyUser.objects.create(**validated_data)
+		def create(self, validated_data):
+			return MyUser.objects.create(**validated_data)
 
-        def update(self, instance, validated_data):
-            instance.address = validated_data.get('address', instance.address)
-            instance.email = validated_data.get('email', instance.email)
-            instance.phone = validated_data.get('phone', instance.phone)
-            instance.nationality = validated_data.get('nationality', instance.nationality)
+		def update(self, instance, validated_data):
+			instance.address = validated_data.get('address', instance.address)
+			instance.email = validated_data.get('email', instance.email)
+			instance.phone = validated_data.get('phone', instance.phone)
+			instance.nationality = validated_data.get('nationality', instance.nationality)
+			print instance
+			instance.save()
 
+			password1 = validated_data.get('password1', None)
+			password2 = validated_data.get('password2', None)
 
+			if password1 and password2 and password1 == password2:
+				instance.set_password(password1)
+				instance.save()
 
-            instance.save()
+			update_session_auth_hash(self.context.get('request'), instance)
 
-            password1 = validated_data.get('password1', None)
-            password2 = validated_data.get('password2', None)
-
-            if password1 and password2 and password1 == password2:
-                instance.set_password(password1)
-                instance.save()
-
-            update_session_auth_hash(self.context.get('request'), instance)
-
-            return instance
+			return instance
