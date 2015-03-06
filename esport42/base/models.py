@@ -10,7 +10,9 @@ class AccountManager(BaseUserManager):
             raise ValueError('User must have a valid email')
         if not username:
 			raise ValueError('User must have a valid username')
-        account = self.model(username=username, email=self.normalize_email(kwargs.get('email')))
+        account = self.model(username=username, email=self.normalize_email(kwargs.get('email')),
+                             first_name=kwargs.get('first_name', ''), last_name=kwargs.get('last_name', ''),
+                             address=kwargs.get('address', ''), birth_date=kwargs.get('birth_date'), nationality=kwargs.get('nationality', 'FR'), phone=kwargs.get('phone', ''))
         account.set_password(password)
         account.save()
         return account

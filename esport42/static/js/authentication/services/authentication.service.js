@@ -19,11 +19,17 @@
 
         return Authentication;
 
-        function register (email, password, username) {
+        function register (email, password, username, firstName, lastName,  address, birthDate, nationality, phone ) {
             return $http.post('/api/v1/accounts', {
                 email : email,
                 password : password,
-                username: username
+                username: username,
+                first_name: firstName,
+                last_name: lastName,
+                address : address,
+                birth_date : birthDate,
+                nationality: nationality,
+                phone: phone
             });
         }
     }
