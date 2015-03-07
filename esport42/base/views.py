@@ -29,7 +29,7 @@ class MyUserViewSet(viewsets.ModelViewSet):
     def create(self, request, **kwargs):
         serializer = self.serializer_class(data = request.data)
 
-        if serializer.is_valid():
+        if serializer.is_valid() and request.data['password1'] == request.data['password2']:
             MyUser.objects.create_user(**serializer.validated_data)
             return Response(serializer.validated_data, status=status.HTTP_201_CREATED)
         return Response({'status' : 'Bad request',

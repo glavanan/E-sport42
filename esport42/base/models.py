@@ -5,7 +5,7 @@ from django.contrib.auth.models import AbstractBaseUser
 from django.contrib.auth.models import BaseUserManager
 
 class AccountManager(BaseUserManager):
-    def create_user(self, username, password=None, **kwargs):
+    def create_user(self, username, **kwargs):
         if not kwargs.get('email'):
             raise ValueError('User must have a valid email')
         if not username:
@@ -13,11 +13,12 @@ class AccountManager(BaseUserManager):
         account = self.model(username=username, email=self.normalize_email(kwargs.get('email')),
                              first_name=kwargs.get('first_name', ''), last_name=kwargs.get('last_name', ''),
                              address=kwargs.get('address', ''), birth_date=kwargs.get('birth_date'), nationality=kwargs.get('nationality', 'FR'), phone=kwargs.get('phone', ''))
-        account.set_password(password)
+        account.set_password(kwargs.get('password1', ''))
         account.save()
         return account
     def create_superuser(self, username, password, **kwrags):
         account = self.create_user(username, **kwrags)
+        account.set_password(password)
         account.is_admin = True
         account.save()
 
