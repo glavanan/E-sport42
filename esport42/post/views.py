@@ -8,11 +8,8 @@ from post.serializers import PostSerializer
 class PostViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.order_by('-created_at')
     serializer_class = PostSerializer
+    permission_classes = (IsAdminOfSite,)
 
-    def get_permissions(self):
-        if self.request.method in permissions.SAFE_METHODS and self.request.user.is_admin:
-            return (IsAdminOfSite(),)
-        return (IsAdminOfSite(), )
 
     def perform_create(self, serializer):
         print self.request.user
