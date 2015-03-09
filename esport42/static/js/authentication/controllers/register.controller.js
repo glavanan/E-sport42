@@ -22,27 +22,36 @@
             birthDate: null,
             nationality: null,
             phone: null
-        }
-        vm.register = register;
+        };
+        vm.registerMandatory = registerMandatory;
+        vm.registerOptional = registerOptional;
+        vm.next = false;
+        vm.EMAIL_REGEXP = /^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/i;
 
-        function register() {
-            if (vm.form.password == vm.password2) {
-                console.log('In register function bitch');
-                Authentication.register(vm.email, vm.password, vm.username)
-                    .success(function (data, status, headers, config) {
-                        alert('You have been registered');
-                        // this callback will be called asynchronously
-                        // when the response is available
-                    })
-                    .error(function (data, status, headers, config) {
-                        alert('Something was wrong. Maybe it\'s your username');
-                        console.log('KAKA');
-                        // called asynchronously if an error occurs
-                        // or server returns response with an error status.
-                    });
+        function registerMandatory(isValid) {
+            if (!isValid)
+                return ;
+            else if (vm.form.password && vm.form.password == vm.passwordConfirm) {
+                vm.next = true;
+                //Authentication.register(vm.form.email, vm.form.password, vm.form.username)
+                //    .success(function (data, status, headers, config) {
+                //        alert('You have been registered');
+                //        vm.next = true;
+                //    })
+                //    .error(function (data, status, headers, config) {
+                //        alert('Something was wrong. Maybe it\'s your username');
+                //        console.log('KAKA');
+                //    });
             }
             else
                 alert("Both passwords are different");
+        }
+
+        function registerOptional(isValid) {
+            console.log("je passe dedans: ", isValid);
+            if (!isValid)
+                return ;
+            console.log('Registering Optional fields');
         }
     }
 })();

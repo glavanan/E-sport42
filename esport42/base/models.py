@@ -5,19 +5,19 @@ from django.contrib.auth.models import AbstractBaseUser
 from django.contrib.auth.models import BaseUserManager
 
 class AccountManager(BaseUserManager):
-    def create_user(self, username, **kwargs):
+    def create_user(self, username, password=None, **kwargs):
         if not kwargs.get('email'):
             raise ValueError('User must have a valid email')
         if not username:
-			raise ValueError('User must have a valid username')
+            raise ValueError('User must have a valid username')
         account = self.model(username=username, email=self.normalize_email(kwargs.get('email')),
                              first_name=kwargs.get('first_name', ''), last_name=kwargs.get('last_name', ''),
                              address=kwargs.get('address', ''), birth_date=kwargs.get('birth_date'), nationality=kwargs.get('nationality', 'FR'), phone=kwargs.get('phone', ''))
-        account.set_password(kwargs.get('password1', ''))
+        account.set_password(password)
         account.save()
         return account
     def create_superuser(self, username, password, **kwrags):
-        account = self.create_user(username, **kwrags)
+        account = self.create_user(username, password, **kwrags)
         account.set_password(password)
         account.is_admin = True
         account.save()
@@ -25,7 +25,7 @@ class AccountManager(BaseUserManager):
         return account
 
 class Teams(models.Model):
-    name = models.CharField(max_length = 50)
+    name = models.CharField(max_length=50)
 
 class MyUser(AbstractBaseUser):
     username = models.CharField(max_length=30, unique=True)

@@ -17,7 +17,6 @@ class MyUserViewSet(viewsets.ModelViewSet):
     queryset = MyUser.objects.all()
     serializer_class = MyUserSerializer
     lookup_field = 'username'
-    print 'LOLOLOL'
 
     def get_permissions(self):
         if self.request.method in permissions.SAFE_METHODS:
@@ -29,17 +28,12 @@ class MyUserViewSet(viewsets.ModelViewSet):
     def create(self, request, **kwargs):
         serializer = self.serializer_class(data = request.data)
 
-        if serializer.is_valid() and request.data['password1'] == request.data['password2']:
+        if not request.data.get('password'):
+            return Response({"error": "password", 'message': "There was no password in the request"}, status=status.HTTP_400_BAD_REQUEST)
+        if serializer.is_valid() and request.data.get('password'):
             MyUser.objects.create_user(**serializer.validated_data)
             return Response(serializer.validated_data, status=status.HTTP_201_CREATED)
-        return Response({'status' : 'Bad request',
-                         'message' : 'User could not be created with received data.'}, status=status.HTTP_400_BAD_REQUEST)
-    # def list(self, request, *args, **kwargs):
-    # 	obj = []
-    # 	for i in self.queryset:
-    # 		i[]
-    # 	print obj
-    # 	return Response({'lol': 'prout'})
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class LoginView(views.APIView):
     def post(self, request, format=None):

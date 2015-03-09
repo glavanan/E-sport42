@@ -13,7 +13,7 @@ class PostViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         print self.request.user
-        if self.request.user.is_admin:
+        if self.request.user.get('is_admin', None):
             instance = serializer.save(author=self.request.user)
             return super(PostViewSet, self).perform_create(serializer)
         return Response({'status' : 'Bad request',
