@@ -64,5 +64,36 @@ class LogoutView(views.APIView):
         logout(request)
         return Response({}, status=status.HTTP_204_NO_CONTENT)
 
+class UserExists(views.APIView):
+
+    def get(self, request, format=None):
+      try:
+        if request.method == 'GET':
+            data = request.GET['username']
+            data1 = request.GET['email']
+            print data
+            user = MyUser.objects.filter(username=data)
+            email = MyUser.objects.filter(email=data1)
+            emailr = False
+            if email:
+                emailr = True
+            userr = False
+            if user:
+                userr= True
+            return Response({"user" : userr, "email" : emailr})
+      except:
+        return Response({"message" : "un post ?"})
+    def post(selfself, request, format=None):
+        data = request.data
+        user = MyUser.objects.filter(username=data.get('username', None))
+        email = MyUser.objects.filter(email=data.get('email', None))
+        emailr = False
+        if email:
+            emailr = True
+        userr = False
+        if user:
+            userr= True
+        return Response({"user" : userr, "email" : emailr})
+
 class IndexView(TemplateView):
     template_name = 'user/index.html'
