@@ -6,13 +6,10 @@ from base.models import MyUser
 
 
 class MyUserSerializer(serializers.ModelSerializer):
-    password1 = serializers.CharField(write_only=True, required=False)
-    password2 = serializers.CharField(write_only=True, required=False)
     class Meta:
         model = MyUser
         fields = ('id', 'email', 'username', 'created_at', 'updated_at',
-                  'first_name', 'last_name', 'address', 'password1',
-                  'password2', 'birth_date', 'nationality', 'phone')
+                  'first_name', 'last_name', 'address', 'birth_date', 'nationality', 'phone', 'password')
         read_only_fields = ('created_at', 'updated_at',)
 
         def create(self, validated_data):

@@ -7,9 +7,14 @@
 
     angular
         .module("esport42.authentication.services")
-        .factory("Authentication", Authentication);
+        .factory("Authentication", Authentication)
+
+    angular
+        .module("esport42.authentication.services")
+        .factory("Focus", Focus);
 
     Authentication.$inject = ['$cookies', '$http'];
+    Focus.$inject = ['$rootScope', '$timeout'];
 
     function Authentication ($cookies, $http) {
 
@@ -19,18 +24,17 @@
 
         return Authentication;
 
-        function register (email, password, username, firstName, lastName,  address, birthDate, nationality, phone ) {
-            return $http.post('/api/v1/accounts', {
-                email : email,
-                password : password,
-                username: username,
-                first_name: firstName,
-                last_name: lastName,
-                address : address,
-                birth_date : birthDate,
-                nationality: nationality,
-                phone: phone
-            });
+        function register (data) {
+            return $http.post('/api/v1/accounts', data);
         }
     }
+
+        function Focus ($rootScope, $timeout) {
+            return function (name) {
+                $timeout(function () {
+                    $rootScope.$broadcast('focusOn', name);
+                    console.log('focus On declenched !');
+                });
+            }
+        }
 })();
