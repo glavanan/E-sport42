@@ -38,19 +38,18 @@ class MyUserViewSet(viewsets.ModelViewSet):
 class LoginView(views.APIView):
     def post(self, request, format=None):
         data = request.data
-        print data.get("username", None)
-        print request.body
         username = data.get('username', None)
         password = data.get('password', None)
+        if not username or not password:
+            return Response({'error' : 'Missing identifier'}, status=status.HTTP_400_BAD_REQUEST)
         account = authenticate(username=username, password=password)
+        print account
         if account is not None:
             login(request, account)
             serializers = MyUserSerializer(account)
-            serializers.data['is_logged'] = True
             return Response(serializers.data)
         else:
-            return Response({'status' : 'Unauthorized',
-                'message' : 'usernamen/password combination invalid'}, status=status.HTTP_401_UNAUTHORIZED)
+            return Response({'error' : 'User not registered'}, status=status.HTTP_401_UNAUTHORIZED)
 
 class LogoutView(views.APIView):
     permission_classes = (permissions.IsAuthenticated,)
@@ -58,36 +57,22 @@ class LogoutView(views.APIView):
         logout(request)
         return Response({}, status=status.HTTP_204_NO_CONTENT)
 
-class UserExists(views.APIView):
 
-    def get(self, request, format=None):
-      try:
-        if request.method == 'GET':
-            data = request.GET['username']
-            data1 = request.GET['email']
-            print data
-            user = MyUser.objects.filter(username=data)
-            email = MyUser.objects.filter(email=data1)
-            emailr = False
-            if email:
-                emailr = True
-            userr = False
-            if user:
-                userr= True
-            return Response({"user" : userr, "email" : emailr})
-      except:
-        return Response({"message" : "un post ?"})
-    def post(selfself, request, format=None):
-        data = request.data
-        user = MyUser.objects.filter(username=data.get('username', None))
-        email = MyUser.objects.filter(email=data.get('email', None))
-        emailr = False
-        if email:
-            emailr = True
-        userr = False
-        if user:
-            userr= True
-        return Response({"user" : userr, "email" : emailr})
+class UserExists(views.APIView):
+    def get(self, request):
+        username = request.GET.get('u', None)
+        if username and not MyUser.objects.filter(username=username):
+            return Response({}, status=status.HTTP_200_OK)
+        else:
+            return Response({}, status=status.HTTP_404_NOT_FOUND)
+
+class EmailExists(views.APIView):
+    def get(self, request):
+        email = request.GET.get('e', None)
+        if email and not MyUser.objects.filter(email=email):
+            return Response({}, status=status.HTTP_200_OK)
+        else:
+            return Response({}, status=status.HTTP_404_NOT_FOUND)
 
 class IndexView(TemplateView):
     template_name = 'user/index.html'

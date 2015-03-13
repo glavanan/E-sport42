@@ -11,6 +11,7 @@
 
     function focusOn() {
         return function (scope, elem, attr) {
+            console.log('wiwi jexist');
             scope.$on('focusOn', function (e, name) {
                 if (name === attr.focusOn) {
                     elem[0].focus();

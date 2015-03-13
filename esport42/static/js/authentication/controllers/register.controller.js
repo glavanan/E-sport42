@@ -23,34 +23,24 @@
                 return ;
             else if (vm.form.password && vm.form.password == vm.passwordConfirm) {
                 vm.next = true;
-                //Authentication.register(vm.form.email, vm.form.password, vm.form.username)
-                //    .success(function (data, status, headers, config) {
-                //        alert('You have been registered');
-                //        vm.next = true;
-                //    })
-                //    .error(function (data, status, headers, config) {
-                //        alert('Something was wrong. Maybe it\'s your username');
-                //        console.log('KAKA');
-                //    });
+                Focus("FocusFirstName");
             }
             else
                 alert("Both passwords are different");
         }
 
         function registerOptional(isValid) {
-            //vm.form.birthDate = new Date(vm.form.birthDate);
-            if (vm.date !== vm.dirtyDate)
-                vm.form.birth_date = $filter('date')(vm.date, "yyyy/MM/dd");
             if (!isValid)
                 return ;
-            console.log(vm.form);
+            if (vm.date !== vm.dirtyDate)
+                vm.form.birth_date = $filter('date')(vm.date, "yyyy-MM-dd");
             Authentication.register(vm.form)
                 .success(function (data, status, headers, config) {
                     $location.path('/');
                     alert('You have been registered');
                 })
                 .error(function (data, status, headers, config) {
-                    alert('Something was wrong. Maybe it\'s your username');
+                    console.log(vm.form);
                     console.log(data);
                 });
          }
