@@ -18,10 +18,17 @@
         vm.dirtyDate = vm.date;
         vm.EMAIL_REGEXP = /^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/i;
 
+        activate();
+
+        function activate() {
+            if (Authentication.isAuthenticated())
+                $location.url('/');
+        }
+
         function registerMandatory(isValid) {
             if (!isValid)
                 return ;
-            else if (vm.form.password && vm.form.password == vm.passwordConfirm) {
+            else if (vm.form.password && vm.form.password == vm.form.password_confirm) {
                 vm.next = true;
                 Focus("FocusFirstName");
             }
@@ -38,10 +45,6 @@
                 .success(function (data, status, headers, config) {
                     $location.path('/');
                     alert('You have been registered');
-                })
-                .error(function (data, status, headers, config) {
-                    console.log(vm.form);
-                    console.log(data);
                 });
          }
     }

@@ -20,6 +20,7 @@ class AccountManager(BaseUserManager):
         account = self.create_user(username, password, **kwrags)
         account.set_password(password)
         account.is_admin = True
+        account.is_staff = True
         account.save()
         return account
 
@@ -38,6 +39,7 @@ class MyUser(AbstractBaseUser):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     is_admin = models.BooleanField(default=False)
+    is_staff = models.BooleanField(default=False)
     USERNAME_FIELD = 'username'
     REQUIRED_FIELDS = ['email']
     teams = models.ManyToManyField(Teams)
