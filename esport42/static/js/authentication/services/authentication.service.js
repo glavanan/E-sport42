@@ -21,6 +21,7 @@
         var Authentication = {
             register : register,
             login: login,
+            logout: logout,
             getAuthenticatedAccount: getAuthenticatedAccount,
             setAuthenticatedAccount: setAuthenticatedAccount,
             isAuthenticated: isAuthenticated,
@@ -39,32 +40,38 @@
                 console.log(dataReceived);
             }
         }
+
         function login (username, password) {
             return $http.post('/api/v1/login', {
                 username: username,
                 password: password
             });
-        //    }).then(loginSuccess, loginError);
-        //    function loginSuccess(data, status, headers, config) {
-        //        Authentication.setAuthenticatedAccount(data.data);
-        //        window.location = '/';
-        //    }
-        //    function loginError(data, status, headers, config) {
-        //        alert('Mysterious problem while logging in... Please contact administrator.');
-        //        console.log(data);
-        //    }
+        }
+
+        function logout() {
+            $http.post('/api/v1/logout', {})
+                .success(function () {
+                    unauthenticate();
+                    window.location = '/';
+                })
+                .error(function () {
+                    alert('We were unable to logout you. Please contact the administrator');
+            });
         }
         function getAuthenticatedAccount() {
             if (!$cookies.authenticatedAccount)
                 return ;
             return JSON.parse($cookies.authenticatedAccount);
         }
+
         function setAuthenticatedAccount(account) {
             $cookies.authenticatedAccount = JSON.stringify(account);
         }
+
         function isAuthenticated() {
             return !!$cookies.authenticatedAccount;
         }
+
         function unauthenticate() {
             delete $cookies.authenticatedAccount;
         }

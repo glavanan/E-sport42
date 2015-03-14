@@ -26,7 +26,7 @@
             Authentication.login(vm.form.username, vm.form.password)
                 .success(function (data, status, headers, config) {
                     Authentication.setAuthenticatedAccount(data);
-                    $location.path('/');
+                    window.location = '/';
                 })
                 .error(function(data, status, headers, config) {
                     vm.error = {};

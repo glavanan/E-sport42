@@ -34,14 +34,6 @@ class LoginView(views.APIView):
         serializer = LoginSerializer(data=request.data)
         if not serializer.is_valid():
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        # data = request.data
-        # username = data.get('username', None)
-        # password = data.get('password', None)
-        # if not username or not password:
-        #     return Response({"error": "Missing parameters"}, status=status.HTTP_400_BAD_REQUEST)
-        # user = MyUser.objects.filter(username=username)
-        # if not user:
-        #     return Response({"error": "Unknown user"}, status=status.HTTP_404_NOT_FOUND)
         account = authenticate(username=serializer.validated_data['username'] , password=serializer.validated_data['password'])
         login(request, account)
         serializers = MyUserSerializer(account)
@@ -52,7 +44,6 @@ class LogoutView(views.APIView):
     def post(self, request, format=None):
         logout(request)
         return Response({}, status=status.HTTP_204_NO_CONTENT)
-
 
 class UserExists(views.APIView):
     def get(self, request):

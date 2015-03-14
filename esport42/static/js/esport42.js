@@ -6,7 +6,8 @@
         .module('esport42', [
             'esport42.config',
             'esport42.routes',
-            'esport42.authentication'
+            'esport42.authentication',
+            'esport42.layouts'
         ]);
     angular
         .module('esport42.routes', ['ngRoute']);
@@ -14,6 +15,8 @@
         .module('esport42.config', []);
     angular
         .module('esport42.authentication', []);
+    angular
+        .module('esport42.layouts', []);
     angular
         .module('esport42')
         .run(run);
