@@ -7,7 +7,7 @@
 
     angular
         .module('esport42.layouts.controllers')
-        .controller('NavbarController', NavbarController)
+        .controller('NavbarController', NavbarController);
 
     NavbarController.$inject = ['$scope', 'Authentication'];
 

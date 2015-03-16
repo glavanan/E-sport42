@@ -6,7 +6,7 @@ from post.views import PostViewSet
 
 router = routers.SimpleRouter(trailing_slash=False)
 router.register(r'accounts', MyUserViewSet)
-router.register(r'post', PostViewSet)
+router.register(r'posts', PostViewSet)
 
 urlpatterns = patterns('',
 					url(r'^api/v1/', include(router.urls)),
