@@ -47,7 +47,7 @@ class LogoutView(views.APIView):
 
 class UserExists(views.APIView):
     def get(self, request):
-        username = request.GET.get('u', None)
+        username = request.GET.get('username', None)
         if username and not MyUser.objects.filter(username=username):
             return Response({}, status=status.HTTP_200_OK)
         else:
@@ -55,7 +55,7 @@ class UserExists(views.APIView):
 
 class EmailExists(views.APIView):
     def get(self, request):
-        email = request.GET.get('e', None)
+        email = request.GET.get('email', None)
         if email and not MyUser.objects.filter(email=email):
             return Response({}, status=status.HTTP_200_OK)
         else:

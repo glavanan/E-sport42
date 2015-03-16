@@ -15,7 +15,7 @@
             require: 'ngModel',
             link: function ($scope, elem, attrs, ngModel) {
                 ngModel.$asyncValidators.usernameAvailable = function (username) {
-                    return $http.get('/api/v1/username-exists?u=' + username);
+                    return $http.get('/api/v1/username-exists?username=' + username);
                 }
             }
         }

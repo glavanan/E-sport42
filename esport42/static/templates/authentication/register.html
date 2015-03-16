@@ -15,7 +15,7 @@
                            placeholder="example@example.com"
                            ng-model="vm.form.email"
                            ng-pattern="vm.EMAIL_REGEXP"
-                           ng-model-options="{ updateOn: 'default blur', debounce: { default: 500, blur: 0 } }"
+                           ng-model-options="{ updateOn: 'blur', debounce: { blur: 0 } }"
                            ng-required="true"
                            email-available autofocus/>
                     <div ng-if="registerForm.email.$pending">Email en cours de vérification...</div>
@@ -36,7 +36,7 @@
                            placeholder="XxKittyKatdu94xX"
                            name="username"
                            ng-model="vm.form.username"
-                           ng-model-options="{ updateOn: 'default blur', debounce: { default: 500, blur: 0 } }"
+                           ng-model-options="{ updateOn: 'blur', debounce: { blur: 0 } }"
                            minlength="3"
                            maxlength="30"
                            username-available

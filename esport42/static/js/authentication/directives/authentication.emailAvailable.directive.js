@@ -15,7 +15,7 @@
             require: 'ngModel',
             link: function ($scope, elem, attrs, ngModel) {
                 ngModel.$asyncValidators.emailAvailable = function (email) {
-                    return $http.get('/api/v1/email-exists?e=' + email);
+                    return $http.get('/api/v1/email-exists?email=' + email);
                 }
             }
         }
