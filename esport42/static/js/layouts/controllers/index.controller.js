@@ -9,9 +9,9 @@
         .module('esport42.layouts.controllers')
         .controller('IndexController', IndexController);
 
-    IndexController.$inject = ['Post'];
+    IndexController.$inject = ['$sce', 'Post', '_'];
 
-    function IndexController(Post) {
+    function IndexController($sce, Post, _) {
         var vm = this;
 
         vm.posts = [];
@@ -26,8 +26,7 @@
                 .error(PostFailure);
 
             function PostSuccess(data) {
-                vm.posts = data;
-                console.log('Posts:', vm.posts);
+                vm.posts = _.map(data, function (data) {return $sce.trustAsHtml(data.text)});
             }
             function PostFailure(data) {
                 console.log('error bitch');

@@ -41,6 +41,7 @@ INSTALLED_APPS = (
     'post',
     'djangular',
     'rest_framework',
+    'jsonify',
 )
 
 MIDDLEWARE_CLASSES = (

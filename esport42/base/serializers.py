@@ -16,9 +16,11 @@ class MyUserSerializer(serializers.ModelSerializer):
         read_only_fields = ('created_at', 'updated_at')
 
         def create(self, validated_data):
+            print 'IM HERE TOO'
             return MyUser.objects.create(**validated_data)
 
         def update(self, instance, validated_data):
+            print 'TESTING ?'
             instance.address = validated_data.get('address', instance.address)
             instance.phone = validated_data.get('phone', instance.phone)
             instance.first_name = validated_data.get('first_name', instance.first_name)
@@ -26,15 +28,16 @@ class MyUserSerializer(serializers.ModelSerializer):
             instance.nationality = validated_data.get('nationality', instance.nationality)
             instance.save()
 
+            print 'KAKAKAKALOLOLO'
             password = validated_data.get('password', None)
             password_confirm = validated_data.get('password_confirm', None)
 
             if password and password_confirm and password == password_confirm:
+                print 'PASSSSSWORD', password
                 instance.set_password(password)
                 instance.save()
 
             update_session_auth_hash(self.context.get('request'), instance)
-
             return instance
 
 class LoginSerializer(serializers.Serializer):
