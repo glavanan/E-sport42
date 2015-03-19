@@ -23,6 +23,7 @@
                 $location.path('/');
         }
         function login() {
+            vm.error = null;
             Authentication.login(vm.form.username, vm.form.password)
                 .success(function (data, status, headers, config) {
                     Authentication.setAuthenticatedAccount(data);

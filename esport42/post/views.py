@@ -12,5 +12,5 @@ class PostViewSet(viewsets.ModelViewSet):
         return super(PostViewSet, self).perform_create(serializer)
 
     def get_permissions(self):
-        return ((permissions.AllowAny(),) if self.request.method == 'POST'
+        return ((permissions.AllowAny(),) if self.request.method == 'GET'
                 else (permissions.IsAdminUser(), IsOwnerOrAdmin()))

@@ -29,6 +29,16 @@ class MyUserViewSet(viewsets.ModelViewSet):
             return Response(serializer.validated_data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+    def update(self, request, *args, **kwargs):
+        print 'In update !'
+        instance = self.get_object()
+        serializer = self.serializer_class(instance, data=request.data)
+        if serializer.is_valid():
+            print 'IT IS VALID'
+            serializer.save()
+            return Response(serializer.validated_data, status=status.HTTP_202_ACCEPTED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 class LoginView(views.APIView):
     def post(self, request, format=None):
         serializer = LoginSerializer(data=request.data)
