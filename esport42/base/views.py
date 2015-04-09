@@ -12,7 +12,6 @@ from base.permissions import IsAccountOwner, IsOwnerOrAdmin
 from rest_framework import permissions, viewsets, status, views, permissions
 from rest_framework.response import Response
 
-
 class MyUserViewSet(viewsets.ModelViewSet):
     queryset = MyUser.objects.all()
     serializer_class = MyUserSerializer
@@ -30,12 +29,10 @@ class MyUserViewSet(viewsets.ModelViewSet):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def update(self, request, *args, **kwargs):
-        print 'In update !'
         instance = self.get_object()
-        serializer = self.serializer_class(instance, data=request.data)
+        serializer = self.serializer_class(instance, data=request.data, context={'request': request})
         if serializer.is_valid():
-            print 'IT IS VALID'
-            serializer.save()
+            serializer.update(instance, serializer.validated_data)
             return Response(serializer.validated_data, status=status.HTTP_202_ACCEPTED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -44,7 +41,7 @@ class LoginView(views.APIView):
         serializer = LoginSerializer(data=request.data)
         if not serializer.is_valid():
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        account = authenticate(username=serializer.validated_data['username'] , password=serializer.validated_data['password'])
+        account = authenticate(username=serializer.validated_data['username'], password=serializer.validated_data['password'])
         login(request, account)
         serializers = MyUserSerializer(account)
         return Response(serializers.data)

@@ -26,11 +26,20 @@
                 .error(PostFailure);
 
             function PostSuccess(data) {
-                vm.posts = _.map(data, function (data) {return $sce.trustAsHtml(data.text)});
+                vm.posts = _.map(data, function (data) {
+                    return {
+                        text: $sce.trustAsHtml(data.text),
+                        img: data.image,
+                        title: data.title,
+                        author: data.author.username
+                    }
+                });
             }
+
             function PostFailure(data) {
                 console.log('error bitch');
             }
         }
+
     }
 })();
