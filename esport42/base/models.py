@@ -24,8 +24,7 @@ class AccountManager(BaseUserManager):
         account.save()
         return account
 
-class Teams(models.Model):
-    name = models.CharField(max_length=50)
+
 
 class MyUser(AbstractBaseUser):
     username = models.CharField(max_length=30, unique=True)
@@ -42,7 +41,6 @@ class MyUser(AbstractBaseUser):
     is_staff = models.BooleanField(default=False)
     USERNAME_FIELD = 'username'
     REQUIRED_FIELDS = ['email']
-    teams = models.ManyToManyField(Teams)
     objects = AccountManager()
     def __unicode__(self):
         return self.username
@@ -52,5 +50,20 @@ class MyUser(AbstractBaseUser):
 
     def get_short_name(self):
         return self.first_name
+
+class Tournament(models.Model):
+    name = models.CharField(max_length=50)
+    nbteams = models.IntegerField()
+    player_per_team = models.IntegerField()
+    template = models.IntegerField()
+
+class Phase(models.Model):
+    tmp_name = models.CharField(default='Tree', max_length=50)
+    tournament=models.ForeignKey(Tournament)
+
+class Teams(models.Model):
+    name = models.CharField(max_length=50)
+    members = models.ManyToManyField(MyUser)
+    tournoi = models.ForeignKey(Tournament)
 
 

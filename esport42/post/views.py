@@ -10,10 +10,9 @@ class PostViewSet(viewsets.ModelViewSet):
     serializer_class = PostSerializer
     permission_classes = (IsAdminOfSite,)
 
-
     def perform_create(self, serializer):
         print self.request.user
-        if self.request.user.get('is_admin', None):
+        if self.request.user.is_staff:
             instance = serializer.save(author=self.request.user)
             return super(PostViewSet, self).perform_create(serializer)
         return Response({'status' : 'Bad request',

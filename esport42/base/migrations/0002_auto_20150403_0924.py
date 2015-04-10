@@ -7,13 +7,13 @@ from django.db import models, migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('post', '0001_initial'),
+        ('base', '0001_initial'),
     ]
 
     operations = [
         migrations.RenameField(
-            model_name='post',
-            old_name='autor',
-            new_name='author',
+            model_name='teams',
+            old_name='users',
+            new_name='members',
         ),
     ]

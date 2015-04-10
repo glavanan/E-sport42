@@ -7,9 +7,9 @@ class Post(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     text = models.TextField()
     title = models.CharField(max_length=255)
-    image = models.ImageField(upload_to='imgs')
+    image = models.ImageField(upload_to='/static/img')
 
     def __unicode__(self):
         return '{0}'.format(self.content)
 
-# Create your models here.
+# Create your models 0here.
