@@ -57,7 +57,6 @@ class TeamsViewSet(viewsets.ModelViewSet):
         team = serializer.save()
         return Response(serializer.validated_data, status=status.HTTP_201_CREATED)
 
-
 class MyUserViewSet(viewsets.ModelViewSet):
     queryset = MyUser.objects.all()
     serializer_class = MyUserSerializer
@@ -74,12 +73,20 @@ class MyUserViewSet(viewsets.ModelViewSet):
             return Response(serializer.validated_data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+    def update(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.serializer_class(instance, data=request.data, context={'request': request})
+        if serializer.is_valid():
+            serializer.update(instance, serializer.validated_data)
+            return Response(serializer.validated_data, status=status.HTTP_202_ACCEPTED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 class LoginView(views.APIView):
     def post(self, request, format=None):
         serializer = LoginSerializer(data=request.data)
         if not serializer.is_valid():
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        account = authenticate(username=serializer.validated_data['username'] , password=serializer.validated_data['password'])
+        account = authenticate(username=serializer.validated_data['username'], password=serializer.validated_data['password'])
         login(request, account)
         serializers = MyUserSerializer(account)
         return Response(serializers.data)

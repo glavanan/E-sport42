@@ -6,17 +6,23 @@
         .module('esport42', [
             'esport42.config',
             'esport42.routes',
+            'esport42.utils',
             'esport42.authentication',
-            'esport42.layouts'
+            'esport42.layouts',
+            'esport42.posts'
         ]);
     angular
         .module('esport42.routes', ['ngRoute']);
     angular
         .module('esport42.config', []);
     angular
+        .module('esport42.utils', []);
+    angular
         .module('esport42.authentication', []);
     angular
         .module('esport42.layouts', []);
+    angular
+        .module('esport42.posts', []);
     angular
         .module('esport42')
         .run(run);

@@ -28,27 +28,26 @@ class MyUserSerializer(serializers.ModelSerializer):
                   'nationality', 'phone', 'password', 'password_confirm')
         read_only_fields = ('created_at', 'updated_at')
 
-        def create(self, validated_data):
-            return MyUser.objects.create(**validated_data)
+    def create(self, validated_data):
+        return MyUser.objects.create(**validated_data)
 
-        def update(self, instance, validated_data):
-            instance.address = validated_data.get('address', instance.address)
-            instance.phone = validated_data.get('phone', instance.phone)
-            instance.first_name = validated_data.get('first_name', instance.first_name)
-            instance.last_name = validated_data.get('last_name', instance.last_name)
-            instance.nationality = validated_data.get('nationality', instance.nationality)
+    def update(self, instance, validated_data):
+        instance.address = validated_data.get('address', instance.address)
+        instance.phone = validated_data.get('phone', instance.phone)
+        instance.first_name = validated_data.get('first_name', instance.first_name)
+        instance.last_name = validated_data.get('last_name', instance.last_name)
+        instance.nationality = validated_data.get('nationality', instance.nationality)
+        instance.save()
+
+        password = validated_data.get('password', None)
+        password_confirm = validated_data.get('password_confirm', None)
+
+        if password and password_confirm and password == password_confirm:
+            instance.set_password(password)
             instance.save()
 
-            password = validated_data.get('password', None)
-            password_confirm = validated_data.get('password_confirm', None)
-
-            if password and password_confirm and password == password_confirm:
-                instance.set_password(password)
-                instance.save()
-
-            update_session_auth_hash(self.context.get('request'), instance)
-
-            return instance
+        update_session_auth_hash(self.context.get('request'), instance)
+        return instance
 
 class TeamSerializer(serializers.ModelSerializer):
 #Hey pede tu a pas reussis a resoudre le probleme regarde si il y a pas un serializer.ququechose, cadeau :

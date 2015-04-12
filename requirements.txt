@@ -1,5 +1,13 @@
 Django==1.7.4
+Pillow==2.7.0
+beautifulsoup4==4.3.2
 django-countries==3.1.1
-djangular==0.2.7
+django-jsonify==0.3.0
 djangorestframework==3.0.5
+djangular==0.2.7
 drf-nested-routers==0.9.0
+gnureadline==6.3.3
+image==1.3.4
+ipython==3.0.0
+requests==2.5.1
+wsgiref==0.1.2

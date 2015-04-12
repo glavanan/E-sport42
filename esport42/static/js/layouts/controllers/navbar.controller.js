@@ -7,7 +7,7 @@
 
     angular
         .module('esport42.layouts.controllers')
-        .controller('NavbarController', NavbarController)
+        .controller('NavbarController', NavbarController);
 
     NavbarController.$inject = ['$scope', 'Authentication'];
 
@@ -16,10 +16,22 @@
 
         vm.logout = logout;
 
+        activate();
+
+        function activate() {
+            $scope.$watch(function (scope) {return scope.userIsAuthenticated}, onUserChange);
+        }
+
         function logout() {
+            console.log($scope.user);
             if (Authentication.isAuthenticated())
                 Authentication.logout();
             return false;
+        }
+
+        function onUserChange(newValue) {
+            if (newValue === false)
+                Authentication.unauthenticate();
         }
     }
 })();

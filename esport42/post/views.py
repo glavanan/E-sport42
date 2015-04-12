@@ -1,15 +1,14 @@
-from django.shortcuts import render
-from rest_framework import permissions, viewsets, status
-from rest_framework.response import Response
-from post.models import Post
+from rest_framework import permissions, viewsets
+from base.permissions import IsOwnerOrAdmin
 from post.permissions import IsAdminOfSite
+from post.models import Post
 from post.serializers import PostSerializer
 
 class PostViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.order_by('-created_at')
     serializer_class = PostSerializer
-    permission_classes = (IsAdminOfSite,)
 
+    permission_classes = (IsAdminOfSite,)
     def perform_create(self, serializer):
         print self.request.user
         if self.request.user.is_staff:
@@ -23,4 +22,6 @@ class AdminPostViewSet(viewsets.ViewSet):
     queryset = Post.objects.order_by('-created_at')
     serializer_class = PostSerializer
 
-# Create your views here.
+    def get_permissions(self):
+        return ((permissions.AllowAny(),) if self.request.method == 'GET'
+                else (permissions.IsAdminUser(), IsOwnerOrAdmin()))

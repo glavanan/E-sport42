@@ -45,6 +45,9 @@
                 .success(function (data, status, headers, config) {
                     $location.path('/');
                     alert('You have been registered');
+                })
+                .error(function (data, status, headers, config) {
+                    console.log(data);
                 });
          }
     }

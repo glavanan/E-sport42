@@ -77,12 +77,12 @@
         }
     }
 
-        function Focus ($rootScope, $timeout) {
-            return function (name) {
-                $timeout(function () {
-                    $rootScope.$broadcast('focusOn', name);
-                    console.log('focus On declenched !');
-                });
-            }
+    function Focus ($rootScope, $timeout) {
+        return function (name) {
+            $timeout(function () {
+                $rootScope.$broadcast('focusOn', name);
+                console.log('focus On declenched !');
+            });
         }
+    }
 })();

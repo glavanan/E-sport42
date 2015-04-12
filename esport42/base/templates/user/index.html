@@ -8,9 +8,11 @@
 </head>
 <body>
 
-<nav class="navbar navbar-inverse" ng-controller="NavbarController as vm">
+{% load jsonify %}
+
+<nav class="navbar navbar-inverse" ng-init="userIsAuthenticated={{ user.is_authenticated|jsonify }}" ng-controller="NavbarController as vm">
   <div class="container-fluid">
-    <!-- Brand and toggle get grouped for better mobile display -->
+{#    Brand and toggle get grouped for better mobile display#}
     <div class="navbar-header">
      	<a class="navbar-brand" href="/">
             {% load staticfiles %}
@@ -21,7 +23,7 @@
                   {% if not user.is_authenticated %}
 	                  <li><a href="/register">Créer un compte</a></li>
     	              <li><a href="/login">Se connecter</a></li>
-				  {% else %}
+                  {% else %}
 	                  <li><a href="#" ng-click="vm.logout()">Se déconnecter</a></li>
                       <li><p class="navbar-text">Salut {{ user.username }}</p></li>
                   {% endif %}
