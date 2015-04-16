@@ -1,17 +1,14 @@
 .animate-post.ng-animate {
-  -webkit-transition:all ease 1s;
-  transition:all ease 1s;
+    -webkit-transition:all ease 0s;
+    transition:all ease 0s;
 
-  position:relative;
+    position:relative;
 }
 
 .animate-post.ng-leave.ng-leave-active,
 .animate-post.ng-enter {
-    top:-50px;
-    height: 200px;
+    /*opacity: 1;*/
 }
-.animate-post.ng-leave,
-.animate-post.ng-enter.ng-enter-active {
-    top:0;
-    height: 0px;
+.animate-post.ng-enter {
+    opacity: 0;
 }
