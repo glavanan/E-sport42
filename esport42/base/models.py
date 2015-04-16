@@ -51,19 +51,7 @@ class MyUser(AbstractBaseUser):
     def get_short_name(self):
         return self.first_name
 
-class Tournament(models.Model):
-    name = models.CharField(max_length=50)
-    nbteams = models.IntegerField()
-    player_per_team = models.IntegerField()
-    template = models.IntegerField()
 
-class Phase(models.Model):
-    tmp_name = models.CharField(default='Tree', max_length=50)
-    tournament=models.ForeignKey(Tournament)
 
-class Teams(models.Model):
-    name = models.CharField(max_length=50)
-    members = models.ManyToManyField(MyUser)
-    tournoi = models.ForeignKey(Tournament)
 
 
