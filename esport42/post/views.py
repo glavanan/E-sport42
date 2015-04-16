@@ -3,12 +3,16 @@ from base.permissions import IsOwnerOrAdmin
 from post.permissions import IsAdminOfSite
 from post.models import Post
 from post.serializers import PostSerializer
+from rest_framework.response import Response
 
 class PostViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.order_by('-created_at')
     serializer_class = PostSerializer
 
-    permission_classes = (IsAdminOfSite,)
+    def get_permissions(self):
+        return ((permissions.AllowAny(),) if self.request.method == 'GET'
+                else (permissions.IsAdminUser(), IsOwnerOrAdmin()))
+
     def perform_create(self, serializer):
         print self.request.user
         if self.request.user.is_staff:

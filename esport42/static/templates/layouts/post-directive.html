@@ -1,0 +1,19 @@
+<div  class="post-switch-container" ng-switch on="clicked">
+    <div class="media animate-post post-summary" ng-switch-default>
+        <div class="media-left media-top">
+            <img class="media-object" src="{{ article.img }}">
+        </div>
+        <div class="media-body">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="media-heading panel-title">{{ article.title }} by {{ article.author }}</h4>
+                </div>
+                <div class="panel-body">
+                    <div class="post-text" ng-bind-html="article.summary"></div>
+                    <p ng-click="clickOn()">Lire l'article...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="animate-post post-detail" ng-switch-when="true" ng-click="clickOn()">Ducks everywhere...</div>
+</div>

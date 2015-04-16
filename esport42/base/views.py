@@ -37,7 +37,6 @@ class TournamentViewSet(viewsets.ModelViewSet):
 
 class TeamsViewSet(viewsets.ModelViewSet):
     queryset = Teams.objects.all()
-
     serializer_class=TeamSerializer
 
     def get(self, request):
@@ -45,11 +44,9 @@ class TeamsViewSet(viewsets.ModelViewSet):
         return Response({}, status=status.HTTP_200_OK)
 
     def post(self, request):
-        print "HEREMOTHERFUCKER"
         serializer = TeamSerializer(data=request.data)
         for data in serializer.data:
             print data
-        print "HEREMOTHERFUCKER"
         if not serializer.is_valid():
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 

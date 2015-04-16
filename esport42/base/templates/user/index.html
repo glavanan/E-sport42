@@ -4,19 +4,20 @@
     <meta charset="UTF-8">
     <base href="/" />
     {% include 'user/css_template.html' %}
+    {% include 'user/js_template.html' %}
     <title>E-Sport 42</title>
 </head>
 <body>
 
 {% load jsonify %}
 
-<nav class="navbar navbar-inverse" ng-init="userIsAuthenticated={{ user.is_authenticated|jsonify }}" ng-controller="NavbarController as vm">
+<nav class="navbar navbar-inverse navbar-fixed-top" ng-init="userIsAuthenticated={{ user.is_authenticated|jsonify }}" ng-controller="NavbarController as vm">
   <div class="container-fluid">
 {#    Brand and toggle get grouped for better mobile display#}
     <div class="navbar-header">
      	<a class="navbar-brand" href="/">
             {% load staticfiles %}
-            <img alt="Brand" src="{% static 'img/logo_esport42.jpg' %}" height="100%"></a>
+            <img alt="Brand" src="{% static 'img/site/logo_esport42.jpg' %}" height="100%"></a>
     	</div>
           <div class="collapse navbar-collapse">
               <ul class="nav navbar-nav navbar-right">
@@ -34,6 +35,5 @@
 
 <ng-view></ng-view>
 
-{% include 'user/js_template.html' %}
 </body>
 </html>

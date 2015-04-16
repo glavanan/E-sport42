@@ -1,15 +1,7 @@
-<div class="media" ng-repeat="post in vm.posts">
-  <div class="media-left media-middle">
-      <img class="media-object" src="post.img">
-  </div>
-  <div class="media-body">
-      <div class="post panel panel-default">
-        <div class="panel-heading">
-            <h4 class="media-heading panel-title">{{ post.title }} by {{ post.author }}</h4>
+<div class="content">
+    <div class="post-area">
+        <div ng-repeat="post in vm.posts">
+            <post-article article="post"></post-article>
         </div>
-        <div class="panel-body">
-            <div ng-bind-html="post.text"></div>
-        </div>
-      </div>
-  </div>
+    </div>
 </div>

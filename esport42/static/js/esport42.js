@@ -4,6 +4,7 @@
 (function () {
     angular
         .module('esport42', [
+            'ngAnimate', 'ngSanitize',
             'esport42.config',
             'esport42.routes',
             'esport42.utils',

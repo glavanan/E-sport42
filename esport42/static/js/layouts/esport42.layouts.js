@@ -7,10 +7,13 @@
 
     angular
         .module('esport42.layouts', [
-            'esport42.layouts.controllers'
+            'esport42.layouts.controllers',
+            'esport42.layouts.directives'
         ]);
 
     angular
         .module('esport42.layouts.controllers', []);
+    angular
+        .module('esport42.layouts.directives', []);
 
 })();
