@@ -1,0 +1,14 @@
+.animate-post.ng-animate {
+    -webkit-transition:all ease 0s;
+    transition:all ease 0s;
+
+    position:relative;
+}
+
+.animate-post.ng-leave.ng-leave-active,
+.animate-post.ng-enter {
+    /*opacity: 1;*/
+}
+.animate-post.ng-enter {
+    opacity: 0;
+}

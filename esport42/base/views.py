@@ -8,9 +8,12 @@ from django.contrib.auth import authenticate, login, logout
 from base.forms import UserCreationForm
 from base.models import MyUser
 from base.serializers import MyUserSerializer, LoginSerializer
+from tournoi.serializers import TournamentSerializer, TeamSerializer
 from base.permissions import IsAccountOwner, IsOwnerOrAdmin
 from rest_framework import permissions, viewsets, status, views, permissions
 from rest_framework.response import Response
+from post.permissions import IsAdminOfSite
+
 
 class MyUserViewSet(viewsets.ModelViewSet):
     queryset = MyUser.objects.all()

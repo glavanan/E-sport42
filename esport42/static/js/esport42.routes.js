@@ -26,6 +26,11 @@
                 controllerAs: 'vm',
                 templateUrl: '/static/templates/layouts/index.html'
             })
+            .when('/post', {
+                controller: 'PostController',
+                controllerAs: 'vm',
+                templateUrl: '/static/templates/post/post.html'
+            })
             .otherwise('/');
     }
 })();

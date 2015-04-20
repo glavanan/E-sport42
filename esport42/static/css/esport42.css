@@ -1,3 +1,81 @@
-div.post {
-    width: 80%;
+.post-summary img {
+    -webkit-border-top-right-radius: 0;
+    -moz-border-radius: 50px 0 50px 50px;
+    border-radius: 50px 0 50px 50px;
+    width: 300px;
+    height: 200px;
 }
+
+.post-detail img {
+    float: left;
+    border-radius: 20px;
+    margin-right: 20px
+}
+
+.post-detail {
+    height: 100%;
+}
+
+.post-switch-container {
+    margin-bottom: 20px;
+    border-top-left-radius: 50px;
+    border-bottom-left-radius: 50px;
+    width: 100%;
+    word-wrap:break-word;
+}
+
+.post-area {
+    width: 90%;
+    padding: 20px;
+    margin-right: 5px;
+}
+
+.content {
+    background-color: rgba(0, 0, 0, 0.8);
+    padding-top: 50px;
+    height: auto !important;
+    min-height: 100%;
+}
+
+.button-close-block {
+    width: 100%;
+    margin-top: 10px;
+    padding: 10px;
+    text-align: center;
+    background-color: #5D695F;
+    border: 1px solid #6C756E;
+    border-radius: 10px;
+}
+
+.button-close-block#hover {
+    width: 100%;
+    padding: 10px;
+    text-align: center;
+    background-color: red;
+    border: 1px solid #6C756E;
+    border-radius: 10px;
+}
+
+.fake-link {
+    cursor: pointer;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    color: #749179 ;
+}
+
+html, body {
+  background: url("../img/site/logo_esport42.jpg") no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+    height: 100%;
+}
+
+
+.color-primary-0 { color: #6C756E }	/* Main Primary color */
+.color-primary-1 { color: #749179 }
+.color-primary-2 { color: #5D695F }
+.color-primary-3 { color: #4F5E52 }
+.color-primary-4 { color: #425245 }

@@ -1,8 +1,13 @@
 from django.contrib.auth import update_session_auth_hash, authenticate
 
 from rest_framework import serializers
-
 from base.models import MyUser
+from tournoi.models import Teams
+from tournoi.models import Tournament
+
+
+
+
 
 
 class MyUserSerializer(serializers.ModelSerializer):
@@ -35,6 +40,10 @@ class MyUserSerializer(serializers.ModelSerializer):
 
         update_session_auth_hash(self.context.get('request'), instance)
         return instance
+
+
+
+
 
 class LoginSerializer(serializers.Serializer):
     username = serializers.CharField(write_only=True, required=True)

@@ -9,9 +9,9 @@
         .module('esport42.layouts.controllers')
         .controller('IndexController', IndexController);
 
-    IndexController.$inject = ['$sce', 'Post', '_'];
+    IndexController.$inject = ['Post', '_'];
 
-    function IndexController($sce, Post, _) {
+    function IndexController(Post, _) {
         var vm = this;
 
         vm.posts = [];
@@ -20,6 +20,7 @@
 
         //console.log(Post.all);
         function activate() {
+            //var trim = require("underscore.string/trim");
 
             Post.all()
                 .success(PostSuccess)
@@ -28,8 +29,10 @@
             function PostSuccess(data) {
                 vm.posts = _.map(data, function (data) {
                     return {
-                        text: $sce.trustAsHtml(data.text),
-                        img: data.image,
+                        summary: "Je suis un canard",
+                        text: data.text,
+                        imgCropped: data.image_url,
+                        imgFull: data.image,
                         title: data.title,
                         author: data.author.username
                     }
