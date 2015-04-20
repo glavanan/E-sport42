@@ -1,0 +1,71 @@
+    <div class="row">
+      <div class="col-md-8 col-md-offset-2">
+        <h1>Post</h1>
+
+        <div class="well">
+          <form role="form" name="PostForm" ng-submit="vm.post()">
+            <div class="alert alert-danger" ng-show="vm.error.non_field_errors" ng-bind="vm.error.non_field_errors"></div>
+
+            <div class="form-group"
+                 ng-class="{'has-success': loginForm.username.$valid,
+                 'has-error': loginForm.username.$dirty && loginForm.username.$invalid}">
+              <label for="post__title">Titre</label>
+              <input type="text" class="form-control" id="post__title"
+                     name="titre"
+                     ng-model="vm.form.title"
+                     ng-model-options="{ updateOn: 'default blur', debounce: { default: 500, blur: 0 } }"
+                     minlength="3"
+                     maxlength="50"
+                     required autofocus>
+                <div class="text-danger" ng-if="vm.error.username" ng-bind="vm.error.username"></div>
+                        <ng-messages ng-if="loginForm.username.$dirty" for="loginForm.username.$error" class="text-danger">
+                            <ng-message when="required">Le titre est requis...</ng-message>
+                            <ng-message when="minlength">Le titre est trop court.</ng-message>
+                            <ng-message when="maxlength">Le titre est trop long.</ng-message>
+                        </ng-messages>
+            </div>
+            <div class="form-group">
+              <label for="post__resume">Resume</label>
+              <textarea class="form-control" rows="5" id="post__resume"
+                     name="resume"
+                     ng-model="vm.form.resume"
+                     ng-model-options="{ updateOn: 'default blur', debounce: { default: 500, blur: 0 } }"
+                     minlength="3"
+                     maxlength="300"
+                     required autofocus> </textarea>
+                <div class="text-danger" ng-if="vm.error.username" ng-bind="vm.error.username"></div>
+                        <ng-messages ng-if="loginForm.username.$dirty" for="loginForm.username.$error" class="text-danger">
+                            <ng-message when="required"> Le resumer est requis...</ng-message>
+                            <ng-message when="minlength">Le  resumer est trop court.</ng-message>
+                            <ng-message when="maxlength">Le resumer est trop long.</ng-message>
+                        </ng-messages>
+            </div>
+            <div class="form-group">
+              <label for="post__text">Texte</label>
+              <textarea class="form-control" rows="5" id="post__text"
+                     name="texte"
+                     ng-model="vm.form.text"
+                     ng-model-options="{ updateOn: 'default blur', debounce: { default: 500, blur: 0 } }"
+                     minlength="3"
+                     required autofocus> </textarea>
+                <div class="text-danger" ng-if="vm.error.username" ng-bind="vm.error.username"></div>
+                        <ng-messages ng-if="loginForm.username.$dirty" for="loginForm.username.$error" class="text-danger">
+                            <ng-message when="required"> Le text est requis...</ng-message>
+                            <ng-message when="minlength">Le  text est trop court.</ng-message>
+                        </ng-messages>
+            </div>
+            <div class="form-group">
+              <label for="post__image">Image</label>
+              <input type="file" class="form-control" id="post__image"
+                     name="image"
+                     ng-model="vm.form.image"
+                     required autofocus/>
+            </div>
+
+            <div class="form-group">
+              <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
