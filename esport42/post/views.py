@@ -23,8 +23,8 @@ class PostViewSet(viewsets.ModelViewSet):
         dest = ""
         dest = dest.join(path)
         with Image.open(self.request.data['image']) as im:
-            tmp2 = im.size[0] / 400
-            tmp = im.size[1] / 300
+            tmp2 = float(im.size[0]) / 300
+            tmp = float(im.size[1]) / 200
             if (tmp2 < tmp):
                 tmp = tmp2
             if (tmp == 0):

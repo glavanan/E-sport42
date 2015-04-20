@@ -31,7 +31,7 @@
                     return {
                         summary: "Je suis un canard",
                         text: data.text,
-                        img: data.image,
+                        img: data.image_url,
                         title: data.title,
                         author: data.author.username
                     }
