@@ -13,13 +13,22 @@
 
     function Post($http) {
         var Post = {
-            all: all
+            all: all,
+            post: post
         };
 
         return Post;
 
         function all() {
             return $http.get('/api/v1/posts');
+        }
+        function post(text, resume, title, image) {
+            return $http.post('/api/v1/posts', {
+                text: text,
+                resume: resume,
+                title: title,
+                image: image
+            });
         }
     }
 })();
