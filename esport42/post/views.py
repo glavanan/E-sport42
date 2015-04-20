@@ -16,12 +16,14 @@ class PostViewSet(viewsets.ModelViewSet):
                 else (permissions.IsAdminUser(), IsOwnerOrAdmin()))
 
     def perform_create(self, serializer):
-        print self.request.data['image']
+        # Fais les choses proprement x_x"... https://docs.djangoproject.com/en/1.7/ref/models/fields/#django.db.models.FileField
+        # os.path.join aussi :P.
         path = FRONT_POST + str(self.request.data['image'])
         path = path.split('.')
         path[-1] = ".crop." + path[-1]
         dest = ""
         dest = dest.join(path)
+        # Care au join ("img.tarace.lol")
         with Image.open(self.request.data['image']) as im:
             tmp2 = float(im.size[0]) / 300
             tmp = float(im.size[1]) / 200
@@ -31,16 +33,14 @@ class PostViewSet(viewsets.ModelViewSet):
                 tmp = 1
             size = (int(im.size[0] / tmp), int(im.size[1] / tmp))
             im.thumbnail(size)
-            print size
-            print size[0] / 2 - 150
-            print size[1] / 2 - 100
             box = ((size[0] / 2) - 150, (size[1] / 2) - 100, size[0] / 2 + 150, size[1] / 2 + 100)
             im = im.crop(box)
-            im.save(dest, im.format)
+            try:
+                im.save(dest, im.format)
+            except IOError as e:
+                print "I/O error({0}): {1}\nError: {2}".format(e.errno, e.strerror, e)
         instance = serializer.save(author=self.request.user, image_url=dest)
         return super(PostViewSet, self).perform_create(serializer)
-        return Response({'status' : 'Bad request',
-                         'message' : 'post could not be created with received data.'}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class AdminPostViewSet(viewsets.ViewSet):

@@ -18,9 +18,16 @@
             templateUrl: "static/templates/layouts/post-directive.html",
             link: function (scope, elem, attrs) {
                 scope.clicked = "false";
+                console.log(scope.article);
                 scope.clickOn = function () {
-                    console.log(scope.clicked);
                     scope.clicked = (scope.clicked === "true" ? "false" : "true");
+/*
+                    var mydiv = angular.element(elem.children()[0]);
+                    var h = mydiv.height();
+                    console.log(h);
+                    mydiv.height(h + 200);
+                    console.log(mydiv.height());
+*/
                 }
             }
         }
