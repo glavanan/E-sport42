@@ -5,7 +5,7 @@
         </div>
         <div class="media-body">
             <div class="panel panel-default">
-                <div class="panel-heading">
+                <div class="panel-heading" ng-click="clickOn()">
                     <div class="row">
                         <div class="col-md-6 text-left">
                             <h4 class="media-heading panel-title">{{ article.title }} by {{ article.author }}</h4>
@@ -24,21 +24,20 @@
     </div>
     <div class="animate-post post-detail" ng-switch-when="true">
         <div class="panel panel-default">
-            <div class="panel-heading">
+            <div class="panel-heading" ng-click="clickOn()">
                 <div class="row">
                     <div class="col-md-6 text-left">
-                        <h4 class="media-heading panel-title">{{ article.title }} by {{ article.author }}</h4>
+                        <h4 class="media-heading panel-title">{{ article.title }} par {{ article.author }}</h4>
                     </div>
                     <div class="col-md-6 text-right">
-                        <i ng-click="clickOn()" class="fa fa-search-minus fa-2x fake-link"></i>
+                        <i class="fa fa-search-minus fa-2x fake-link"></i>
                     </div>
                 </div>
             </div>
             <div class="panel-body">
                 <img class="img-responsive" src="{{ article.imgFull }}" height="600"/>
-                <div class="text-justified post-text" ng-bind-html="article.text"></div>
-                <button type="button" class="btn btn-default btn-lg btn-block">Block level button</button>
-                <button ng-click="clickOn()" type="button" class="button-close-block">Fermer le machin</button>
+                <div class="text-justified" ng-bind-html="article.text"></div>
+                <button ng-click="clickOn()" type="button" class="button-close-block">Fermer l'article</button>
             </div>
         </div>
     </div>

@@ -24,7 +24,6 @@
     word-wrap:break-word;
 }
 
-
 .post-area {
     width: 90%;
     padding: 20px;
@@ -40,6 +39,7 @@
 
 .button-close-block {
     width: 100%;
+    margin-top: 10px;
     padding: 10px;
     text-align: center;
     background-color: #5D695F;
