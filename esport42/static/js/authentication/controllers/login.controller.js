@@ -23,19 +23,20 @@
                 $location.path('/');
         }
         function login() {
-            vm.error = null;
+            vm.error = {};
             Authentication.login(vm.form.username, vm.form.password)
-                .success(function (data, status, headers, config) {
-                    Authentication.setAuthenticatedAccount(data);
+                .then(
+                function (data, status, headers, config) {
                     window.location = '/';
-                })
-                .error(function(data, status, headers, config) {
-                    vm.error = {};
+                },
+                function(data, status, headers, config) {
+                    console.log(data);
                     if (data.username)
                         vm.error.username = data.username;
                     if (data.non_field_errors)
                         vm.error.non_field_errors = data.non_field_errors;
-            });
+                }
+            );
         }
     }
 })();

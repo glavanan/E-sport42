@@ -13,10 +13,10 @@
         .module("esport42.authentication.services")
         .factory("Focus", Focus);
 
-    Authentication.$inject = ['$cookies', '$http'];
+    Authentication.$inject = ['$cookies', '$http', '$q'];
     Focus.$inject = ['$rootScope', '$timeout'];
 
-    function Authentication ($cookies, $http) {
+    function Authentication ($cookies, $http, $q) {
 
         var Authentication = {
             register : register,
@@ -33,19 +33,22 @@
         function register (data) {
             return $http.post('/api/v1/accounts', data).then(registerSuccess, registerError);
             function registerSuccess(dataReceived, status, headers, config) {
-                Authentication.login(data.email, data.password);
+                return Authentication.login(data.username, data.password);
             }
             function registerError(dataReceived, status, headers, config) {
-                    alert('Something was wrong. It should not have happend. Contact the administrator');
+                alert('Something was wrong. It should not have happend. Contact the administrator');
                 console.log(dataReceived);
+                return $q.reject(dataReceived);
             }
         }
 
         function login (username, password) {
-            return $http.post('/api/v1/login', {
-                username: username,
-                password: password
-            });
+            return $http.post('/api/v1/login', {username: username, password: password})
+                .then(function (dataReceived, status, headers, config) {
+                    Authentication.setAuthenticatedAccount(dataReceived);
+                }, function (dataReceived, status, headers, config) {
+                    return $q.reject(dataReceived.data);
+                });
         }
 
         function logout() {

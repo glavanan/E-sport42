@@ -6,10 +6,36 @@
     height: 200px;
 }
 
+.post-summary .media-body {
+    height:300px;
+}
+
+.multiline-ellipsis {
+    display: block;
+    display: -webkit-box;
+    max-width: 400px;
+    height: 200px;
+    margin: 0 auto;
+    font-size: 26px;
+    line-height: 1.4;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 .post-detail img {
     float: left;
     border-radius: 20px;
-    margin-right: 20px
+    margin-right: 30px;
+}
+
+.post-detail-text {
+    padding-left: 200px;
+}
+
+.post-resume {
+    height: 200px;
 }
 
 .post-detail {
@@ -28,6 +54,10 @@
     width: 90%;
     padding: 20px;
     margin-right: 5px;
+}
+
+.login-box {
+    margin-top: 20px;
 }
 
 .content {
@@ -60,9 +90,9 @@
     cursor: pointer;
 }
 
-h1, h2, h3, h4, h5, h6 {
-    color: #749179 ;
-}
+/*h1, h2, h3, h4, h5, h6 {*/
+    /*color: #749179 ;*/
+/*}*/
 
 html, body {
   background: url("../img/site/logo_esport42.jpg") no-repeat center center fixed;

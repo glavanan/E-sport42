@@ -16,7 +16,7 @@
                     </div>
                 </div>
                 <div class="panel-body">
-                    <div class="post-text">{{ article.summary }}</div><br>
+                    <p class="multiline-ellipsis">{{ article.summary }}</p><br>
                     <p class="fake-link" ng-click="clickOn()">Lire l'article...</p>
                 </div>
             </div>
@@ -35,8 +35,8 @@
                 </div>
             </div>
             <div class="panel-body">
-                <img class="img-responsive" src="{{ article.imgFull }}" height="600"/>
-                <div class="text-justified" ng-bind-html="article.text"></div>
+                <img src="{{ article.imgFull }}" height="600"/>
+                <div class="text-justified post-detail-text" ng-bind-html="article.text"></div>
                 <button ng-click="clickOn()" type="button" class="button-close-block">Fermer l'article</button>
             </div>
         </div>

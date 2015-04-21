@@ -29,7 +29,7 @@
             function PostSuccess(data) {
                 vm.posts = _.map(data, function (data) {
                     return {
-                        summary: "Je suis un canard",
+                        summary: data.resume,
                         text: data.text,
                         imgCropped: data.image_url,
                         imgFull: data.image,

@@ -41,13 +41,12 @@
                 return ;
             if (vm.date !== vm.dirtyDate)
                 vm.form.birth_date = $filter('date')(vm.date, "yyyy-MM-dd");
-            Authentication.register(vm.form)
-                .success(function (data, status, headers, config) {
-                    $location.path('/');
-                    alert('You have been registered');
-                })
-                .error(function (data, status, headers, config) {
-                    console.log(data);
+            Authentication.register(vm.form).then(
+                function (data, status, headers, config) {
+                    window.location.href = '/';
+                    alert('Vous etes maintenant inscrits !');
+                },
+                function (data, status, headers, config) {
                 });
          }
     }
