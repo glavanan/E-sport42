@@ -6,8 +6,8 @@
     height: 200px;
 }
 
-.post-summary .media-body {
-    height:300px;
+.post-summary {
+    max-height: 200px;
 }
 
 .multiline-ellipsis {
@@ -34,9 +34,6 @@
     padding-left: 200px;
 }
 
-.post-resume {
-    height: 200px;
-}
 
 .post-detail {
     height: 100%;
