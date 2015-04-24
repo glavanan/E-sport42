@@ -31,6 +31,11 @@
                 controllerAs: 'vm',
                 templateUrl: '/static/templates/post/post.html'
             })
+            .when('/test', {
+                controller: 'TestController',
+                controllerAs: 'vm',
+                templateUrl: '/static/templates/test/test-post.html'
+            })
             .otherwise('/');
     }
 })();

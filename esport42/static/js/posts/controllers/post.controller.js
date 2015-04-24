@@ -9,19 +9,22 @@
         .module('esport42.posts.controllers')
         .controller('PostController', PostController);
 
-    PostController.$inject = ['$http', 'Post'] ;
+    PostController.$inject = ['$anchorScroll', '$location', 'Post', 'Authentication', '$timeout'] ;
 
-    function PostController($http, Post){
+    function PostController($anchorScroll, $location,Post, Authentication, $timeout){
         var vm = this;
+        vm.displayPreview = displayPreview;
 
-        vm.error = null;
-        vm.post = post;
+        vm.form = {
+            "imgCropped": "static/img/post/img95.crop.jpg",
+            "imgFull": "http://localhost:8080/static/img/post/img95_e7XPKgK.jpg",
+            "author": Authentication.getAuthenticatedAccount().data.username
+        };
 
-        function post() {
-            vm.error = null;
-            Post.post(vm.form.text, vm.form.resume, vm.form.title, vm.form.image)
-                .success()
+        function displayPreview () {
+            vm.displayed = true;
+            vm.postDefault = vm.form;
+            $timeout(function () {window.scrollTo(0, 300);}, 100);
         }
     }
-
 })();

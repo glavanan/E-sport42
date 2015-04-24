@@ -17,29 +17,30 @@
                                    ng-model="vm.form.title"
                                    minlength="5"
                                    maxlength="50"
-                                   required autofocus>
+                                    autofocus>
                         </div>
                         <div class="form-group">
                             <label for="post__resume">Resumé</label>
                             <textarea class="form-control" rows="3" id="post__resume"
                             name="resume"
-                            ng-model="vm.form.summary" required></textarea>
+                            ng-model="vm.form.summary" ></textarea>
                         </div>
                         <div class="form-group">
                             <label for="post__text">Texte</label>
-                            <div text-angular="" ng-model="vm.form.text" required></div>
+                            <div text-angular="" ng-model="vm.form.text" ></div>
                         </div>
                         <div class="form-group">
                             <label for="post__image">Image</label>
                             <input type="file" class="form-control" id="post__image"
                                    name="image"
                                    ng-model="vm.form.imgFull"
-                                   required/>
+                                   />
                         </div>
                         <div class="form-group">
                             <button type="submit" class="btn btn-primary">Submit</button>
                             <button type="button" class="btn btn-primary" ng-click="vm.displayPreview()">Voir l'apercu
                             </button>
+                            <div class="button" ngf-select ng-model="vm.files">Upload using model $watch</div>
                         </div>
                     </form>
                 </div>
@@ -51,7 +52,4 @@
             </div>
         </div> -->
     </div>
-</div>
-<div ng-show="vm.displayed" class="post-area " id="post-preview">
-    <post-article article="vm.postDefault"></post-article>
 </div>

@@ -1,7 +1,9 @@
 <div  class="post-switch-container" ng-switch on="clicked">
     <div class="media animate-post post-summary" ng-switch-default>
         <div class="media-left media-top">
-            <img class="media-object" src="{{ article.imgCropped }}">
+            <div class="thumbnail">
+                <img class="media-object portrait" src="{{ article.imgFull }}">
+            </div>
         </div>
         <div class="media-body">
             <div class="panel panel-default">
