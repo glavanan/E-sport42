@@ -8,9 +8,6 @@
                     <form role="form" name="PostForm" ng-submit="vm.post()">
                         <div class="alert alert-danger" ng-show="vm.error.non_field_errors"
                              ng-bind="vm.error.non_field_errors"></div>
-                        <div class="form-group"
-                             ng-class="{'has-success': loginForm.username.$valid,
-                 'has-error': loginForm.username.$dirty && loginForm.username.$invalid}">
                             <label for="post__title">Titre</label>
                             <input type="text" class="form-control" id="post__title"
                                    name="titre"
@@ -18,7 +15,6 @@
                                    minlength="5"
                                    maxlength="50"
                                     autofocus>
-                        </div>
                         <div class="form-group">
                             <label for="post__resume">Resumé</label>
                             <textarea class="form-control" rows="3" id="post__resume"
@@ -31,16 +27,14 @@
                         </div>
                         <div class="form-group">
                             <label for="post__image">Image</label>
-                            <input type="file" class="form-control" id="post__image"
+                            <input type="file" class="form-control" id="post__image" ngf-select ng-model="vm.file"
                                    name="image"
-                                   ng-model="vm.form.imgFull"
                                    />
                         </div>
                         <div class="form-group">
                             <button type="submit" class="btn btn-primary">Submit</button>
                             <button type="button" class="btn btn-primary" ng-click="vm.displayPreview()">Voir l'apercu
                             </button>
-                            <div class="button" ngf-select ng-model="vm.files">Upload using model $watch</div>
                         </div>
                     </form>
                 </div>

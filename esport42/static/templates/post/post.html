@@ -8,33 +8,28 @@
                     <form role="form" name="PostForm" ng-submit="vm.post()">
                         <div class="alert alert-danger" ng-show="vm.error.non_field_errors"
                              ng-bind="vm.error.non_field_errors"></div>
-                        <div class="form-group"
-                             ng-class="{'has-success': loginForm.username.$valid,
-                 'has-error': loginForm.username.$dirty && loginForm.username.$invalid}">
                             <label for="post__title">Titre</label>
                             <input type="text" class="form-control" id="post__title"
                                    name="titre"
                                    ng-model="vm.form.title"
                                    minlength="5"
                                    maxlength="50"
-                                   required autofocus>
-                        </div>
+                                    autofocus>
                         <div class="form-group">
                             <label for="post__resume">Resumé</label>
                             <textarea class="form-control" rows="3" id="post__resume"
                             name="resume"
-                            ng-model="vm.form.summary" required></textarea>
+                            ng-model="vm.form.summary" ></textarea>
                         </div>
                         <div class="form-group">
                             <label for="post__text">Texte</label>
-                            <div text-angular="" ng-model="vm.form.text" required></div>
+                            <div text-angular="" ng-model="vm.form.text" ></div>
                         </div>
                         <div class="form-group">
                             <label for="post__image">Image</label>
-                            <input type="file" class="form-control" id="post__image"
+                            <input type="file" class="form-control" id="post__image" ngf-select ng-model="vm.file"
                                    name="image"
-                                   ng-model="vm.form.imgFull"
-                                   required/>
+                                   />
                         </div>
                         <div class="form-group">
                             <button type="submit" class="btn btn-primary">Submit</button>
