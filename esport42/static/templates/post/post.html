@@ -1,50 +1,69 @@
 <div class="container">
     <div class="row">
         <div class="col-md-12">
-<!--        <div class="col-md-6"> -->
+            <!--        <div class="col-md-6"> -->
             <div class="panel panel-default login-box">
                 <div class="panel-heading"><h3>Créer un nouvel article</h3></div>
                 <div class="panel-body">
-                    <form role="form" name="PostForm" ng-submit="vm.post()">
-                        <div class="alert alert-danger" ng-show="vm.error.non_field_errors"
-                             ng-bind="vm.error.non_field_errors"></div>
+                    <form role="form" name="postForm" ng-submit="vm.post(postForm)">
+                        <div class="form-group">
                             <label for="post__title">Titre</label>
                             <input type="text" class="form-control" id="post__title"
-                                   name="titre"
+                                   name="title"
                                    ng-model="vm.form.title"
                                    minlength="5"
                                    maxlength="50"
-                                    autofocus>
+                                   required
+                                   autofocus>
+                            <ng-messages ng-if="postForm.title.$dirty" for="postForm.title.$error"
+                                         class="text-danger">
+                                <ng-message when="required">Le titre est requis pour envoyer un article</ng-message>
+                                <ng-message when="minlength">Le titre doit faire plus de 5 caractères</ng-message>
+                                <ng-message when="maxlength">Le titre doit faire moins de 50 caractères</ng-message>
+                            </ng-messages>
+                        </div>
                         <div class="form-group">
                             <label for="post__resume">Resumé</label>
                             <textarea class="form-control" rows="3" id="post__resume"
-                            name="resume"
-                            ng-model="vm.form.summary" ></textarea>
+                                      name="resume"
+                                      ng-model="vm.form.summary"
+                                      required></textarea>
+                            <ng-messages ng-if="postForm.resume.$dirty" for="postForm.resume.$error"
+                                         class="text-danger">
+                                <ng-message when="required">Le résumé est requis pour envoyer un article</ng-message>
+                            </ng-messages>
                         </div>
+
                         <div class="form-group">
                             <label for="post__text">Texte</label>
-                            <div text-angular="" ng-model="vm.form.text" ></div>
+                            <div text-angular="" ng-model="vm.form.text"></div>
                         </div>
+
                         <div class="form-group">
                             <label for="post__image">Image</label>
                             <input type="file" class="form-control" id="post__image" ngf-select ng-model="vm.file"
-                                   name="image"
-                                   />
+                                   name="image" required
+                                    />
+                            <ng-messages for="postForm.image.$error"
+                                         class="text-danger">
+                                <ng-message when="required">Une image est requise pour envoyer un article</ng-message>
+                            </ng-messages>
                         </div>
                         <div class="form-group">
                             <button type="submit" class="btn btn-primary">Submit</button>
-                            <button type="button" class="btn btn-primary" ng-click="vm.displayPreview()">Voir l'apercu
+                            <button type="button" class="btn btn-primary" ng-click="vm.displayPreview(postForm)">Voir
+                                l'apercu
                             </button>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
-<!--        <div class="col-md-6">
-            <div ng-show="vm.displayed" class="post-area " id="post-preview">
-                <post-article article="vm.postDefault"></post-article>
-            </div>
-        </div> -->
+        <!--        <div class="col-md-6">
+                    <div ng-show="vm.displayed" class="post-area " id="post-preview">
+                        <post-article article="vm.postDefault"></post-article>
+                    </div>
+                </div> -->
     </div>
 </div>
 <div ng-show="vm.displayed" class="post-area " id="post-preview">

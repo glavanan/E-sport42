@@ -81,7 +81,7 @@ html, body {
     height: 100%;
 }
 
-.thumbnail {
+.post-thumbnail {
     position: relative;
     width: 300px;
     height: 200px;
@@ -91,7 +91,7 @@ html, body {
     border-radius: 50px 0 50px 50px;
 }
 
-.thumbnail img {
+.post-thumbnail img {
   position: absolute;
   left: 50%;
   top: 50%;
@@ -102,7 +102,7 @@ html, body {
   transform: translate(-50%, -50%);
 }
 
-.thumbnail img.portrait {
+.post-thumbnail img.portrait {
   width: 100%;
   height: auto;
 }

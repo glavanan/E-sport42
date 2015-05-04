@@ -9,12 +9,12 @@
         .module('esport42.posts.services')
         .factory('Post', Post);
 
-    Post.$inject = ['$http'];
+    Post.$inject = ['$http', 'Upload'];
 
-    function Post($http) {
+    function Post($http, Upload) {
         var Post = {
             all: all,
-            post: post
+            newPost: newPost
         };
 
         return Post;
@@ -22,13 +22,26 @@
         function all() {
             return $http.get('/api/v1/posts');
         }
-        function post(text, resume, title, image) {
-            return $http.post('/api/v1/posts', {
-                text: text,
-                resume: resume,
-                title: title,
-                image: image
-            });
+
+        function newPost(image, form) {
+            var uploadOpts = {
+                url: 'api/v1/posts',
+                fields: {
+                    title: form.title,
+                    resume: form.summary,
+                    text: form.text
+                },
+                file: image,
+                fileFormDataName: 'image'
+            };
+
+            return Upload.upload(uploadOpts)
+                .then(function (data, status, headers, config) {
+                    return data.data;
+                }, function (data, status, headers, config) {
+                    console.log("Fail dans l'upload: ", data);
+                    return data.data;
+                });
         }
     }
-})();
+}());

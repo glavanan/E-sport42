@@ -9,51 +9,48 @@
         .module('esport42.posts.controllers')
         .controller('PostController', PostController);
 
-    PostController.$inject = ['$location', 'Upload', 'Authentication', '$timeout'] ;
+    PostController.$inject = ['$scope', '$location', 'Post', 'Authentication', '$timeout', 'fileReader'];
 
-    function PostController($location, Upload, Authentication, $timeout){
+    function PostController($scope, $location, Post, Authentication, $timeout, fileReader) {
         var vm = this;
         vm.displayPreview = displayPreview;
         vm.post = post;
+        vm.displayed = false;
 
         vm.form = {
             "author": Authentication.getAuthenticatedAccount().data.username
         };
 
-        var upload = function (file) {
-            if (file) {
-                Upload.upload({
-                    url: 'http://localhost:8080/api/v1/posts',
-                    fields: {
-                        'title': vm.form.title,
-                        'resume': vm.form.summary,
-                        'text': vm.form.text
-                    },
-                    file: file,
-                    fileFormDataName: 'image'
-                }).progress(function (evt) {
-                    var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
-                    console.log('progress: ' + progressPercentage + '% ' + evt.config.file.name);
-                }).success(function (data, status, headers, config) {
-                    $location.path('/');
-                }).error(function (data, status, headers, config) {
-                    console.log("An error happened at the upload...: ", data);
-                });
-            }
-        };
 
-        function post() {
-            console.log(vm.form);
-            if (confirm("Avez vous bien regardé l'apercu d'abord ? :)"))
-                upload(vm.file);
+        function post(form) {
+            if (form.$valid && vm.form && vm.file && (vm.displayed || confirm("Avez vous bien regardé l'apercu d'abord ? :)"))) {
+                Post.newPost(vm.file, vm.form)
+                    .then(function (data, status) {
+                        $location.url('/');
+                    }, function (data, status) {
+                        console.log("I'm in controller bitch and I failed: ", data);
+                    }
+                );
+            }
             else
-                displayPreview();
+                displayPreview(form);
         }
 
-        function displayPreview () {
-            vm.displayed = true;
-            vm.postDefault = vm.form;
-            $timeout(function () {window.scrollTo(0, 300);}, 100);
+        function displayPreview(form) {
+            if (form.$valid) {
+                fileReader.readAsDataUrl(vm.file[0], $scope)
+                    .then(function (result) {
+                        vm.displayed = true;
+                        vm.form.imgFull = result;
+                        vm.postDefault = vm.form;
+                        $timeout(function () {
+                            window.scrollTo(0, 300);
+                        }, 100);
+                    });
+            }
+            else {
+                alert("Le formulaire est mal rempli...");
+            }
         }
     }
 })();
