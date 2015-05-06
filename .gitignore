@@ -2,6 +2,7 @@ ENV/
 .idea
 *.pyc
 *.swp
+*local_settings.py
 db.sqlite3
 migrations/
 esport42/static/img/post/
