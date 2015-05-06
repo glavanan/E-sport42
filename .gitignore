@@ -1,7 +1,8 @@
 ENV/
 .idea
-**/*.pyc
+*.pyc
+*.swp
 db.sqlite3
-**/migrations/
+migrations/
 esport42/static/img/post/
 esport42/static/bower_components

@@ -1,30 +1,10 @@
-"""
-Django settings for esport42 project.
-
-For more information on this file, see
-https://docs.djangoproject.com/en/1.7/topics/settings/
-
-For the full list of settings and their values, see
-https://docs.djangoproject.com/en/1.7/ref/settings/
-"""
-
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
+import sys
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
+DEBUG = TEMPLATE_DEBUG = False
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/1.7/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'khv6w%^lluw)e%)4nshk@+6rczvohsx(f*m$m_hg8c+d)#kt*r'
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-TEMPLATE_DEBUG = True
-
-ALLOWED_HOSTS = []
+ADMINS = (("Camille", "camwag.w@gmail.com"), ("Guillian", "guillian.lavanant@gmail.com"))
 
 AUTH_USER_MODEL = 'base.MyUser'
 # Application definition
@@ -41,7 +21,8 @@ INSTALLED_APPS = (
     'post',
     'tournoi',
     'djangular',
-    'rest_framework'
+    'rest_framework',
+    'jsonify'
 )
 
 MIDDLEWARE_CLASSES = (
@@ -62,15 +43,14 @@ WSGI_APPLICATION = 'esport42.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.7/ref/settings/#databases
 
-DATABASES = {
-    'default': {
+DB = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'esport42',
+        'NAME': 'esport42_debug',
 	'USER': 'esport42',
-	'PASSWORD': os.getenv("DB_PASS"),
-	'HOST': 'localhost',
-	'PORT': ''
-    }
+	'PASSWORD': os.getenv("DB_PASS")
+}
+DATABASES = {
+    'default': DB
 }
 
 # Internationalization
@@ -105,3 +85,4 @@ MEDIA_URL = '/'
 
 STATIC_URL = '/static/'
 
+from local_settings import *
