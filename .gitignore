@@ -4,9 +4,4 @@ ENV/
 db.sqlite3
 **/migrations/
 esport42/static/img/post/
-<<<<<<< HEAD
 esport42/static/bower_components
-
-=======
-esport42/static/bower_components
->>>>>>> team
