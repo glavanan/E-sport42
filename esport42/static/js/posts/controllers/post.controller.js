@@ -23,7 +23,7 @@
         var upload = function (file) {
             if (file) {
                 Upload.upload({
-                    url: 'http://localhost:8080/api/v1/posts',
+                    url: 'http://localhost:8000/api/v1/posts',
                     fields: {
                         'title': vm.form.title,
                         'resume': vm.form.summary,

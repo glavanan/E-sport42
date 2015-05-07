@@ -1,4 +1,5 @@
-from tournoi.models import Tournament, Teams, TPost
+from tournoi.models import Tournament, Teams, TPost, APost
+from base.serializers import MyUserSerializer
 from rest_framework import serializers
 
 class TournamentSerializer(serializers.ModelSerializer):
@@ -21,9 +22,26 @@ class TeamSerializer(serializers.ModelSerializer):
             team.members.add(man)
         return team
 
+class APostSerializer(serializers.ModelSerializer):
+    author = MyUserSerializer(read_only=True, required=False)
+
+    class Meta:
+        model = APost
+        fields = ('id', 'author', 'title', 'created_at', 'updated_at',  'content')
+        read_only_fields = ('id', 'created_at', 'updated_at')
+
+    def get_validation_exclusion(self):
+            exclusions = super(TPostSerializer, self).get_validation_exclusions()
+            return exclusions + ['author', 'tournament']
+
 class TPostSerializer(serializers.ModelSerializer):
+    author = MyUserSerializer(read_only=True, required=False)
 
     class Meta:
         model = TPost
-        fields = ('id', 'title', 'content', 'image')
-        read_only_fiedls = ('id', 'image')
+        fields = ('id', 'author', 'title', 'created_at', 'updated_at',  'content', 'image')
+        read_only_fields = ('id', 'created_at', 'updated_at')
+
+    def get_validation_exclusion(self):
+            exclusions = super(TPostSerializer, self).get_validation_exclusions()
+            return exclusions + ['author', 'tournament']
