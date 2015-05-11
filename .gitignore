@@ -4,6 +4,5 @@ ENV/
 *.swp
 *local_settings.py
 db.sqlite3
-migrations/
 esport42/static/img/post/
 esport42/static/bower_components
