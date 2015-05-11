@@ -6,10 +6,6 @@ from tournoi.models import Teams
 from tournoi.models import Tournament
 
 
-
-
-
-
 class MyUserSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True, required=True)
     password_confirm = serializers.CharField(write_only=True, required=True)
@@ -17,8 +13,8 @@ class MyUserSerializer(serializers.ModelSerializer):
         model = MyUser
         fields = ('id', 'email', 'username', 'created_at', 'updated_at',
                   'first_name', 'last_name', 'address', 'birth_date',
-                  'nationality', 'phone', 'password', 'password_confirm')
-        read_only_fields = ('created_at', 'updated_at')
+                  'nationality', 'phone', 'password', 'password_confirm', 'is_admin', 'is_staff')
+        read_only_fields = ('created_at', 'updated_at', 'is_admin', 'is_staff')
 
     def create(self, validated_data):
         return MyUser.objects.create(**validated_data)
@@ -40,10 +36,6 @@ class MyUserSerializer(serializers.ModelSerializer):
 
         update_session_auth_hash(self.context.get('request'), instance)
         return instance
-
-
-
-
 
 class LoginSerializer(serializers.Serializer):
     username = serializers.CharField(write_only=True, required=True)

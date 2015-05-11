@@ -5,5 +5,6 @@ urlpatterns = patterns('base.views',
     url(r'login$', views.LoginView.as_view(), name='login'),
     url(r'logout$', views.LogoutView.as_view(), name='logout'),
     url(r'username-exists$', views.UserExists.as_view(), name='uexists'),
-    url(r'email-exists$', views.EmailExists.as_view(), name='eexists')
+    url(r'email-exists$', views.EmailExists.as_view(), name='eexists'),
+    url(r'^.*$', views.NotFound.as_view(), name='notfound')
 )

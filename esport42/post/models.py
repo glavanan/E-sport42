@@ -11,6 +11,7 @@ class Post(models.Model):
     title = models.CharField(max_length=255)
     image = models.ImageField(upload_to=FRONT_POST)
     image_url = models.CharField(max_length=1024)
+    is_landing = models.BooleanField(default=False)
 
     def __unicode__(self):
         return '{0}'.format(self.title)

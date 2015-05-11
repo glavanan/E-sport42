@@ -71,5 +71,9 @@ class EmailExists(views.APIView):
         else:
             return Response({}, status=status.HTTP_404_NOT_FOUND)
 
+class NotFound(views.APIView):
+    def get(self, request):
+        return Response({}, status=status.HTTP_404_NOT_FOUND)
+
 class IndexView(TemplateView):
     template_name = 'user/index.html'

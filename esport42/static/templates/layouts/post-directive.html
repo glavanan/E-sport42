@@ -7,13 +7,14 @@
         </div>
         <div class="media-body">
             <div class="panel panel-default">
-                <div class="panel-heading" ng-click="clickOn()">
+                <div class="panel-heading">
                     <div class="row">
                         <div class="col-md-6 text-left">
-                            <h4 class="media-heading panel-title">{{ article.title }} by {{ article.author }}</h4>
+                            <h4 class="media-heading panel-title" ng-click="clickOn()">{{ article.title }} by {{ article.author }}</h4>
                         </div>
                         <div class="col-md-6 text-right">
-                            <i ng-click="clickOn()" class="fa fa-search-plus fa-2x fake-link"></i>
+                            <i ng-if="user.is_admin && user.is_staff" ng-click="deletePost()" class="fa fa-times fa-2x fake-link"></i>
+                            <i class="fa fa-search-plus fa-2x fake-link" ng-click="clickOn()"></i>
                         </div>
                     </div>
                 </div>
@@ -37,7 +38,7 @@
                 </div>
             </div>
             <div class="panel-body">
-                <img src="{{ article.imgFull }}" height="600"/>
+                <img class="main" ng-class="{ 'is_landing': article.is_landing }" src="{{ article.imgFull }}" height="600"/>
                 <div class="text-justified post-detail-text" ng-bind-html="article.text"></div>
                 <button ng-click="clickOn()" type="button" class="button-close-block">Fermer l'article</button>
             </div>

@@ -9,38 +9,28 @@
         .module('esport42.layouts.controllers')
         .controller('IndexController', IndexController);
 
-    IndexController.$inject = ['Post', '_'];
+    IndexController.$inject = ['Post', 'Authentication'];
 
-    function IndexController(Post, _) {
+    function IndexController(Post, Authentication) {
         var vm = this;
 
         vm.posts = [];
 
         activate();
 
-        //console.log(Post.all);
         function activate() {
-            //var trim = require("underscore.string/trim");
 
+            vm.user = Authentication.getAuthenticatedAccount();
+            console.log(vm.user);
             Post.all()
-                .success(PostSuccess)
-                .error(PostFailure);
+                .then(PostSuccess, PostFailure);
 
             function PostSuccess(data) {
-                vm.posts = _.map(data, function (data) {
-                    return {
-                        summary: data.resume,
-                        text: data.text,
-                        imgCropped: data.image_url,
-                        imgFull: data.image,
-                        title: data.title,
-                        author: data.author.username
-                    }
-                });
+                vm.posts = data;
             }
 
             function PostFailure(data) {
-                console.log('error bitch');
+                console.log('error in Index Controller for posts');
             }
         }
 

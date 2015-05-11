@@ -1,5 +1,6 @@
 import os
 import sys
+
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 DEBUG = TEMPLATE_DEBUG = False
@@ -44,11 +45,10 @@ WSGI_APPLICATION = 'esport42.wsgi.application'
 # https://docs.djangoproject.com/en/1.7/ref/settings/#databases
 
 DB = {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'esport42_debug',
-	'USER': 'esport42',
-	'PASSWORD': os.getenv("DB_PASS")
+    'ENGINE': 'django.db.backends.sqlite3',
+    'NAME': 'testing'
 }
+
 DATABASES = {
     'default': DB
 }

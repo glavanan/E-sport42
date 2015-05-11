@@ -8,7 +8,7 @@ class PostSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Post
-        fields = ('id', 'author', 'text', 'resume', 'created_at', 'updated_at', 'title', 'image', 'image_url')
+        fields = ('id', 'author', 'text', 'resume', 'created_at', 'updated_at', 'title', 'image', 'image_url', 'is_landing')
         read_only_fields = ('id', 'created_at', 'updated_at', 'image_url')
 
         def get_validation_exclusion(self):

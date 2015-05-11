@@ -2,7 +2,7 @@
 <html ng-app="esport42">
 <head lang="en">
     <meta charset="UTF-8">
-    <base href="/" />
+    <base href="/"/>
     {% include 'user/css_template.html' %}
     {% include 'user/js_template.html' %}
     <title>E-Sport 42</title>
@@ -11,30 +11,39 @@
 
 {% load jsonify %}
 
-<nav class="navbar navbar-inverse navbar-fixed-top" ng-init="userIsAuthenticated={{ user.is_authenticated|jsonify }}" ng-controller="NavbarController as vm">
-  <div class="container-fluid">
-{#    Brand and toggle get grouped for better mobile display#}
-    <div class="navbar-header">
-     	<a class="navbar-brand" href="/">
-            {% load staticfiles %}
-            <img alt="Brand" src="{% static 'img/site/logo_esport42.jpg' %}" height="100%"></a>
-    	</div>
-          <div class="collapse navbar-collapse">
-              <ul class="nav navbar-nav navbar-right">
-                  {% if user.is_admin %}
-                      <li><a href="/test">Page de test</a></li>
-                      <li><a href="/post">Créer un article</a></li>
-                  {% endif %}
-                  {% if not user.is_authenticated %}
-	                  <li><a href="/register">Créer un compte</a></li>
-    	              <li><a href="/login">Se connecter</a></li>
-                  {% else %}
-	                  <li><a href="#" ng-click="vm.logout()">Se déconnecter</a></li>
-                      <li><p class="navbar-text">Salut {{ user.username }}</p></li>
-                  {% endif %}
-              </ul>
-          </div>
-	</div>
+<nav class="navbar navbar-inverse navbar-fixed-top" ng-init="userIsAuthenticated={{ user.is_authenticated|jsonify }}"
+     ng-controller="NavbarController as vm">
+    <div class="container-fluid">
+        {#    Brand and toggle get grouped for better mobile display#}
+        <div class="navbar-header">
+            <a class="navbar-brand" href="/">
+                {% load staticfiles %}
+                <img alt="Brand" src="{% static 'img/site/logo_esport42.jpg' %}" height="100%"></a>
+        </div>
+        <div class="collapse navbar-collapse">
+            <ul class="nav navbar-nav navbar-right">
+                {% if user.is_admin %}
+                    <li><a href="/test">Page de test</a></li>
+                    <li><a href="/post">Créer un article</a></li>
+                {% endif %}
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Dropdown
+                        <span class="caret"></span></a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="#">Action</a></li>
+                        <li><a href="#">Another action</a></li>
+                        <li><a href="#">Something else here</a></li>
+                    </ul>
+                    {% if not user.is_authenticated %}
+                        <li><a href="/register">Créer un compte</a></li>
+                        <li><a href="/login">Se connecter</a></li>
+                    {% else %}
+                        <li><a href="#" ng-click="vm.logout()">Se déconnecter</a></li>
+                        <li><p class="navbar-text">Salut {{ user.username }}</p></li>
+                    {% endif %}
+            </ul>
+        </div>
+    </div>
 </nav>
 
 <div class="content">

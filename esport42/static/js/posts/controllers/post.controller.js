@@ -18,7 +18,7 @@
         vm.displayed = false;
 
         vm.form = {
-            "author": Authentication.getAuthenticatedAccount().data.username
+            "author": Authentication.getAuthenticatedAccount().username
         };
 
 

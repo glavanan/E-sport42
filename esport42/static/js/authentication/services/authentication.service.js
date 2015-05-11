@@ -45,7 +45,7 @@
         function login (username, password) {
             return $http.post('/api/v1/login', {username: username, password: password})
                 .then(function (dataReceived, status, headers, config) {
-                    Authentication.setAuthenticatedAccount(dataReceived);
+                    Authentication.setAuthenticatedAccount(dataReceived.data);
                 }, function (dataReceived, status, headers, config) {
                     return $q.reject(dataReceived.data);
                 });
@@ -64,6 +64,7 @@
         function getAuthenticatedAccount() {
             if (!$cookies.authenticatedAccount)
                 return ;
+            console.log("JE MANGE DES POMMES");
             return JSON.parse($cookies.authenticatedAccount);
         }
 

@@ -36,6 +36,7 @@
 
                         <div class="form-group">
                             <label for="post__text">Texte</label>
+
                             <div text-angular="" ng-model="vm.form.text"></div>
                         </div>
 
@@ -48,7 +49,16 @@
                                          class="text-danger">
                                 <ng-message when="required">Une image est requise pour envoyer un article</ng-message>
                             </ng-messages>
+                            <div class="form-group">
+                                <label for="post__image_is_landing">L'image est-elle en mode paysage ?</label>
+                                <input type="checkbox" class="form-control checkbox inline" id="post__image_is_landing"
+                                       ng-model="vm.form.is_landing"
+                                       name="image_is_landing"
+                                        />
+                            </div>
                         </div>
+
+
                         <div class="form-group">
                             <button type="submit" class="btn btn-primary">Submit</button>
                             <button type="button" class="btn btn-primary" ng-click="vm.displayPreview(postForm)">Voir
