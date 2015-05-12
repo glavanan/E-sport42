@@ -23,9 +23,6 @@
         }
 
         function logout() {
-            console.log($scope.userIsAuthenticated);
-            console.log($scope.user);
-            console.log(Authentication.isAuthenticated());
             if (Authentication.isAuthenticated())
                 Authentication.logout();
             return false;

@@ -30,7 +30,7 @@
                     window.location = '/';
                 },
                 function(data, status, headers, config) {
-                    console.log(data);
+                    console.log("Login error: ", data);
                     if (data.username)
                         vm.error.username = data.username;
                     if (data.non_field_errors)

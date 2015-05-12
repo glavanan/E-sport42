@@ -39,7 +39,7 @@
                         }
                     });
                 }, function (data, status) {
-                    console.log("Failed in post service...");
+                    console.log("Get Post Error in service: ", data);
                     return $q.reject(data);
                 });
         }
@@ -61,7 +61,7 @@
                 .then(function (data, status, headers, config) {
                     return data.data;
                 }, function (data, status, headers, config) {
-                    console.log("Fail dans l'upload: ", data);
+                    console.log("Upload of file failed: ", data);
                     return data.data;
                 });
         }

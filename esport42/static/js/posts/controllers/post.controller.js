@@ -28,7 +28,7 @@
                     .then(function (data, status) {
                         $location.url('/');
                     }, function (data, status) {
-                        console.log("I'm in controller bitch and I failed: ", data);
+                        console.log("Uploading Post failed...: ", data);
                     }
                 );
             }

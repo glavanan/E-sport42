@@ -37,7 +37,7 @@
             }
             function registerError(dataReceived, status, headers, config) {
                 alert('Something was wrong. It should not have happend. Contact the administrator');
-                console.log(dataReceived);
+                console.log("Register Error: ", dataReceived);
                 return $q.reject(dataReceived);
             }
         }
@@ -64,7 +64,6 @@
         function getAuthenticatedAccount() {
             if (!$cookies.authenticatedAccount)
                 return ;
-            console.log("JE MANGE DES POMMES");
             return JSON.parse($cookies.authenticatedAccount);
         }
 
@@ -85,7 +84,6 @@
         return function (name) {
             $timeout(function () {
                 $rootScope.$broadcast('focusOn', name);
-                console.log('focus On declenched !');
             });
         }
     }

@@ -21,7 +21,6 @@
         function activate() {
 
             vm.user = Authentication.getAuthenticatedAccount();
-            console.log(vm.user);
             Post.all()
                 .then(PostSuccess, PostFailure);
 
@@ -30,7 +29,7 @@
             }
 
             function PostFailure(data) {
-                console.log('error in Index Controller for posts');
+                console.log('Get Posts failed: ', data);
             }
         }
 
