@@ -7,6 +7,8 @@ class Tournament(models.Model):
     nbteams = models.IntegerField()
     player_per_team = models.IntegerField()
     template = models.IntegerField()
+    price = models.IntegerField();
+    receiver_email = models.CharField(max_length=256, blank=True)
     admin = models.ManyToManyField(MyUser)
 
 class Phase(models.Model):
@@ -16,7 +18,9 @@ class Phase(models.Model):
 class Teams(models.Model):
     name = models.CharField(max_length=50)
     members = models.ManyToManyField(MyUser)
+    txn_id = models.CharField(max_length=256, blank=True)
     tournament = models.ForeignKey(Tournament)
+    verified = models.BooleanField(default=False)
 
 class TPost(models.Model):
     title = models.CharField(max_length=50)

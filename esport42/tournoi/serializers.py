@@ -6,15 +6,16 @@ class TournamentSerializer(serializers.ModelSerializer):
     type = serializers.ListField(child=serializers.CharField(max_length=20), write_only=True)
     class Meta:
         model = Tournament
-        fields = ('id', 'name', 'nbteams', 'template', 'type', 'player_per_team', 'admin')
-        read_only_fields = ('id')
+        fields = ('id', 'name', 'nbteams', 'template', 'type', 'player_per_team', 'admin', 'price', 'receiver_email')
+        read_only_fields = ('id',)
 
 class TeamSerializer(serializers.ModelSerializer):
 #Hey pede tu a pas reussis a resoudre le probleme regarde si il y a pas un serializer.ququechose, cadeau :
 #http://www.django-rest-framework.org/api-guide/serializers/#writable-nested-representations
     class Meta:
         model = Teams
-        fields = ('name', 'members', 'tournoi')
+        fields = ('id', 'verified', 'name', 'members', 'tournament', 'txn_id')
+        read_only_fields = ('id', 'verified', 'txn_id')
     def create(self, validated_data):
         users = validated_data.pop('members')
         team = Teams.objects.create(**validated_data)
