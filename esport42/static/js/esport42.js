@@ -4,16 +4,17 @@
 (function () {
     angular
         .module('esport42', [
-            'ngAnimate', 'ngSanitize', 'textAngular', 'ngFileUpload',
+            'ngAnimate', 'ngSanitize', 'textAngular', 'ngFileUpload', 'ui.router',
             'esport42.config',
             'esport42.routes',
             'esport42.utils',
             'esport42.authentication',
             'esport42.layouts',
-            'esport42.posts'
+            'esport42.posts',
+            'esport42.tournaments'
         ]);
     angular
-        .module('esport42.routes', ['ngRoute']);
+        .module('esport42.routes', []);
     angular
         .module('esport42.config', []);
     angular
