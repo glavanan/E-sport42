@@ -60,8 +60,10 @@ class TournamentViewSet(viewsets.ModelViewSet):
             return (IsTornamentOrAdmin(), )
         except:
             print ("not int")
-            if self.request.method == 'GET' or self.request.method == 'POST':
+            if self.request.method == 'GET':
                 return [permissions.AllowAny(), ]
+            elif self.request.method == 'POST':
+                return [permissions.IsAuthenticated(), ]
             return [IsAdminOfSite(), ]
 
     def create(self, request, **kwargs):
@@ -91,12 +93,29 @@ class TeamsViewSet(viewsets.ModelViewSet):
     def get_permissions(self):
         self.request.ID = self.kwargs['parent_lookup_tournoi']
         if self.request.method == 'GET':
-            return [permissions.AllowAny(),]
+            return [permissions.AllowAny(), ]
+        elif self.request.method == 'POST':
+            return [permissions.IsAuthenticated(), ]
         else:
             return [IsAdminOfSite(),]
     def perform_create(self, serializer):
         instance = serializer.save(tournament=Tournament.objects.get(id=self.kwargs['parent_lookup_tournoi']))
         return super(TeamsViewSet, self).perform_create(serializer)
+
+    def create(self, request, **kwargs):
+        serializers = self.serializer_class(data=request.data)
+        tournoi = Tournament.objects.get(id=self.kwargs['parent_lookup_tournoi'])
+        print tournoi.player_per_team
+        if serializers.is_valid():
+            if len(serializers.validated_data['members']) >= tournoi.player_per_team and len(serializers.validated_data['members']) <= tournoi.max_player:
+                serializers.save(tournament=tournoi)
+                serializers.validated_data.pop('members')
+                return Response(serializers.validated_data, status=status.HTTP_201_CREATED)
+            return Response({"error" : "Not enought member"}, status=status.HTTP_400_BAD_REQUEST)
+        return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+
 
 
     # def process(self, data):
@@ -123,18 +142,19 @@ def ipn(request):
         if tmp == 'VERIFIED':
             if data('payement_status') == 'Completed':
                 Teams.objects.filter(txn_id=data('txn_id'))
-                if data('receiver_email') == "esport.42@gmail.com" and data('payment'):
+                team = Teams.objects.filter(id=data('custom'))
+                if Teams.objects.filter(txn_id=data('txn_id')) and data('receiver_email') == team.tournament.receiver_email and data('mc_gross') == team.tournament.price and data('payment_status') == 'Completed' and data('mc_currency') == 'EUR':
+                    team.verified = True
+                    team.save()
                     print "gg"
+                print "almost"
         else:
             print "ret"
             print tmp
             print "fail"
         return HttpResponse("OK")
     else:
-        data = {}
-        site = requests.post('http://127.0.0.1:8000/api/v1/ipn', data=data)
-        print site
-        return HttpResponse("How the hell did you arrived here ?")
+        return HttpResponse('<form method="post" action="https://www.sandbox.paypal.com/cgi-bin/webscr" class="paypal-button" target="_top" style="opacity: 1;"><div class="hide" id="errorBox"></div><input type="hidden" name="button" value="buynow"><input type="hidden" name="business" value="42.esport1@gmail.com"><input type="hidden" name="item_name" value="tournoi"><input type="hidden" name="quantity" value="1"><input type="hidden" name="amount" value="50"><input type="hidden" name="currency_code" value="EUR"><input type="hidden" name="shipping" value="0"><input type="hidden" name="tax" value="0"><input type="hidden" name="notify_url" value="127.0.0.1/api/v1/ipn"><input type="hidden" name="env" value="www.sandbox"><input type="hidden" name="cmd" value="_xclick"><input type="hidden" name="bn" value="JavaScriptButton_buynow"><input type="hidden" name="custom" value="1"/><button type="submit" class="paypal-button large">Buy Now</button></form>')
 
 
 # Create your views here.

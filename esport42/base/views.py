@@ -18,7 +18,7 @@ from post.permissions import IsAdminOfSite
 class MyUserViewSet(viewsets.ModelViewSet):
     queryset = MyUser.objects.all()
     serializer_class = MyUserSerializer
-    lookup_field = 'username'
+    # TODO username to ID
 
     def get_permissions(self):
         return ((permissions.AllowAny() if self.request.method == 'POST'
@@ -32,12 +32,29 @@ class MyUserViewSet(viewsets.ModelViewSet):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def update(self, request, *args, **kwargs):
+        partial = False
+        if 'PATCH' in request.method:
+            partial = True
         instance = self.get_object()
-        serializer = self.serializer_class(instance, data=request.data, context={'request': request})
-        if serializer.is_valid():
-            serializer.update(instance, serializer.validated_data)
-            return Response(serializer.validated_data, status=status.HTTP_202_ACCEPTED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        serializer = self.serializer_class(instance, data=request.data, context={'request': request}, partial=partial)
+        if 'password' in request.data and not request.data['password']:
+            serializer.exclude_fields(['password'])
+        if 'password_confirm' in request.data and not request.data['password_confirm']:
+            serializer.exclude_fields(['password_confirm'])
+        if not serializer.is_valid():
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        serializer.save()
+        return Response(serializer.validated_data, status=status.HTTP_202_ACCEPTED)
+
+        # instance = self.get_object()
+        # serializer = self.serializer_class(instance, data=request.data, context={'request': request})
+        # if serializer.is_valid():
+        #     serializer.update(instance, serializer.validated_data)
+        #     return Response(serializer.validated_data, status=status.HTTP_202_ACCEPTED)
+        # return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def patch(self, request, *args, **kwargs):
+        return self.partially_update(request, *args, **kwargs)
 
 class LoginView(views.APIView):
     def post(self, request, format=None):
