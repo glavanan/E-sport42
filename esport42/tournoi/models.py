@@ -10,7 +10,6 @@ class Tournament(models.Model):
     template = models.IntegerField()
     price = models.IntegerField()
     receiver_email = models.CharField(max_length=256, blank=True)
-    bg_image = models.ImageField(upload_to=FRONT_POST)
     admin = models.ManyToManyField(MyUser)
 
 class Phase(models.Model):

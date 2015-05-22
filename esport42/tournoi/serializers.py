@@ -14,7 +14,7 @@ class TeamSerializer(serializers.ModelSerializer):
 #http://www.django-rest-framework.org/api-guide/serializers/#writable-nested-representations
     class Meta:
         model = Teams
-        fields = ('id', 'verified', 'name', 'members', 'txn_id', 'bg_image')
+        fields = ('id', 'verified', 'name', 'members', 'txn_id')
         read_only_fields = ('id', 'verified', 'txn_id')
 
     def get_validation_exclusions(self):
