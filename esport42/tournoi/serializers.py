@@ -14,8 +14,8 @@ class TeamSerializer(serializers.ModelSerializer):
 #http://www.django-rest-framework.org/api-guide/serializers/#writable-nested-representations
     class Meta:
         model = Teams
-        fields = ('id', 'verified', 'name', 'members', 'tournament', 'txn_id')
-        read_only_fields = ('id', 'verified', 'txn_id')
+        fields = ('id', 'verified', 'name', 'members', 'tournament', 'txn_id', 'created_at', 'updated_at', 'admin', 'tag')
+        read_only_fields = ('id', 'verified', 'tournament', 'txn_id', 'created_at', 'updated_at')
     def create(self, validated_data):
         users = validated_data.pop('members')
         team = Teams.objects.create(**validated_data)

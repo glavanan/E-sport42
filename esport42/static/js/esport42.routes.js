@@ -42,11 +42,24 @@
                 controllerAs: 'vm',
                 templateUrl: '/static/templates/test/test-post.html'
             })
-            .state('tournament.detail', {
-                url: "/tournament/:tournamentName",
+            .state('tournament-detail', {
+                url: "/tournaments/:tournamentName",
+                templateUrl: '/static/templates/tournaments/tournament-detail.html',
+                resolve: {
+                    tService: 'Tournaments',
+                    tournament: function(tService){
+                        //return {value: 'tournament'};
+                        return tService.all();
+                    }
+                },
                 controller: 'TournamentDetailController',
-                controllerAs: 'vm',
-                templateUrl: '/static/templates/tournaments/tournament-detail.html'
+                controllerAs: 'vm'
+            })
+            .state('tournament-detail.register', {
+                url: "/register",
+                templateUrl: '/static/templates/tournaments/tournament-detail-register.html',
+                controller: 'TournamentDetailRegisterController',
+                controllerAs: 'vm'
             });
     }
 })();

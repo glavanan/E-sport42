@@ -16,7 +16,8 @@
         var tournaments_url = '/api/v1/tournoi';
 
         var Tournaments = {
-            all: all
+            all: all,
+            submitTeam: submitTeam
             //newPost: newPost,
             //deletePost: deletePost
         };
@@ -34,31 +35,15 @@
                     return $q.reject(data);
                 });
         }
-
-        //function newPost(image, form) {
-        //    var uploadOpts = {
-        //        url: post_url,
-        //        fields: {
-        //            title: form.title,
-        //            resume: form.summary,
-        //            text: form.text,
-        //            is_landing: form.is_landing
-        //        },
-        //        file: image,
-        //        fileFormDataName: 'image'
-        //    };
-        //
-        //    return Upload.upload(uploadOpts)
-        //        .then(function (data, status, headers, config) {
-        //            return data.data;
-        //        }, function (data, status, headers, config) {
-        //            console.log("Upload of file failed: ", data);
-        //            return data.data;
-        //        });
-        //}
-        //
-        //function deletePost(id) {
-        //    return $http.delete(post_url + '/' + id);
-        //}
+        
+        function submitTeam(tournamentId, team) {
+            return $http.post(tournaments_url + "/" + tournamentId + "/team", team)
+                .then(function (data, status, headers, config) {
+                    return data.data;
+                }, function (data, status, headers, config) {
+                    console.log("Team submit failed in service: ", data);
+                    return $q.reject(data);
+                });
+        }
     }
 }());

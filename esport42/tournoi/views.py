@@ -56,16 +56,13 @@ class TournamentViewSet(viewsets.ModelViewSet):
         part = url.split('/')
         try:
             int(part[-2])
-            print "is tornament"
             return (IsTornamentOrAdmin(), )
         except:
-            print ("not int")
             if self.request.method == 'GET' or self.request.method == 'POST':
                 return [permissions.AllowAny(), ]
             return [IsAdminOfSite(), ]
 
     def create(self, request, **kwargs):
-        print "viewset"
         serializer = self.serializer_class(data=request.data)
         if serializer.is_valid():
             type = serializer.validated_data.pop('type')
@@ -73,45 +70,29 @@ class TournamentViewSet(viewsets.ModelViewSet):
             for val in type:
                 tmp = Phase(tmp_name=val, tournament=tournoi)
                 tmp.save()
-            print tournoi.phase_set.all()
             #Je doit retourenr le validated data - User !!!
-            return Response({"ok" : "done"}, status=status.HTTP_201_CREATED)
+            return Response({}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
 
 
 class TeamsViewSet(viewsets.ModelViewSet):
     queryset = Teams.objects.all()
 
-    serializer_class=TeamSerializer
+    serializer_class = TeamSerializer
 
     def get_queryset(self):
         return Teams.objects.filter(tournament=self.kwargs['parent_lookup_tournoi'])
     def get_permissions(self):
         self.request.ID = self.kwargs['parent_lookup_tournoi']
-        if self.request.method == 'GET':
+        if self.request.method == 'GET' or self.request.method == "POST":
             return [permissions.AllowAny(),]
         else:
             return [IsAdminOfSite(),]
     def perform_create(self, serializer):
-        instance = serializer.save(tournament=Tournament.objects.get(id=self.kwargs['parent_lookup_tournoi']))
+        serializer.save(tournament=Tournament.objects.get(id=self.kwargs['parent_lookup_tournoi']))
         return super(TeamsViewSet, self).perform_create(serializer)
 
 
-    # def process(self, data):
-    #     print data
-    #     print "GG"
-    #
-    # def process_invalid(self, data):
-    #     print data
-    #     print "fail"
-    #
-    # def verify(self, data):
-    #     arg = {'cmd' : '_notify-validate'}
-    #     arg.update(data)
-    #     tmp = urllib.urlopen("https://www.paypal.com/cgi_bin/websrc", urllib.urlencode(arg)).read()
-    #     return tmp == 'VERIFIED'
 @csrf_exempt
 def ipn(request):
     if request.method == 'POST':
@@ -119,7 +100,7 @@ def ipn(request):
         print request.POST
         data = dict(request.POST)
         print 'cmd=_notify-validate&' + urllib.urlencode(data)
-        tmp = urllib.urlopen("https://www.sandbox.paypal.com/cgi_bin/websrc",  'cmd=_notify-validate&' + urllib.urlencode(data)).read()
+        tmp = urllib.urlopen("https://www.sandbox.paypal.com/cgi_bin/websrc", 'cmd=_notify-validate&' + urllib.urlencode(data)).read()
         if tmp == 'VERIFIED':
             if data('payement_status') == 'Completed':
                 Teams.objects.filter(txn_id=data('txn_id'))

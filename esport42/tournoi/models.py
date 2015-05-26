@@ -17,10 +17,14 @@ class Phase(models.Model):
 
 class Teams(models.Model):
     name = models.CharField(max_length=50)
+    tag = models.CharField(max_length=5)
     members = models.ManyToManyField(MyUser)
+    admin = models.ForeignKey(MyUser, related_name="team_admin", null=True, blank=True)
     txn_id = models.CharField(max_length=256, blank=True)
     tournament = models.ForeignKey(Tournament)
     verified = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
 class TPost(models.Model):
     title = models.CharField(max_length=50)
