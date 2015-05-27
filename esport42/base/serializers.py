@@ -6,6 +6,12 @@ from tournoi.models import Teams
 from tournoi.models import Tournament
 
 
+class LimitedMyUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = MyUser
+        fields = ('id', 'username', 'nationality', 'created_at')
+        read_only_fields = ('id', 'username', 'nationality', 'created_at')
+
 class MyUserSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True, required=True)
     password_confirm = serializers.CharField(write_only=True, required=True)

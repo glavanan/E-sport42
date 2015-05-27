@@ -7,7 +7,7 @@ from django import forms
 from django.contrib.auth import authenticate, login, logout
 from base.forms import UserCreationForm
 from base.models import MyUser
-from base.serializers import MyUserSerializer, LoginSerializer
+from base.serializers import MyUserSerializer, LoginSerializer, LimitedMyUserSerializer
 from tournoi.serializers import TournamentSerializer, TeamSerializer
 from base.permissions import IsAccountOwner, IsOwnerOrAdmin
 from rest_framework import permissions, viewsets, status, views, permissions
@@ -18,20 +18,34 @@ from rest_framework.renderers import JSONRenderer
 
 class MyUserViewSet(viewsets.ModelViewSet):
     queryset = MyUser.objects.all()
-    serializer_class = MyUserSerializer
     # TODO username to ID
+
+    def get_serializer_class(self):
+        try:
+            url = self.request.build_absolute_uri()
+            url.split('/')
+            int(url[-1])
+            return MyUserSerializer
+        except:
+            if self.request.method == 'GET' and not self.request.user.is_staff:
+                return LimitedMyUserSerializer
+            else:
+                return MyUserSerializer
+
 
     def get_permissions(self):
         return ((permissions.AllowAny() if self.request.method == 'POST'
                 else IsOwnerOrAdmin()),)
 
     def create(self, request, **kwargs):
-        serializer = self.serializer_class(data=request.data)
+        serializer = self.get_serializer_class()
+        serializer = serializer(data=request.data)
         if serializer.is_valid():
             ret = MyUser.objects.create_user(**serializer.validated_data)
             Token.objects.create(user=ret)
             return Response(serializer.validated_data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
     def update(self, request, *args, **kwargs):
         partial = False
@@ -41,7 +55,8 @@ class MyUserViewSet(viewsets.ModelViewSet):
         instance = self.get_object()
         request.data['username'] = user.username
         request.data['id'] = user.id
-        serializer = self.serializer_class(instance, data=request.data, context={'request': request}, partial=partial)
+        serializer = self.get_serializer_class()
+        serializer = serializer(instance, data=request.data, context={'request': request}, partial=partial)
         if 'password' in request.data and not request.data['password']:
             serializer.exclude_fields(['password'])
         if 'password_confirm' in request.data and not request.data['password_confirm']:
