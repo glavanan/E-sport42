@@ -13,7 +13,8 @@ from base.permissions import IsAccountOwner, IsOwnerOrAdmin
 from rest_framework import permissions, viewsets, status, views, permissions
 from rest_framework.response import Response
 from post.permissions import IsAdminOfSite
-
+from rest_framework.authtoken.models import Token
+from rest_framework.renderers import JSONRenderer
 
 class MyUserViewSet(viewsets.ModelViewSet):
     queryset = MyUser.objects.all()
@@ -27,15 +28,19 @@ class MyUserViewSet(viewsets.ModelViewSet):
     def create(self, request, **kwargs):
         serializer = self.serializer_class(data=request.data)
         if serializer.is_valid():
-            MyUser.objects.create_user(**serializer.validated_data)
+            ret = MyUser.objects.create_user(**serializer.validated_data)
+            Token.objects.create(user=ret)
             return Response(serializer.validated_data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def update(self, request, *args, **kwargs):
         partial = False
+        user = MyUser.objects.get(id=request.data['id'])
         if 'PATCH' in request.method:
             partial = True
         instance = self.get_object()
+        request.data['username'] = user.username
+        request.data['id'] = user.id
         serializer = self.serializer_class(instance, data=request.data, context={'request': request}, partial=partial)
         if 'password' in request.data and not request.data['password']:
             serializer.exclude_fields(['password'])
@@ -63,8 +68,12 @@ class LoginView(views.APIView):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         account = authenticate(username=serializer.validated_data['username'], password=serializer.validated_data['password'])
         login(request, account)
+        token = Token.objects.get(user=account)
         serializers = MyUserSerializer(account)
-        return Response(serializers.data)
+        data = serializers.data
+        data = dict(data)
+        data['token'] = token.key
+        return Response(data)
 
 class LogoutView(views.APIView):
     permission_classes = (permissions.IsAuthenticated,)

@@ -3,7 +3,7 @@ import sys
 
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
-DEBUG = TEMPLATE_DEBUG = False
+DEBUG = TEMPLATE_DEBUG = True
 
 ADMINS = (("Camille", "camwag.w@gmail.com"), ("Guillian", "guillian.lavanant@gmail.com"))
 
@@ -17,6 +17,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework.authtoken',
     'django_countries',
     'base',
     'post',
@@ -25,6 +26,14 @@ INSTALLED_APPS = (
     'rest_framework',
     'jsonify'
 )
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.TokenAuthentication'
+    )
+}
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',

@@ -143,8 +143,9 @@ def ipn(request):
             if data('payement_status') == 'Completed':
                 Teams.objects.filter(txn_id=data('txn_id'))
                 team = Teams.objects.filter(id=data('custom'))
-                if Teams.objects.filter(txn_id=data('txn_id')) and data('receiver_email') == team.tournament.receiver_email and data('mc_gross') == team.tournament.price and data('payment_status') == 'Completed' and data('mc_currency') == 'EUR':
+                if not Teams.objects.filter(txn_id=data('txn_id')) and data('receiver_email') == team.tournament.receiver_email and data('mc_gross') == team.tournament.price and data('payment_status') == 'Completed' and data('mc_currency') == 'EUR':
                     team.verified = True
+                    team.txn_id = data('txn_id')
                     team.save()
                     print "gg"
                 print "almost"
