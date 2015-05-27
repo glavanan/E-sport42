@@ -117,5 +117,24 @@ def ipn(request):
         print site
         return HttpResponse("How the hell did you arrived here ?")
 
+class TeamExists(views.APIView):
+    def get(self, request):
+        teamname = request.GET.get('name', None)
+        tournament = request.GET.get('tournament', None)
+        print tournament
+        if teamname and tournament and not Teams.objects.filter(name=teamname, tournament=tournament):
+            return Response({}, status=status.HTTP_200_OK)
+        else:
+            return Response({}, status=status.HTTP_404_NOT_FOUND)
+
+class TagExists(views.APIView):
+    def get(self, request):
+        teamname = request.GET.get('name', None)
+        tournament = request.GET.get('tournament', None)
+        print tournament
+        if teamname and tournament and not Teams.objects.filter(tag=teamname, tournament=tournament):
+            return Response({}, status=status.HTTP_200_OK)
+        else:
+            return Response({}, status=status.HTTP_404_NOT_FOUND)
 
 # Create your views here.

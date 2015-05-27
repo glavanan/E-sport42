@@ -12,11 +12,12 @@
 
     function teamNameAvailable($http) {
         return {
+            restrict: 'A',
             require: 'ngModel',
             link: function ($scope, elem, attrs, ngModel) {
-                ngModel.$asyncValidators.teamNameAvailable = function (tournament, teamname) {
-                    //return $http.get('/api/v1/username-exists?username=' + username);
-                    return $http.get('/api/v1/tournament/' + tournament.id + "/teamname-exists?name=" + teamname);
+                ngModel.$asyncValidators.teamNameAvailable = function (teamname) {
+                    console.log($scope, attrs);
+                    return $http.get('/api/v1/team-exists?tournament=' + attrs.teamNameAvailable +  '&name=' + teamname);
                 }
             }
         }

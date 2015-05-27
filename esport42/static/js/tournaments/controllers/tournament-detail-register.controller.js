@@ -9,34 +9,35 @@
         .module('esport42.tournaments.controllers')
         .controller('TournamentDetailRegisterController', TournamentDetailRegisterController);
 
-    TournamentDetailRegisterController.$inject = ['tournament', 'Users', 'Tournaments'];
+    TournamentDetailRegisterController.$inject = ['tournament', 'Users', 'Tournaments', 'Authentication', '_'];
 
-    function TournamentDetailRegisterController(tournament, Users, Tournaments) {
+    function TournamentDetailRegisterController(tournament, Users, Tournaments, Authentication, _) {
         var vm = this;
 
         vm.register = register;
         vm.submtionOk = false;
+        vm.users = [];
+        vm.tournament = null;
+        vm.me = null;
 
         activate();
 
         function activate() {
             vm.tournament = tournament[0];
-            vm.users = [];
             Users.all()
                 .then(function (data, status) {
                     vm.users = data;
                 }, function (data, status) {
                     console.log("I failed to getting all users in the controller :(", data);
                 });
-            console.log(vm.users);
-
+            vm.me = Authentication.getAuthenticatedAccount();
         }
 
         function register() {
-            console.log("U did register biatch !", vm.form.members);
+            vm.form.members = _.pluck(vm.form.members, 'id');
+            vm.form.admin = vm.me.id;
             Tournaments.submitTeam(vm.tournament.id, vm.form)
                 .then(function (data, status, headers, config) {
-                    console.log("Team submitted, easy as shit !", data);
                     vm.submitionOk = true;
                 }, function (data, status, headers, config) {
 
