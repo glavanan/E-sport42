@@ -46,11 +46,9 @@
                 url: "/tournaments/:tournamentName",
                 templateUrl: '/static/templates/tournaments/tournament-detail.html',
                 resolve: {
-                    tService: 'Tournaments',
-                    tournament: function(tService){
-                        //return {value: 'tournament'};
-                        return tService.all();
-                    }
+                    tournament: ['Tournaments', '$stateParams', function (Tournaments, $stateParams) {
+                        return Tournaments.getTournamentByName($stateParams.tournamentName);
+                    }]
                 },
                 controller: 'TournamentDetailController',
                 controllerAs: 'vm'

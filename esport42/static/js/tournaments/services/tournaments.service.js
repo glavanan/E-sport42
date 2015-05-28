@@ -36,11 +36,16 @@
                 });
         }
         
-        function getTournamentByName() {
+        function getTournamentByName(tName) {
             return $http.get(tournaments_url)
                 .then(function (data, status) {
-                    return _.map(data.data, function (data) {
-                        return (data);
+                    console.log(tName);
+                    //return _.map(data.data, function (data) {
+                    //    return (data);
+                    //});
+                    return _.find(data.data, function (data) {
+                        console.log(data);
+                        return data.name === tName;
                     });
                 }, function (data, status) {
                     console.log("Get Tournament Error in service: ", data);
