@@ -6,6 +6,7 @@ class Tournament(models.Model):
     name = models.CharField(max_length=50)
     nbteams = models.IntegerField()
     player_per_team = models.IntegerField()
+    max_player = models.IntegerField()
     template = models.IntegerField()
     price = models.IntegerField()
     receiver_email = models.CharField(max_length=256, blank=True)

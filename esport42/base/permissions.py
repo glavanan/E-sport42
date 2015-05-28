@@ -7,9 +7,6 @@ class IsAccountOwner(permissions.BasePermission):
         return False
 
 class IsOwnerOrAdmin(permissions.BasePermission):
-    def has_permission(self, request, view):
-        return view.action == 'retrieve' or view.action == 'destroy' or request.user.is_staff
-
     def has_object_permission(self, request, view, obj):
         if request.user:
             return request.user.is_staff or obj == request.user

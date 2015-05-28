@@ -6,7 +6,7 @@ class TournamentSerializer(serializers.ModelSerializer):
     type = serializers.ListField(child=serializers.CharField(max_length=20), write_only=True)
     class Meta:
         model = Tournament
-        fields = ('id', 'name', 'nbteams', 'template', 'type', 'player_per_team', 'admin', 'price', 'receiver_email')
+        fields = ('id', 'name', 'nbteams', 'template', 'type', 'player_per_team', 'max_player', 'admin', 'price', 'receiver_email')
         read_only_fields = ('id',)
 
 class TeamSerializer(serializers.ModelSerializer):
@@ -16,11 +16,16 @@ class TeamSerializer(serializers.ModelSerializer):
         model = Teams
         fields = ('id', 'verified', 'name', 'members', 'tournament', 'txn_id', 'created_at', 'updated_at', 'admin', 'tag')
         read_only_fields = ('id', 'verified', 'tournament', 'txn_id', 'created_at', 'updated_at')
+
     def create(self, validated_data):
         users = validated_data.pop('members')
+        admin = validated_data.pop('admin')
         team = Teams.objects.create(**validated_data)
+        team.admin = admin
+        team.save()
         for man in users:
             team.members.add(man)
+        team.members.add(admin)
         return team
 
 class APostSerializer(serializers.ModelSerializer):
