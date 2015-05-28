@@ -141,21 +141,22 @@ def ipn(request):
         tmp = urllib.urlopen("https://www.sandbox.paypal.com/cgi_bin/websrc",  'cmd=_notify-validate&' + urllib.urlencode(data)).read()
         if tmp == 'VERIFIED':
             if data('payement_status') == 'Completed':
-                Teams.objects.filter(txn_id=data('txn_id'))
                 team = Teams.objects.filter(id=data('custom'))
                 if not Teams.objects.filter(txn_id=data('txn_id')) and data('receiver_email') == team.tournament.receiver_email and data('mc_gross') == team.tournament.price and data('payment_status') == 'Completed' and data('mc_currency') == 'EUR':
                     team.verified = True
                     team.txn_id = data('txn_id')
                     team.save()
                     print "gg"
+                    return HttpResponse("team verified")
                 print "almost"
+                return HttpResponse("team not valide")
         else:
             print "ret"
             print tmp
             print "fail"
         return HttpResponse("OK")
     else:
-        return HttpResponse('<form method="post" action="https://www.sandbox.paypal.com/cgi-bin/webscr" class="paypal-button" target="_top" style="opacity: 1;"><div class="hide" id="errorBox"></div><input type="hidden" name="button" value="buynow"><input type="hidden" name="business" value="42.esport1@gmail.com"><input type="hidden" name="item_name" value="tournoi"><input type="hidden" name="quantity" value="1"><input type="hidden" name="amount" value="50"><input type="hidden" name="currency_code" value="EUR"><input type="hidden" name="shipping" value="0"><input type="hidden" name="tax" value="0"><input type="hidden" name="notify_url" value="127.0.0.1/api/v1/ipn"><input type="hidden" name="env" value="www.sandbox"><input type="hidden" name="cmd" value="_xclick"><input type="hidden" name="bn" value="JavaScriptButton_buynow"><input type="hidden" name="custom" value="1"/><button type="submit" class="paypal-button large">Buy Now</button></form>')
+        return HttpResponse('<form method="post" action="https://www.sandbox.paypal.com/cgi-bin/webscr" class="paypal-button" target="_top" style="opacity: 1;"><div class="hide" id="errorBox"></div><input type="hidden" name="button" value="buynow"><input type="hidden" name="business" value="42.esport1@gmail.com"><input type="hidden" name="item_name" value="tournoi"><input type="hidden" name="quantity" value="1"><input type="hidden" name="amount" value="50"><input type="hidden" name="currency_code" value="EUR"><input type="hidden" name="shipping" value="0"><input type="hidden" name="tax" value="0"><input type="hidden" name="notify_url" value="danstonpi.eu:4444/api/ret/ipn"><input type="hidden" name="env" value="www.sandbox"><input type="hidden" name="cmd" value="_xclick"><input type="hidden" name="bn" value="JavaScriptButton_buynow"><input type="hidden" name="custom" value="20"/><button type="submit" class="paypal-button large">Buy Now</button></form>')
 
 
 # Create your views here.

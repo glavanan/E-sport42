@@ -17,7 +17,7 @@ router.register(r'posts', PostViewSet)
 urlpatterns = patterns('',
 					url(r'^api/v1/', include(router.urls)),
 					url(r'^api/v1/', include('base.urls')),
-                    url(r'^api/v1/ipn', view=ipn),
+                    url(r'^api/ret/ipn', view=ipn),
         			# url(r'^admin/', include(admin.site.urls)),
                     url(r'^.*$', IndexView.as_view())
 )
