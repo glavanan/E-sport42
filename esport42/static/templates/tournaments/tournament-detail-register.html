@@ -1,0 +1,89 @@
+<div class="container">
+    <div class="row">
+        <div class="panel panel-default">
+            <div class="panel-heading"><h3>S'inscrire à {{ vm.tournament.name }}</h3></div>
+            <div class="panel-body">
+                <form role="form" name="registerForm" ng-submit="vm.register()">
+                    <div class="form-group"
+                         ng-class="{'has-success': registerForm.name.$valid,
+                                         'has-error': registerForm.name.$dirty && registerForm.name.$invalid}">
+                        <label for="team__name">Nom de l'équipe</label>
+                        <input type="text" class="form-control" id="team__name"
+                               name="name"
+                               ng-model="vm.form.name"
+                               ng-model-options="{ updateOn: 'default blur', debounce: { default: 500, blur: 0 } }"
+                               maxlength="50"
+                               required autofocus team-name-available="{{ vm.tournament.id }}"/>
+
+                        <div ng-if="registerForm.name.$pending">Vérification du nom d'équipe...</div>
+                        <ng-messages ng-if="registerForm.name.$dirty" for="registerForm.name.$error"
+                                     class="text-danger">
+                            <ng-message when="required">Le nom d'équipe est requis.</ng-message>
+                            <ng-message when="maxlength">Le nom d'équipe est trop long.</ng-message>
+                            <ng-message when="teamNameAvailable">Le nom d'équipe est déjà pris.</ng-message>
+                        </ng-messages>
+                    </div>
+
+                    <div class="form-group"
+                         ng-class="{'has-success': registerForm.tag.$valid,
+                                         'has-error': registerForm.tag.$dirty && registerForm.tag.$invalid}">
+                        <label for="team__tag">Tag de l'équipe</label>
+                        <input type="text" class="form-control" id="team__tag"
+                               name="tag"
+                               ng-model="vm.form.tag"
+                               ng-model-options="{ updateOn: 'default blur', debounce: { default: 500, blur: 0 } }"
+                               maxlength="5"
+                               required autofocus tag-available="{{ vm.tournament.id }}"/>
+                        <div ng-if="registerForm.tag.$pending">Vérification du tag d'équipe...</div>
+                        <ng-messages ng-if="registerForm.tag.$dirty" for="registerForm.tag.$error"
+                                     class="text-danger">
+                            <ng-message when="required">Le tag est requis pour créer l'équipe</ng-message>
+                            <ng-message when="maxlength">Le tag ne doit pas dépasser 5 caractères</ng-message>
+                            <ng-message when="tagAvailable">Le tag d'équipe est déjà pris.</ng-message>
+                        </ng-messages>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="team__tag">Composition de l'équipe</label>
+                        <p>Chercher un joueur: <input ng-model="searchedName"></p>
+                        <select multiple required class="form-control"
+                                ng-options="user as user.username for user in vm.users | filter:{$:searchedName, id:'!' + vm.me.id}" ng-model="vm.form.members">
+                        </select>
+                        <p class="text-warning">Attention, les joueurs doivent être inscrits sur le site et vous serez considéré comme le chef d'équipe !<br/>
+                        N'oubliez pas de maintenir <kbd><kbd>ctrl</kbd> / <kbd>⌘</kbd></kbd> lorsque que vous cliquez sur un joueur...</p>
+                        <table ng-if="vm.form.members" class="table table-condensed table-striped">
+                            <tr><th>#</th><th>Joueurs sélectionnés</th></tr>
+                            <tr ng-repeat="user in vm.form.members"><td>{{ $index + 1 }}</td><td>{{ user.username }}</td></tr>
+                        </table>
+                    </div>
+
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary">Enregistrer l'équipe</button>
+                    </div>
+                </form>
+                <div ng-if="vm.submitionOk">
+                    <form action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post" target="_top">
+                        <input type="hidden" name="cmd" value="_xclick">
+                        <input type="hidden" name="business" value="42.esport1@gmail.com">
+                        <input type="hidden" name="lc" value="FR">
+                        <input type="hidden" name="item_name" value="price">
+                        <input type="hidden" name="amount" value="50.00">
+                        <input type="hidden" name="currency_code" value="EUR">
+                        <input type="hidden" name="button_subtype" value="services">
+                        <input type="hidden" name="no_note" value="1">
+                        <input type="hidden" name="no_shipping" value="1">
+                        <input type="hidden" name="rm" value="1">
+                        <input type="hidden" name="return" value="127.0.0.1:8080/api/v1/ipn">
+                        <input type="hidden" name="bn" value="PP-BuyNowBF:btn_buynowCC_LG.gif:NonHosted">
+                        <input type="hidden" name="team_id" value="{{ vm.tournament.id }}">
+                        <input type="image" src="https://www.sandbox.paypal.com/fr_FR/FR/i/btn/btn_buynowCC_LG.gif"
+                               border="0" name="submit"
+                               alt="PayPal - la solution de paiement en ligne la plus simple et la plus sécurisée !">
+                        <img alt="" border="0" src="https://www.sandbox.paypal.com/fr_FR/i/scr/pixel.gif" width="1"
+                             height="1">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
