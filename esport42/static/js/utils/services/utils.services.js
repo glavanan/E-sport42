@@ -8,10 +8,41 @@
     angular
         .module('esport42.utils.services')
         .factory('_', Underscore)
-        .factory('fileReader', fileReader);
+        .factory('fileReader', fileReader)
+        .factory('Users', Users);
 
 
     FileReader.$inject = ["$q", "$log"];
+
+    Users.$inject = ['$http', '$q', '_'];
+
+    function Users($http, $q, _) {
+        var accounts_url = "api/v1/accounts";
+
+        return {
+            all: getAllUsers,
+            allUsernames: getAllUsernames
+        };
+
+        function getAllUsers() {
+            return $http.get(accounts_url)
+                .then(function (data, status) {
+                    return data.data;
+                }, function (data, status) {
+                    console.log("I failed in users services", data.data);
+                    return $q.reject(data);
+                });
+        }
+
+        function getAllUsernames() {
+            return getAllUsers()
+                .then(function (data, status, headers, config) {
+                    return _.map(data, function (user) {return user.username;});
+                }, function (data, status, headers, config) {
+                    return $q.reject(data);
+                });
+        }
+    }
 
     function Underscore() {
         return window._;
