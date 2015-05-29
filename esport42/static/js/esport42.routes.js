@@ -40,7 +40,7 @@
                 url: "/test",
                 controller: 'TestController',
                 controllerAs: 'vm',
-                templateUrl: '/static/templates/test/test-post.html'
+                templateUrl: '/static/templates/test/test-ui-select.html'
             })
             .state('tournament-detail', {
                 url: "/tournaments/:tournamentName",

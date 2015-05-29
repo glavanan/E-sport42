@@ -34,7 +34,7 @@
                                    ng-model="vm.form.tag"
                                    ng-model-options="{ updateOn: 'default blur', debounce: { default: 500, blur: 0 } }"
                                    maxlength="5"
-                                   required autofocus tag-available="{{ vm.tournament.id }}"/>
+                                   required autofocus tag-available="{{ vm.tournament.id }}" input-capitalize/>
 
                             <div ng-if="registerForm.tag.$pending">Vérification du tag d'équipe...</div>
                             <ng-messages ng-if="registerForm.tag.$dirty" for="registerForm.tag.$error"

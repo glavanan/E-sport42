@@ -11,6 +11,8 @@
             <dd>{{ vm.tournament.player_per_team }} joueurs</dd>
             <dt>Prix d'entrée</dt>
             <dd>{{ vm.tournament.price }}€ par personne</dd>
+            <dt>Type de jeu</dt>
+            <dd>{{ vm.tournament.game_name }}</dd>
         </dl>
         <div ui-view><a ui-sref="tournament-detail.register" class="btn btn-default btn-lg" role="button"> S'inscrire !</a></div>
     </div>

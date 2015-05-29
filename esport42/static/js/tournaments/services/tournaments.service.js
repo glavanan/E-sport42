@@ -28,6 +28,7 @@
             return $http.get(tournaments_url)
                 .then(function (data, status) {
                     return _.map(data.data, function (data) {
+                        transformTournament(data);
                         return (data);
                     });
                 }, function (data, status) {
@@ -40,13 +41,9 @@
             return $http.get(tournaments_url)
                 .then(function (data, status) {
                     console.log(tName);
-                    //return _.map(data.data, function (data) {
-                    //    return (data);
-                    //});
-                    return _.find(data.data, function (data) {
-                        console.log(data);
+                    return transformTournament(_.find(data.data, function (data) {
                         return data.name === tName;
-                    });
+                    }));
                 }, function (data, status) {
                     console.log("Get Tournament Error in service: ", data);
                     return $q.reject(data);
@@ -62,5 +59,16 @@
                     return $q.reject(data);
                 });
         }
+
+        function transformTournament(tournament) {
+            var tagToName = {
+                "LoL": "League of Legends",
+                "HotS": "Heroes of the Storm",
+                "CS:GO": "Counter-Strike: Global Offensive"
+            };
+            tournament.game_name = tagToName[tournament.game_name];
+            return tournament;
+        }
+
     }
 }());
