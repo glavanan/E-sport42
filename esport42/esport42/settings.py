@@ -10,6 +10,29 @@ ADMINS = (("Camille", "camwag.w@gmail.com"), ("Guillian", "guillian.lavanant@gma
 AUTH_USER_MODEL = 'base.MyUser'
 # Application definition
 
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': '/webapps/esport42/site/debug.log',
+        },
+    },
+    'loggers': {
+        'django.request': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+        'tournoi' : {
+            'handlers' : ['file'],
+            'level' : 'DEBUG',
+        },
+    },
+}
+
 INSTALLED_APPS = (
     'django.contrib.admin',
     'django.contrib.auth',
