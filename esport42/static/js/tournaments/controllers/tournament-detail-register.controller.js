@@ -23,7 +23,7 @@
         activate();
 
         function activate() {
-            vm.tournament = tournament[0];
+            vm.tournament = tournament;
             Users.all()
                 .then(function (data, status) {
                     vm.users = data;

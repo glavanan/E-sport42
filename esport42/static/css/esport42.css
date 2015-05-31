@@ -125,8 +125,21 @@ html, body {
 
 .tournament {
     background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 20px;
     width: auto;
     height: auto;
     margin-left: 20px;
     margin-right: 20px;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-bottom: 20px;
+}
+
+.tournament-title {
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+.tournament-infos {
+    margin-left: 20px;
 }

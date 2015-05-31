@@ -1,9 +1,19 @@
 <div class="tournament">
-    <h2>{{ vm.tournament.name }}</h2>
-    <h4>Infos:</h4>
-    <p>Nombre de places (Equipes): {{ vm.tournament.nbteams }}</p>
-    <p>Nombre de joueurs / equipe : {{ vm.tournament.player_per_team }}</p>
-    <p>Cout de l'entree: {{ vm.tournament.price }}</p>
-    <h2>Test</h2>
-    <div ui-view>KAKAKAKA</div>
+    <h1 class="tournament-title">{{ vm.tournament.name }}:</h1>
+
+    <div class="tournament-infos">
+        <h3>Informations:</h3>
+
+        <dl>
+            <dt>Nombre de places (équipes)</dt>
+            <dd>{{ vm.tournament.nbteams }} équipes</dd>
+            <dt>Nombre de joueurs / équipes</dt>
+            <dd>{{ vm.tournament.player_per_team }} joueurs</dd>
+            <dt>Prix d'entrée</dt>
+            <dd>{{ vm.tournament.price }}€ par personne</dd>
+            <dt>Type de jeu</dt>
+            <dd>{{ vm.tournament.game_name }}</dd>
+        </dl>
+        <div ui-view><a ui-sref="tournament-detail.register" class="btn btn-default btn-lg" role="button"> S'inscrire !</a></div>
+    </div>
 </div>

@@ -40,17 +40,15 @@
                 url: "/test",
                 controller: 'TestController',
                 controllerAs: 'vm',
-                templateUrl: '/static/templates/test/test-post.html'
+                templateUrl: '/static/templates/test/test-ui-select.html'
             })
             .state('tournament-detail', {
                 url: "/tournaments/:tournamentName",
                 templateUrl: '/static/templates/tournaments/tournament-detail.html',
                 resolve: {
-                    tService: 'Tournaments',
-                    tournament: function(tService){
-                        //return {value: 'tournament'};
-                        return tService.all();
-                    }
+                    tournament: ['Tournaments', '$stateParams', function (Tournaments, $stateParams) {
+                        return Tournaments.getTournamentByName($stateParams.tournamentName);
+                    }]
                 },
                 controller: 'TournamentDetailController',
                 controllerAs: 'vm'

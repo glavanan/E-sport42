@@ -9,6 +9,7 @@ class Tournament(models.Model):
     max_player = models.IntegerField()
     template = models.IntegerField()
     price = models.IntegerField()
+    game_name = models.CharField(max_length=40)
     receiver_email = models.CharField(max_length=256, blank=True)
     admin = models.ManyToManyField(MyUser)
 

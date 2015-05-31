@@ -23,9 +23,8 @@
         activate();
 
         function activate() {
-            vm.tournament = tournament[0];
+            vm.tournament = tournament;
             //console.log(vm.tournament);
-            vm.test = "<p>{{ vm.tournament.name }}</p>";
             //console.log(vm.test);
             //vm.test = $sce.trustAsHtml(vm.test);
             //console.log(vm.test);
