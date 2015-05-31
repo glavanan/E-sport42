@@ -46,28 +46,16 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="team__tag">Composition de l'équipe</label>
-
-                            <p>Chercher un joueur: <input ng-model="searchedName"></p>
-                            <select multiple required class="form-control"
-                                    ng-options="user as user.username for user in vm.users | filter:{$:searchedName, id:'!' + vm.me.id}"
-                                    ng-model="vm.form.members">
-                            </select>
-
-                            <p class="text-warning">Attention, les joueurs doivent être inscrits sur le site et vous
-                                serez considéré comme le chef d'équipe !<br/>
-                                N'oubliez pas de maintenir <kbd><kbd>ctrl</kbd> / <kbd>⌘</kbd></kbd> lorsque que vous
-                                cliquez sur un joueur...</p>
-                            <table ng-if="vm.form.members" class="table table-condensed table-striped">
-                                <tr>
-                                    <th>#</th>
-                                    <th>Joueurs sélectionnés</th>
-                                </tr>
-                                <tr ng-repeat="user in vm.form.members">
-                                    <td>{{ $index + 1 }}</td>
-                                    <td>{{ user.username }}</td>
-                                </tr>
-                            </table>
+                            <label for="team__players">Composition de l'équipe</label>
+                            <ui-select multiple required ng-model="vm.form.members" style="width: 300px;">
+                                <ui-select-match placeholder="Veuillez sélectionner les joueurs de l'équipe">
+                                    {{ $item.username }}</ui-select-match>
+                                <ui-select-choices repeat="user in vm.users | filter: {$: $select.search}"
+                                        ui-disable-choice="user.username == vm.me.username || vm.form.members.length > vm.tournament.max_player - 1">
+                                    <div ng-bind-html="user.username | highlight: $select.search"></div>
+                                </ui-select-choices>
+                            </ui-select>
+                            <p class="text-warning">Attention, pensez à inclure les remplacants (s'il y en a).</p>
                         </div>
 
                         <div class="form-group">

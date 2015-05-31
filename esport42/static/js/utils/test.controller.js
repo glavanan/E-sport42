@@ -11,6 +11,7 @@
         var vm = this;
 
         vm.users = null;
+        vm.selectedPeople = [];
 
         activate();
 

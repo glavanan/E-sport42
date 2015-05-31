@@ -19,11 +19,14 @@
         vm.users = [];
         vm.tournament = null;
         vm.me = null;
+        vm.form = {};
+        vm.form.members = [];
 
         activate();
 
         function activate() {
             vm.tournament = tournament;
+            console.log("Tournament:", tournament);
             Users.all()
                 .then(function (data, status) {
                     vm.users = data;
@@ -31,6 +34,7 @@
                     console.log("I failed to getting all users in the controller :(", data);
                 });
             vm.me = Authentication.getAuthenticatedAccount();
+            vm.form.members.push(vm.me);
         }
 
         function register() {
