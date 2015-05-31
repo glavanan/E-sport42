@@ -12,7 +12,10 @@ from django.views.generic import View
 from rest_framework.decorators import detail_route
 from django.core import serializers
 from rest_framework.renderers import JSONRenderer
+import logging
+from django.core.mail import send_mail
 
+logger = logging.getLogger(__name__)
 class APostViewSet(viewsets.ModelViewSet):
     queryset = APost.objects.all()
     serializer_class = APostSerializer
@@ -114,31 +117,35 @@ class TeamsViewSet(viewsets.ModelViewSet):
 
 
 
+
 @csrf_exempt
 def ipn(request):
+
     if request.method == 'POST':
-        print 'POST'
-        print request.POST
         data = dict(request.POST)
-        print 'cmd=_notify-validate&' + urllib.urlencode(data)
-        tmp = urllib.urlopen("https://www.sandbox.paypal.com/cgi_bin/websrc", 'cmd=_notify-validate&' + urllib.urlencode(data)).read()
+        for k in data:
+           data[k] = data[k][0].encode('utf-8')
+        tmp = urllib.urlopen("https://www.sandbox.paypal.com/cgi_bin/websrc",'cmd=_notify-validate&' + urllib.urlencode(data)).read()
         if tmp == 'VERIFIED':
-            if data('payement_status') == 'Completed':
-                Teams.objects.filter(txn_id=data('txn_id'))
-                team = Teams.objects.filter(id=data('custom'))
-                if not Teams.objects.filter(txn_id=data('txn_id')) and data('receiver_email') == team.tournament.receiver_email and data('mc_gross') == team.tournament.price and data('payment_status') == 'Completed' and data('mc_currency') == 'EUR':
+            if data['payment_status'] == 'Completed':
+                team = Teams.objects.get(id=data['custom'])
+                if not Teams.objects.filter(txn_id=data['txn_id']) and data['receiver_email'] == team.tournament.receiver_email and float(data['mc_gross']) == float(team.tournament.price) and data['payment_status'] == 'Completed' and data['mc_currency'] == 'EUR':
                     team.verified = True
-                    team.txn_id = data('txn_id')
+                    team.txn_id = data['txn_id']
                     team.save()
-                    print "gg"
-                print "almost"
+                    logger.debug("gg")
+                    send_mail('payement tournoi accepter', 'Nous avons bien recus votre paiement pour le tournoi.  nous vous invitons a etre present aux horraire indiquer sur la page du tournoi. Merci pour votre inscription, et bon tournoi', '42.esport@gmail.com', [team.admin.email])
+                    return HttpResponse("team verified")
+                logger.debug("almost")
+                return HttpResponse("team not valide")
         else:
-            print "ret"
+            logger.debug("ret")
             print tmp
             print "fail"
         return HttpResponse("OK")
     else:
-        return HttpResponse('<form method="post" action="https://www.sandbox.paypal.com/cgi-bin/webscr" class="paypal-button" target="_top" style="opacity: 1;"><div class="hide" id="errorBox"></div><input type="hidden" name="button" value="buynow"><input type="hidden" name="business" value="42.esport1@gmail.com"><input type="hidden" name="item_name" value="tournoi"><input type="hidden" name="quantity" value="1"><input type="hidden" name="amount" value="50"><input type="hidden" name="currency_code" value="EUR"><input type="hidden" name="shipping" value="0"><input type="hidden" name="tax" value="0"><input type="hidden" name="notify_url" value="127.0.0.1/api/v1/ipn"><input type="hidden" name="env" value="www.sandbox"><input type="hidden" name="cmd" value="_xclick"><input type="hidden" name="bn" value="JavaScriptButton_buynow"><input type="hidden" name="custom" value="1"/><button type="submit" class="paypal-button large">Buy Now</button></form>')
+        logger.debug("get")
+        return HttpResponse('<form method="post" action="https://www.sandbox.paypal.com/cgi-bin/webscr" class="paypal-button" target="_top" style="opacity: 1;"><div class="hide" id="errorBox"></div><input type="hidden" name="button" value="buynow"><input type="hidden" name="business" value="42.esport1@gmail.com"><input type="hidden" name="item_name" value="tournoi"><input type="hidden" name="quantity" value="1"><input type="hidden" name="amount" value="50"><input type="hidden" name="currency_code" value="EUR"><input type="hidden" name="shipping" value="0"><input type="hidden" name="tax" value="0"><input type="hidden" name="notify_url" value="http://danstonpi.eu/api/ret/ipn"><input type="hidden" name="cancel_url" value="http://danstonpi.eu/cancel"><input type="hidden" name="return_url" value="http://danstonpi.eu/done"><input type="hidden" name="cmd" value="_xclick"><input type="hidden" name="bn" value="JavaScriptButton_buynow"><input type="hidden" name="custom" value="26"/><button type="submit" class="paypal-button large">Buy Now</button></form>')
 
 class TeamExists(views.APIView):
     def get(self, request):
