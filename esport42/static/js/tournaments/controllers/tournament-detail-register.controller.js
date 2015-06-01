@@ -37,6 +37,7 @@
                 });
             vm.me = Authentication.getAuthenticatedAccount();
             vm.form.members.push(vm.me);
+            vm.submitionOk = true;
         }
 
         function register() {

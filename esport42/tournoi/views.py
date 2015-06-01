@@ -8,6 +8,7 @@ import urllib
 import requests
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
+from django.shortcuts import redirect
 from django.views.generic import View
 from rest_framework.decorators import detail_route
 from django.core import serializers
@@ -157,6 +158,16 @@ def ipn(request):
         logger.debug("get")
         return HttpResponse(
             '<form method="post" action="https://www.sandbox.paypal.com/cgi-bin/webscr" class="paypal-button" target="_top" style="opacity: 1;"><div class="hide" id="errorBox"></div><input type="hidden" name="button" value="buynow"><input type="hidden" name="business" value="42.esport1@gmail.com"><input type="hidden" name="item_name" value="tournoi"><input type="hidden" name="quantity" value="1"><input type="hidden" name="amount" value="50"><input type="hidden" name="currency_code" value="EUR"><input type="hidden" name="shipping" value="0"><input type="hidden" name="tax" value="0"><input type="hidden" name="notify_url" value="http://danstonpi.eu/api/ret/ipn"><input type="hidden" name="cancel_url" value="http://danstonpi.eu/cancel"><input type="hidden" name="return_url" value="http://danstonpi.eu/done"><input type="hidden" name="cmd" value="_xclick"><input type="hidden" name="bn" value="JavaScriptButton_buynow"><input type="hidden" name="custom" value="26"/><button type="submit" class="paypal-button large">Buy Now</button></form>')
+
+@csrf_exempt
+def ipn_return(request):
+    if request.method == "POST":
+        print dict(request.POST)
+        return redirect("http://danstonpi.eu/tournament/test/register-success")
+    else:
+        print "nope"
+        return redirect("http://danstonpi.eu/tournaments/test/register-success")
+
 
 
 class TeamExists(views.APIView):

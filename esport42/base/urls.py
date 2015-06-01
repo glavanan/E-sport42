@@ -1,5 +1,5 @@
 from django.conf.urls import patterns, url
-from tournoi.views import ipn, TeamExists, TagExists
+from tournoi.views import ipn, ipn_return ,TeamExists, TagExists
 import base.views as views
 
 urlpatterns = patterns('base.views',
@@ -9,6 +9,7 @@ urlpatterns = patterns('base.views',
     url(r'email-exists$', views.EmailExists.as_view(), name='eexists'),
     url(r'team-exists$', TeamExists.as_view(), name="ttexists"),
     url(r'tag-exists$', TagExists.as_view(), name="ttexists"),
-    url(r'ipn', view=ipn),
+    url(r'ipn$', view=ipn),
+    url(r'ipn-return$', view=ipn_return, name="ipn_return"),
     url(r'^.*$', views.NotFound.as_view(), name='notfound')
 )
