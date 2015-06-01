@@ -162,8 +162,8 @@ def ipn(request):
 @csrf_exempt
 def ipn_return(request):
     if request.method == "POST":
-        print dict(request.POST)
-        return redirect("http://danstonpi.eu/tournament/test/register-success")
+        logger.debug(dict(request.POST))
+        return redirect("http://danstonpi.eu/tournaments/test/register-success")
     else:
         print "nope"
         return redirect("http://danstonpi.eu/tournaments/test/register-success")
