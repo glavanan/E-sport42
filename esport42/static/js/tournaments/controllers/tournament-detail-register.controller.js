@@ -45,7 +45,6 @@
             Tournaments.submitTeam(vm.tournament.id, vm.form)
                 .then(function (data, status, headers, config) {
                     vm.submitionOk = true;
-                    console.log(data);
                     vm.teamId = data['id'];
                 }, function (data, status, headers, config) {
 
