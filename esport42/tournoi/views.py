@@ -164,14 +164,12 @@ def ipn(request):
 @csrf_exempt
 def ipn_return(request):
     if request.method == "POST":
-        data = dict(request.POST)
-        team = data.get('custom')[0]
-        logger.debug("host: " + request.get_host())
+        team = request.POST['custom']
         if team:
-            team = Teams.objects.filter(id=int(team))
-            logger.debug("team: " + team.id)
+            team = Teams.objects.get(id=int(team))
         else:
             return redirect(request.get_host())
+        print "Wiiiiiiii"
         return redirect(request.get_host() + "/tournaments/" + team.tournament.name + "/register-success?teamName=" + team.name)
     elif request.method == "GET":
         return HttpResponse(request.get_host())
