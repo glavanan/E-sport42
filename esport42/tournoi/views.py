@@ -139,7 +139,7 @@ def ipn(request):
                              'cmd=_notify-validate&' + urllib.urlencode(data)).read()
         if tmp == 'VERIFIED':
             if data['payment_status'] == 'Completed':
-                team = Teams.objects.get(id=data['custom'])
+                team = Teams.objects.get(id=int(data['custom']))
                 if not Teams.objects.filter(txn_id=data['txn_id']) and data[
                     'receiver_email'] == team.tournament.receiver_email and float(data['mc_gross']) == float(
                         team.tournament.price) and data['payment_status'] == 'Completed' and data[
