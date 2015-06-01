@@ -19,11 +19,16 @@
         vm.users = [];
         vm.tournament = null;
         vm.me = null;
+        vm.form = {};
+        vm.form.members = [];
+        vm.paypalReturnUrl = "http://danstonpi.eu";
+        vm.paypalUrl = "https://www.sandbox.paypal.com/cgi-bin/webscr";
 
         activate();
 
         function activate() {
             vm.tournament = tournament;
+            console.log("Tournament:", tournament);
             Users.all()
                 .then(function (data, status) {
                     vm.users = data;
@@ -31,20 +36,21 @@
                     console.log("I failed to getting all users in the controller :(", data);
                 });
             vm.me = Authentication.getAuthenticatedAccount();
+            vm.form.members.push(vm.me);
         }
 
         function register() {
+            vm.toSend = angular.copy(vm.form);
             vm.form.members = _.pluck(vm.form.members, 'id');
             vm.form.admin = vm.me.id;
+            console.log(vm.toSend);
             Tournaments.submitTeam(vm.tournament.id, vm.form)
                 .then(function (data, status, headers, config) {
                     vm.submitionOk = true;
+                    console.log(vm.toSend);
                 }, function (data, status, headers, config) {
 
                 });
         }
     }
 })();
-
-
-//{ Name, Tag, Members }

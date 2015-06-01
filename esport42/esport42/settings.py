@@ -10,29 +10,6 @@ ADMINS = (("Camille", "camwag.w@gmail.com"), ("Guillian", "guillian.lavanant@gma
 AUTH_USER_MODEL = 'base.MyUser'
 # Application definition
 
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'handlers': {
-        'file': {
-            'level': 'DEBUG',
-            'class': 'logging.FileHandler',
-            'filename': '/webapps/esport42/site/debug.log',
-        },
-    },
-    'loggers': {
-        'django.request': {
-            'handlers': ['file'],
-            'level': 'DEBUG',
-            'propagate': True,
-        },
-        'tournoi' : {
-            'handlers' : ['file'],
-            'level' : 'DEBUG',
-        },
-    },
-}
-
 INSTALLED_APPS = (
     'django.contrib.admin',
     'django.contrib.auth',
@@ -106,6 +83,30 @@ USE_L10N = True
 
 USE_TZ = True
 
+# Logs
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': '',
+        },
+    },
+    'loggers': {
+        'django.request': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+        'tournoi' : {
+            'handlers' : ['file'],
+            'level' : 'DEBUG',
+        },
+    },
+}
+
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
@@ -118,3 +119,5 @@ MEDIA_URL = '/'
 STATIC_URL = '/static/'
 
 from local_settings import *
+
+LOGGING['handlers']['file']['filename'] = LOGGING_FILE
