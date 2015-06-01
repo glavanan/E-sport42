@@ -162,11 +162,17 @@ def ipn(request):
 @csrf_exempt
 def ipn_return(request):
     if request.method == "POST":
-        logger.debug(dict(request.POST))
-        return redirect("http://danstonpi.eu/tournaments/test/register-success")
+        data = dict(request.POST)
+        team = data.get('custom')
+        logger.debug("host: " + request.get_host())
+        if team:
+            team = Teams.objects.filter(id=team)
+            logger.debug("team: " + team.id)
+        else:
+            return redirect(request.get_host())
+        return redirect(request.get_host() + "/tournaments/" + team.tournament.name + "/register-success?teamName=" + team.name)
     else:
-        print "nope"
-        return redirect("http://danstonpi.eu/tournaments/test/register-success")
+        return redirect(request.get_host())
 
 
 
