@@ -138,7 +138,7 @@ def ipn(request):
         tmp = urllib.urlopen("https://www.sandbox.paypal.com/cgi_bin/websrc",
                              'cmd=_notify-validate&' + urllib.urlencode(data)).read()
         if tmp == 'VERIFIED':
-            if data['payment_status'] == 'Completed':
+            if data['payment_status'] == 'Completed' and 'custom' in data.keys() and data['custom']:
                 team = Teams.objects.get(id=int(data['custom']))
                 if not Teams.objects.filter(txn_id=data['txn_id']) and data[
                     'receiver_email'] == team.tournament.receiver_email and float(data['mc_gross']) == float(
@@ -148,11 +148,12 @@ def ipn(request):
                     team.txn_id = data['txn_id']
                     team.save()
                     send_mail('Paiement tournoi recu',
-                              'Nous avons bien recus votre paiement pour le tournoi.  nous vous invitons a etre present aux horraire indiquer sur la page du tournoi. Merci pour votre inscription, et bon tournoi',
-                              '42.esport@gmail.com', [team.admin.email])
+                              'Nous avons bien recu votre paiement pour le tournoi. Nous vous invitons a etre present aux horaires indiques sur la page du tournoi. Merci pour votre inscription, et bon tournoi',
+                              'noreply@42esport.fr', [team.admin.email])
+                    logger.debug("Team registered and verified")
                     return HttpResponse("team verified")
                 logger.debug("almost")
-                return HttpResponse("team not valide")
+                return HttpResponse("team not valid")
         else:
             logger.debug("ret")
         return HttpResponse("OK")
