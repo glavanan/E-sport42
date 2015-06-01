@@ -18,8 +18,8 @@ class Phase(models.Model):
     tournament=models.ForeignKey(Tournament)
 
 class Teams(models.Model):
-    name = models.CharField(max_length=50, unique=True)
-    tag = models.CharField(max_length=5, unique=True)
+    name = models.CharField(max_length=50)
+    tag = models.CharField(max_length=5)
     members = models.ManyToManyField(MyUser)
     admin = models.ForeignKey(MyUser, related_name="team_admin", null=True, blank=True)
     txn_id = models.CharField(max_length=256, blank=True)

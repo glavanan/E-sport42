@@ -169,7 +169,7 @@ def ipn_return(request):
             team = Teams.objects.get(id=int(team))
         else:
             return redirect(request.get_host())
-        print "Wiiiiiiii"
+        logger.debug("Wiiiiiiii " + request.get_host())
         return redirect(request.get_host() + "/tournaments/" + team.tournament.name + "/register-success?teamName=" + team.name)
     elif request.method == "GET":
         return HttpResponse(request.get_host())
