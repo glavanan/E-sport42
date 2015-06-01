@@ -165,7 +165,7 @@ def ipn(request):
 def ipn_return(request):
     if request.method == "POST":
         data = dict(request.POST)
-        team = data.get('custom')
+        team = data.get('custom')[0]
         logger.debug("host: " + request.get_host())
         if team:
             team = Teams.objects.filter(id=int(team))
