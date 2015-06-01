@@ -28,7 +28,6 @@
 
         function activate() {
             vm.tournament = tournament;
-            console.log("Tournament:", tournament);
             Users.all()
                 .then(function (data, status) {
                     vm.users = data;
@@ -37,18 +36,17 @@
                 });
             vm.me = Authentication.getAuthenticatedAccount();
             vm.form.members.push(vm.me);
-            vm.submitionOk = true;
         }
 
         function register() {
             vm.toSend = angular.copy(vm.form);
             vm.form.members = _.pluck(vm.form.members, 'id');
             vm.form.admin = vm.me.id;
-            console.log(vm.toSend);
             Tournaments.submitTeam(vm.tournament.id, vm.form)
                 .then(function (data, status, headers, config) {
                     vm.submitionOk = true;
-                    console.log(vm.toSend);
+                    console.log(data);
+                    vm.teamId = data['id'];
                 }, function (data, status, headers, config) {
 
                 });

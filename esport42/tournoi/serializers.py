@@ -13,8 +13,6 @@ class TeamSerializer(serializers.ModelSerializer):
 #Hey pede tu a pas reussis a resoudre le probleme regarde si il y a pas un serializer.ququechose, cadeau :
 #http://www.django-rest-framework.org/api-guide/serializers/#writable-nested-representations
 
-
-
     class Meta:
         model = Teams
         fields = ('id', 'verified', 'name', 'members', 'tournament', 'txn_id', 'created_at', 'updated_at', 'admin', 'tag')

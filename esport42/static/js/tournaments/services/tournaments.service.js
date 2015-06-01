@@ -40,7 +40,6 @@
         function getTournamentByName(tName) {
             return $http.get(tournaments_url)
                 .then(function (data, status) {
-                    console.log(tName);
                     return transformTournament(_.find(data.data, function (data) {
                         return data.name === tName;
                     }));

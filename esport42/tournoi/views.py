@@ -114,17 +114,19 @@ class TeamsViewSet(viewsets.ModelViewSet):
         return super(TeamsViewSet, self).perform_create(serializer)
 
     def create(self, request, **kwargs):
-        serializers = self.serializer_class(data=request.data)
+        serial = self.serializer_class(data=request.data)
         tournoi = Tournament.objects.get(id=self.kwargs['parent_lookup_tournoi'])
-        if serializers.is_valid():
-            if len(serializers.validated_data['members']) >= tournoi.player_per_team - 1 and len(
-                    serializers.validated_data['members']) <= tournoi.max_player - 1:
-                serializers.save(tournament=tournoi)
-                serializers.validated_data.pop('members')
-                serializers.validated_data.pop('admin')
-                return Response(serializers.validated_data, status=status.HTTP_201_CREATED)
+        if serial.is_valid():
+            if len(serial.validated_data['members']) >= tournoi.player_per_team - 1 and len(
+                    serial.validated_data['members']) <= tournoi.max_player - 1:
+                serial.save(tournament=tournoi)
+                serial.validated_data['members'] = [user.id for user in serial.validated_data['members']]
+                serial.validated_data['admin'] = serial.validated_data['admin'].id
+                serial.validated_data['tournament'] = tournoi.id
+                serial.validated_data['id'] = serial.data['id']
+                return Response(serial.validated_data, status=status.HTTP_201_CREATED)
             return Response({"error": "Not enough member"}, status=status.HTTP_400_BAD_REQUEST)
-        return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
+        return Response(serial.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 @csrf_exempt
@@ -171,6 +173,8 @@ def ipn_return(request):
         else:
             return redirect(request.get_host())
         return redirect(request.get_host() + "/tournaments/" + team.tournament.name + "/register-success?teamName=" + team.name)
+    elif request.method == "GET":
+        return HttpResponse(request.get_host())
     else:
         return redirect(request.get_host())
 

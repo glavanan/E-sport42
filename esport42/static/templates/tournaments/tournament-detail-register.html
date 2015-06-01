@@ -97,7 +97,7 @@
                             <input type="hidden" name="return" value="{{ vm.paypalReturnUrl }}/api/v1/ipn-return">
                             <input type="hidden" name="cmd" value="_xclick">
                             <input type="hidden" name="bn" value="JavaScriptButton_buynow">
-                            <input type="hidden" name="kakaka" value="26"/>
+                            <input type="hidden" name="kakaka" value="{{ vm.teamId }}"/>
                             <button type="submit" class="paypal-button large">Buy Now</button>
                         </form>
                     </div>
