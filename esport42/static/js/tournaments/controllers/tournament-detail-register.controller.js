@@ -9,9 +9,9 @@
         .module('esport42.tournaments.controllers')
         .controller('TournamentDetailRegisterController', TournamentDetailRegisterController);
 
-    TournamentDetailRegisterController.$inject = ['tournament', 'Users', 'Tournaments', 'Authentication', '_'];
+    TournamentDetailRegisterController.$inject = ['tournament', 'Users', 'Tournaments', 'Authentication', '_', '$sce'];
 
-    function TournamentDetailRegisterController(tournament, Users, Tournaments, Authentication, _) {
+    function TournamentDetailRegisterController(tournament, Users, Tournaments, Authentication, _, $sce) {
         var vm = this;
 
         vm.register = register;
@@ -21,8 +21,8 @@
         vm.me = null;
         vm.form = {};
         vm.form.members = [];
-        vm.paypalReturnUrl = "http://danstonpi.eu";
-        vm.paypalUrl = "https://www.sandbox.paypal.com/cgi-bin/webscr";
+        vm.paypalReturnUrl = $sce.trustAsResourceUrl("http://danstonpi.eu");
+        vm.paypalUrl = $sce.trustAsResourceUrl("https://www.sandbox.paypal.com/cgi-bin/webscr");
 
         activate();
 
