@@ -16,7 +16,6 @@
             require: 'ngModel',
             link: function ($scope, elem, attrs, ngModel) {
                 ngModel.$asyncValidators.teamNameAvailable = function (teamname) {
-                    console.log($scope, attrs);
                     return $http.get('/api/v1/team-exists?tournament=' + attrs.teamNameAvailable +  '&name=' + teamname);
                 }
             }

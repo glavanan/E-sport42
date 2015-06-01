@@ -168,7 +168,7 @@ def ipn_return(request):
         team = data.get('custom')
         logger.debug("host: " + request.get_host())
         if team:
-            team = Teams.objects.filter(id=team)
+            team = Teams.objects.filter(id=int(team))
             logger.debug("team: " + team.id)
         else:
             return redirect(request.get_host())
