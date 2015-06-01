@@ -134,7 +134,7 @@ def ipn(request):
                     team.txn_id = data['txn_id']
                     team.save()
                     logger.debug("gg")
-                    send_mail('payement tournoi accepter', 'Nous avons bien recus votre paiement pour le tournoi.  nous vous invitons a etre present aux horraire indiquer sur la page du tournoi. Merci pour votre inscription, et bon tournoi', '42.esport@gmail.com', [team.admin.email])
+                    logger.debug(send_mail('payement tournoi accepter', 'Nous avons bien recus votre paiement pour le tournoi.  nous vous invitons a etre present aux horraire indiquer sur la page du tournoi. Merci pour votre inscription, et bon tournoi', 'noreply@esport.42.fr', [team.admin.email]))
                     return HttpResponse("team verified")
                 logger.debug("almost")
                 return HttpResponse("team not valide")
