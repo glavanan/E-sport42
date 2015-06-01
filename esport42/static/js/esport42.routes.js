@@ -58,6 +58,20 @@
                 templateUrl: '/static/templates/tournaments/tournament-detail-register.html',
                 controller: 'TournamentDetailRegisterController',
                 controllerAs: 'vm'
+            })
+            .state('tournament-detail.register-cancel', {
+                url: "/register-cancel",
+                templateUrl: '/static/templates/tournaments/tournament-detail-register-cancel.html',
+                controller: ['tournament', '$scope', function (tournament, $scope) {
+                    $scope.tournament = tournament;
+                }]
+            })
+            .state('tournament-detail.register-success', {
+                url: "/register-success",
+                templateUrl: '/static/templates/tournaments/tournament-detail-register-success.html',
+                controller: ['tournament', '$scope', function (tournament, $scope) {
+                    $scope.tournament = tournament;
+                }]
             });
     }
 })();

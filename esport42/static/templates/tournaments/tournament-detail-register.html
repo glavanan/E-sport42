@@ -4,7 +4,7 @@
             <div class="panel panel-default">
                 <div class="panel-heading"><h3>S'inscrire à {{ vm.tournament.name }}</h3></div>
                 <div class="panel-body">
-                    <form role="form" name="registerForm" ng-submit="vm.register()">
+                    <form ng-if="!vm.submitionOk" role="form" name="registerForm" ng-submit="vm.register()">
                         <div class="form-group"
                              ng-class="{'has-success': registerForm.name.$valid,
                                          'has-error': registerForm.name.$dirty && registerForm.name.$invalid}">
@@ -47,41 +47,59 @@
 
                         <div class="form-group">
                             <label for="team__players">Composition de l'équipe</label>
-                            <ui-select multiple required ng-model="vm.form.members" style="width: 300px;">
+                            <ui-select multiple required ng-model="vm.form.members">
                                 <ui-select-match placeholder="Veuillez sélectionner les joueurs de l'équipe">
                                     {{ $item.username }}</ui-select-match>
                                 <ui-select-choices repeat="user in vm.users | filter: {$: $select.search}"
-                                        ui-disable-choice="user.username == vm.me.username || vm.form.members.length > vm.tournament.max_player - 1">
+                                                   ui-disable-choice="user.username == vm.me.username || vm.form.members.length > vm.tournament.max_player - 1">
                                     <div ng-bind-html="user.username | highlight: $select.search"></div>
                                 </ui-select-choices>
                             </ui-select>
                             <p class="text-warning">Attention, pensez à inclure les remplacants (s'il y en a).</p>
+
+                            <p class="text-danger" ng-if="vm.form.members.length < vm.tournament.player_per_team">
+                                Il doit y avoir au minimum {{ vm.tournament.player_per_team }} joueurs dans l'équipe
+                            </p>
                         </div>
 
                         <div class="form-group">
-                            <button type="submit" class="btn btn-primary">Enregistrer l'équipe</button>
+                            <button type="submit"
+                                    ng-disabled="registerForm.$invalid || (vm.form.members.length < vm.tournament.player_per_team || vm.form.members.length > vm.tournament.max_player - 1)"
+                                    class="btn btn-primary">Enregistrer l'équipe
+                            </button>
                         </div>
                     </form>
-                    <div ng-if="vm.submitionOk">
-                        <form action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post" target="_top">
-                            <input type="hidden" name="cmd" value="_xclick">
+                    <div class="text-center" ng-if="vm.submitionOk">
+                        <div>
+                            <h2>Résumé de la réservation pour {{ vm.tournament.name }}</h2>
+                            <dl>
+                                <dt>Chef d'équipe</dt>
+                                <dd>{{ vm.me.username }} : {{ vm.me.email }}</dd>
+                                <dt>Prix a payer</dt>
+                                <dd>{{ vm.tournament.price * vm.tournament.player_per_team }}€ par personne</dd>
+                                <dd>KAKAKA</dd>
+                                <dt>Liste des joueurs</dt>
+                                <dd ng-repeat="user in vm.toSend.members">{{ user.username }} : {{ user.email }}</dd>
+                            </dl>
+                        </div>
+                        <form method="post" action="{{ vm.paypalUrl }}" class="paypal-button"
+                              target="_top" style="opacity: 1;">
+                            <div class="hide" id="errorBox"></div>
+                            <input type="hidden" name="button" value="buynow">
                             <input type="hidden" name="business" value="42.esport1@gmail.com">
-                            <input type="hidden" name="lc" value="FR">
-                            <input type="hidden" name="item_name" value="price">
-                            <input type="hidden" name="amount" value="50.00">
+                            <input type="hidden" name="item_name" value="tournoi_{{ vm.tournament.name }}">
+                            <input type="hidden" name="quantity" value="1">
+                            <input type="hidden" name="amount" value="{{ vm.tournament.price * vm.tournament.player_per_team }}">
                             <input type="hidden" name="currency_code" value="EUR">
-                            <input type="hidden" name="button_subtype" value="services">
-                            <input type="hidden" name="no_note" value="1">
-                            <input type="hidden" name="no_shipping" value="1">
-                            <input type="hidden" name="rm" value="1">
-                            <input type="hidden" name="return" value="127.0.0.1:8080/api/v1/ipn">
-                            <input type="hidden" name="bn" value="PP-BuyNowBF:btn_buynowCC_LG.gif:NonHosted">
-                            <input type="hidden" name="team_id" value="{{ vm.tournament.id }}">
-                            <input type="image" src="https://www.sandbox.paypal.com/fr_FR/FR/i/btn/btn_buynowCC_LG.gif"
-                                   border="0" name="submit"
-                                   alt="PayPal - la solution de paiement en ligne la plus simple et la plus sécurisée !">
-                            <img alt="" border="0" src="https://www.sandbox.paypal.com/fr_FR/i/scr/pixel.gif" width="1"
-                                 height="1">
+                            <input type="hidden" name="shipping" value="0">
+                            <input type="hidden" name="tax" value="0">
+                            <input type="hidden" name="notify_url" value="{{ vm.paypalReturnUrl }}/api/ret/ipn">
+                            <input type="hidden" name="cancel_url" value="{{ vm.paypalReturnUrl }}/tournament/{{ vm.tournament.name }}/register-cancel">
+                            <input type="hidden" name="return" value="{{ vm.paypalReturnUrl }}/tournament/{{ vm.tournament.name }}/register-success">
+                            <input type="hidden" name="cmd" value="_xclick">
+                            <input type="hidden" name="bn" value="JavaScriptButton_buynow">
+                            <input type="hidden" name="custom" value="26"/>
+                            <button type="submit" class="paypal-button large">Buy Now</button>
                         </form>
                     </div>
                 </div>
