@@ -15,6 +15,7 @@ from django.core import serializers
 from rest_framework.renderers import JSONRenderer
 import logging
 from django.core.mail import send_mail
+from django.core.mail import EmailMessage
 
 logger = logging.getLogger(__name__)
 
@@ -147,9 +148,13 @@ def ipn(request):
                     team.verified = True
                     team.txn_id = data['txn_id']
                     team.save()
-                    send_mail('Paiement tournoi recu',
-                              'Nous avons bien recus votre paiement pour le tournoi.  nous vous invitons a etre present aux horraire indiquer sur la page du tournoi. Merci pour votre inscription, et bon tournoi',
-                              '42.esport@gmail.com', [team.admin.email])
+                    msg = EmailMessage(subject="Inscription valide", from_email="noreply@esport.42.fr", to=[team.admin.email])
+                    msg.global_merge_vars={'NAME1' : team.admin.username, 'NAMETOURNOI' : team.tournament.name}
+                    msg.tag="base"
+                    msg.send()
+                    #send_mail('Paiement tournoi recu',
+                    #          'Nous avons bien recus votre paiement pour le tournoi.  nous vous invitons a etre present aux horraire indiquer sur la page du tournoi. Merci pour votre inscription, et bon tournoi',
+                    #          '42.esport@gmail.com', [team.admin.email])
                     return HttpResponse("team verified")
                 logger.debug("almost")
                 return HttpResponse("team not valide")
