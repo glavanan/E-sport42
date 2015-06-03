@@ -67,10 +67,12 @@
                 }]
             })
             .state('tournament-detail.register-success', {
-                url: "/register-success",
+                url: "/register-success?teamName",
                 templateUrl: '/static/templates/tournaments/tournament-detail-register-success.html',
-                controller: ['tournament', '$scope', function (tournament, $scope) {
+                controller: ['tournament', '$scope', '$stateParams', function (tournament, $scope, $stateParams) {
                     $scope.tournament = tournament;
+                    $scope.teamName = $stateParams['teamName'];
+                    console.log($scope.teamName);
                 }]
             });
     }
