@@ -1,0 +1,264 @@
+body {
+	margin: 0;
+	padding: 0;
+ }
+ 
+ #background 
+{ 
+	 left: 0px; 
+	 top: 0px; 
+	 position: relative; 
+	 margin-left: auto; 
+	 margin-right: auto; 
+	 height: 2500px;
+	 overflow: hidden;
+	 z-index:0;
+	} 
+
+   	#LECOLE42VOUSPRSENTE 
+{ 
+	 margin-left: auto;
+	margin-right:auto; 
+	 position: relative;
+	top:100px;
+        width: 529px;
+        height: 50px;
+	 z-index:1;
+} 
+ #Layer2 
+{ 
+	 margin-left: auto;
+	margin-right:auto; 
+	 position: relative;
+	 top:100px;
+	 width: 529px;
+	 height: 358px;
+	 z-index:2;
+} 
+ #participant 
+{ 
+	 margin-left: auto;
+	margin-right:auto; 
+	 position: relative;
+	top:125px; 
+	 width: 628px;
+	 height: 89px;
+	 z-index:3;
+} 
+
+ #Shape1 
+{ 
+	 margin-left: auto;
+	margin-right:auto; 
+	 position: relative;
+	top:135px; 
+	 width: 599px;
+	 height: 4px;
+	 z-index:4;
+} 
+ #dates
+{ 
+	 margin-left: auto;
+	margin-right:auto; 
+	 position: relative;
+	 top:170px;
+	 width: 444px;
+	 height: 47px;
+	 z-index:5;
+}
+
+ #cole4296boulevardbes 
+{ 
+	 margin-left: auto;
+	margin-right:auto; 
+	 position: relative; 
+	 top:185px;
+	 width: 503px;
+	 height: 23px;
+	 z-index:6;
+} 
+
+ #Shape1copy2 
+{ 
+	 margin-left: auto;
+	margin-right:auto; 
+	 position: relative;
+	 top:215px;
+	 width: 599px;
+	 height: 4px;
+	 z-index:7;
+} 
+ #CASTPARKELZOETFOUZ 
+{ 
+	 margin-left: auto;
+	margin-right:auto; 
+	 position: relative; 
+	 top: 230px; 
+	 width: 270px;
+	 height: 72px;
+	 z-index:8;
+} 
+
+ #Shape1copy3 
+{ 
+	 margin-left: auto;
+	margin-right:auto; 
+	 position: relative; 
+	 top: 245px; 
+	 width: 599px;
+	 height: 4px;
+	 z-index:9;
+} 
+ #cashprize 
+{ 
+	 margin-left: auto;
+	margin-right:auto; 
+	 position: relative; 
+	 top: 270px; 
+	 width: 208px;
+	 height: 92px;
+	 z-index:10;
+} 
+ #Rectangle1 
+{ 
+	 margin-left: auto;
+	margin-right:auto; 
+	 position: relative; 
+	 top: 310px; 
+	 width: 328px;
+	 height: 57px;
+	 z-index:11;
+} 
+ #VOUSINSCRIRE 
+{ 
+	 margin-left: auto;
+	margin-right:auto; 
+	 position: relative; 
+	 top: 270px; 
+	 width: 174px;
+	 height: 22px;
+	 z-index:12;
+} 
+
+ #Shape1copy 
+{ 
+	 margin-left: auto;
+	margin-right:auto; 
+	 position: relative; 
+	 top: 340px; 
+	 width: 599px;
+	 height: 4px;
+	 z-index:13;
+}
+
+ #Rectangle2 
+{ 
+	 margin-left: auto;
+	margin-right:auto; 
+	 position: relative; 
+	 top: 380px; 
+	 width: 602px;
+	 height: 367px;
+	 z-index:14;
+} 
+
+ #INFORMATIONSPRATIQUE 
+{ 
+	 margin-left: auto;
+	margin-right:auto; 
+	 position: relative; 
+	 top: 410px; 
+	 width: 606px;
+	 height: 46px;
+	 z-index:15;
+} 
+
+
+
+ #infospratique 
+{ 
+	 margin-left: auto;
+	margin-right:auto; 
+	 position: relative; 
+	 top: 430px; 
+	 width: 586px;
+	 height: 327px;
+	 z-index:15;
+} 
+ #Rectangle3 
+{ 
+	 margin-left: auto;
+	margin-right:auto; 
+	 position: relative; 
+	 top: 426px; 
+	 width: 588px;
+	 height: 330px;
+	 z-index:14;
+} 
+
+ #Calque3 
+{ 
+	 margin-left:289px; 
+	 position: absolute; 
+	 top: 2px; 
+	 width: 298px;
+	 height: 328px;
+	 z-index:17;
+} 
+
+
+
+
+ #Calque4 
+{ 
+	 margin-left: 20px;
+	 position: absolute; 
+	 top: 55px; 
+	 width: 166px;
+	 height: 61px;
+	 z-index:21;
+} 
+
+ #Calque5 
+{ 
+	 margin-left: 20px;
+	 position: absolute; 
+	 top: 130px; 
+	 width: 167px;
+	 height: 57px;
+	 z-index:22;
+} 
+
+ #Calque6 
+{ 
+	 margin-left: 20px;
+	 position: absolute; 
+	 top:200px; 
+	 width: 143px;
+	 height: 48px;
+	 z-index:23;
+} 
+
+ #logements 
+{ 
+	 margin-left: 20px;
+	 position: absolute; 
+	 top: 20px; 
+	 width: 154px;
+	 height: 20px;
+	 z-index:18;
+}
+  #logo
+{
+	 margin-left: auto;
+      margin-right: auto;
+	 position: relative;
+      text-align:center;
+	 top: 450px;
+	 width: 1000px;
+	 height: 200px;
+	 z-index:18;
+}
+  #image{
+      display: inline-block;
+  }
