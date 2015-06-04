@@ -24,7 +24,8 @@ INSTALLED_APPS = (
     'tournoi',
     'djangular',
     'rest_framework',
-    'jsonify'
+    'jsonify',
+    'djrill'
 )
 
 REST_FRAMEWORK = {
@@ -91,7 +92,7 @@ LOGGING = {
         'file': {
             'level': 'DEBUG',
             'class': 'logging.FileHandler',
-            'filename': '',
+            'filename': '/Volumes/Data/nfs/zfs-student-3/users/2013/glavanan/Documents/OP_esport42/debug.log',
         },
     },
     'loggers': {
@@ -101,6 +102,10 @@ LOGGING = {
             'propagate': True,
         },
         'tournoi' : {
+            'handlers' : ['file'],
+            'level' : 'DEBUG',
+        },
+                'base' : {
             'handlers' : ['file'],
             'level' : 'DEBUG',
         },
@@ -120,4 +125,3 @@ STATIC_URL = '/static/'
 
 from local_settings import *
 
-LOGGING['handlers']['file']['filename'] = LOGGING_FILE

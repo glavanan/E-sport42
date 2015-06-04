@@ -15,6 +15,7 @@
         var vm = this;
 
         vm.logout = logout;
+        vm.goHomeYoureDrunk = home;
 
         activate();
 
@@ -38,6 +39,11 @@
         function onUserChange(newValue) {
             if (newValue === false)
                 Authentication.unauthenticate();
+        }
+
+        function home() {
+                                window.location = '/home';
+
         }
     }
 })();

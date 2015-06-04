@@ -15,6 +15,10 @@ from rest_framework.response import Response
 from post.permissions import IsAdminOfSite
 from rest_framework.authtoken.models import Token
 from rest_framework.renderers import JSONRenderer
+from django.core.mail import EmailMessage
+import logging
+
+logger = logging.getLogger(__name__)
 
 class MyUserViewSet(viewsets.ModelViewSet):
     queryset = MyUser.objects.all()
@@ -43,6 +47,13 @@ class MyUserViewSet(viewsets.ModelViewSet):
         if serializer.is_valid():
             ret = MyUser.objects.create_user(**serializer.validated_data)
             Token.objects.create(user=ret)
+            print ret.email
+            print ret.username
+            print serializer.validated_data['password']
+            msg = EmailMessage(subject="Inscription valide", from_email="noreply@esport.42.fr", to=[ret.email])
+            msg.global_merge_vars={'NAME1' : ret.username, 'PASSWORD1' : serializer.validated_data['password']}
+            msg.template_name="inscription-site-1"
+            msg.send()
             return Response(serializer.validated_data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -116,5 +127,8 @@ class NotFound(views.APIView):
     def get(self, request):
         return Response({}, status=status.HTTP_404_NOT_FOUND)
 
-class IndexView(TemplateView):
+class HomeView(TemplateView):
     template_name = 'user/index.html'
+
+class IndexView(TemplateView):
+    template_name = 'user/HOTL.html'
