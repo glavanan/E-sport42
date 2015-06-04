@@ -65,7 +65,6 @@
             }
 
             var user = vm.newUser;
-            console.log(user);
             user.password = randomPassword(5);
             user.password_confirm = user.password;
             Authentication.register(user)

@@ -1,7 +1,7 @@
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
 from rest_framework_nested import routers
-from base.views import MyUserViewSet, IndexView
+from base.views import MyUserViewSet, IndexView, HomeView
 from tournoi.views import TournamentViewSet, TeamsViewSet, TPostViewSet, APostViewSet, ipn, TeamExists
 from post.views import PostViewSet
 from rest_framework_extensions.routers import ExtendedSimpleRouter
@@ -18,5 +18,7 @@ urlpatterns = patterns('',
 					url(r'^api/v1/', include(router.urls)),
 					url(r'^api/ret/ipn', view = ipn),
 					url(r'^api/v1/', include('base.urls')),
+                    url(r'^home$', HomeView.as_view()),
                     url(r'^.*$', IndexView.as_view())
+
 )

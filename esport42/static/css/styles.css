@@ -2,6 +2,17 @@ body {
 	margin: 0;
 	padding: 0;
  }
+
+html, body{
+    background-image:none;
+}
+
+.content {
+    background-color:unset;
+    padding-top: 50px;
+    height: auto !important;
+    min-height: 100%;
+}
  
  #background 
 { 
@@ -139,6 +150,17 @@ body {
 	 height: 22px;
 	 z-index:12;
 } 
+
+  #VENIRVISITEUR
+{
+	 margin-left: auto;
+	margin-right:auto;
+	 position: relative;
+	 top: 310px;
+	 width: 250px;
+	 height: 50px;
+	 z-index:11;
+}
 
  #Shape1copy 
 { 

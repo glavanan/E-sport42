@@ -13,7 +13,7 @@ class PostViewSet(viewsets.ModelViewSet):
 
     def get_permissions(self):
         return ((permissions.AllowAny(),) if self.request.method == 'GET'
-                else (permissions.IsAdminUser(), IsOwnerOrAdmin()))
+                else (IsOwnerOrAdmin(),))
 
     def perform_create(self, serializer):
         # Fais les choses proprement x_x"... https://docs.djangoproject.com/en/1.7/ref/models/fields/#django.db.models.FileField

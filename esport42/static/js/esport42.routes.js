@@ -25,7 +25,7 @@
                 templateUrl: '/static/templates/authentication/login.html'
             })
             .state('home', {
-                url: "/",
+                url: "/home",
                 controller: 'IndexController',
                 controllerAs: 'vm',
                 templateUrl: '/static/templates/layouts/index.html'

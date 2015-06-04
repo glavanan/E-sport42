@@ -150,7 +150,7 @@ def ipn(request):
                     team.save()
                     msg = EmailMessage(subject="Inscription valide", from_email="noreply@esport.42.fr", to=[team.admin.email])
                     msg.global_merge_vars={'NAME1' : team.admin.username, 'NAMETOURNOI' : team.tournament.name}
-                    msg.tag="base"
+                    msg.template_name="base"
                     msg.send()
                     return HttpResponse("team verified")
                 logger.debug("almost")
