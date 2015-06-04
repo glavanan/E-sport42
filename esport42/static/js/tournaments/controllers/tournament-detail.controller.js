@@ -28,10 +28,7 @@
         }
 
         function register () {
-            if (vm.me)
-                $state.go('tournament-detail.register');
-            else
-                console.log('go fuck yourself');
+            $state.go('tournament-detail.register');
         }
 
     }

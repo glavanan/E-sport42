@@ -20,10 +20,10 @@
         </dl>
         <div ui-view>
             <div ng-if="!vm.me">
-                <h4 ng-if="!vm.me" class="text-warning">Vous devez etre connecté pour vous inscrire !</h4>
+                <h4 ng-if="!vm.me" class="text-warning">Vous devez etre connecté pour inscrire une équipe</h4>
                 <a ui-sref="login" class="btn btn-default btn-lg" role="button"> Se connecter </a>
             </div>
-            <a ng-if="vm.me" ng-click="vm.register()" class="btn btn-default btn-lg" role="button"> S'inscrire !</a>
+            <a ng-if="vm.me" ng-click="vm.register()" class="btn btn-default btn-lg" role="button">Inscrire une équipe</a>
         </div>
     </div>
 </div>

@@ -43,6 +43,7 @@ class MyUserViewSet(viewsets.ModelViewSet):
         if serializer.is_valid():
             ret = MyUser.objects.create_user(**serializer.validated_data)
             Token.objects.create(user=ret)
+            serializer.validated_data['id'] = ret.id
             return Response(serializer.validated_data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
