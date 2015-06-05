@@ -88,8 +88,10 @@ class TournamentViewSet(viewsets.ModelViewSet):
             for val in type:
                 tmp = Phase(tmp_name=val, tournament=tournoi)
                 tmp.save()
+            serializer.validated_data.pop('admin')
+            serializer.validated_data.pop('rules')
             # Je doit retourenr le validated data - User !!!
-            return Response({}, status=status.HTTP_201_CREATED)
+            return Response(serializer.validated_data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 

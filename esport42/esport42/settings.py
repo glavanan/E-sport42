@@ -121,6 +121,8 @@ FRONT_POST = 'static/post/img'
 
 MEDIA_URL = '/'
 
+RULES_PATH = 'static/tournament/rules'
+
 STATIC_URL = '/static/'
 
 from local_settings import *
