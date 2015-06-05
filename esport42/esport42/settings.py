@@ -92,7 +92,7 @@ LOGGING = {
         'file': {
             'level': 'DEBUG',
             'class': 'logging.FileHandler',
-            'filename': '/Volumes/Data/nfs/zfs-student-3/users/2013/glavanan/Documents/OP_esport42/debug.log',
+            'filename': '/webapps/esport42/site/debug.log',
         },
     },
     'loggers': {

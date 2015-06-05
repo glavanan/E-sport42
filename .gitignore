@@ -5,5 +5,7 @@ ENV/
 *local_settings.py
 db.sqlite3
 esport42/static/img/post/
+esport42/static/post/
+esport42/retipn.log
 esport42/static/bower_components
 esport42/static/tournament/
