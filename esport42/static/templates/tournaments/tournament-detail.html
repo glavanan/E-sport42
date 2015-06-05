@@ -1,0 +1,29 @@
+<div class="tournament">
+    <h1 class="tournament-title">{{ vm.tournament.name }}:</h1>
+
+    <div class="tournament-infos">
+        <h3>Informations:</h3>
+
+        <dl>
+            <dt>Nombre de places (équipes)</dt>
+            <dd>{{ vm.tournament.nbteams }} équipes</dd>
+            <dt>Nombre de joueurs / équipes</dt>
+            <dd>{{ vm.tournament.player_per_team }} joueurs</dd>
+            <dt>Prix d'entrée</dt>
+            <dd>{{ vm.tournament.price }}€ par personne</dd>
+            <dt>Type de jeu</dt>
+            <dd>{{ vm.tournament.game_name }}</dd>
+            <dt>Lieu du tournoi</dt>
+            <dd>{{ vm.tournament.place }}</dd>
+            <dt>Reglement (A lire impérativement) <a class="btn btn-default" href="{{ vm.tournament.rules }}" target="_blank">Ici</a></dt>
+            <dd></dd>
+        </dl>
+        <div ui-view>
+            <div ng-if="!vm.me">
+                <h4 ng-if="!vm.me" class="text-warning">Vous devez etre connecté pour inscrire une équipe</h4>
+                <a ui-sref="login" class="btn btn-default btn-lg" role="button"> Se connecter </a>
+            </div>
+            <a ng-if="vm.me" ng-click="vm.register()" class="btn btn-default btn-lg" role="button">Inscrire une équipe</a>
+        </div>
+    </div>
+</div>

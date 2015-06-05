@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html ng-app="esport42">
+<head lang="en">
+    <meta charset="UTF-8">
+    <base href="/"/>
+    {% include 'user/meta_template.html' %}
+    {% include 'user/css_template.html' %}
+    {% include 'user/js_template.html' %}
+	<title>HOTL</title>
+    <style>
+    </style>
+</head>
+<body>
+
+{% load jsonify %}
+
+<nav class="navbar navbar-inverse navbar-fixed-top" ng-init="userIsAuthenticated={{ user.is_authenticated|jsonify }}"
+     ng-controller="NavbarController as vm">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" ng-click="vm.goHomeYoureDrunk()">
+                {% load staticfiles %}
+                <img alt="Brand" src="{% static 'img/site/logo_esport42.png' %}" height="100%"></a>
+        </div>
+        <div class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                        Tournois<span class="caret"></span></a>
+                    <ul class="dropdown-menu" role="menu">
+                        {% verbatim %}
+                        <li ng-repeat="tournament in vm.tournaments">
+                            <a ui-sref="tournament-detail({tournamentName: tournament.tag, tournament: tournament})">{{ tournament.name }}</a>
+                        </li>
+                        {% endverbatim %}
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                {% if user.is_admin %}
+                    <li><a ui-sref="test">Page de test</a></li>
+                    <li><a ui-sref="newPost">Créer un article</a></li>
+                {% endif %}
+                {% if not user.is_authenticated %}
+                    <li><a ui-sref="register">Créer un compte</a></li>
+                    <li><a ui-sref="login">Se connecter</a></li>
+                {% else %}
+                    <li><a ng-click="vm.logout()">Se déconnecter</a></li>
+                    <li><p class="navbar-text">Salut {{ user.username }}</p></li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div ui-view class="content">
+	<link href="../../../static/css/styles.css" rel="stylesheet" type="text/css">
+		<div id="background">
+			<div id="LECOLE42VOUSPRSENTE"><img src="/static/img/HOTL/LECOLE42VOUSPRSENTE.png" height="50"></div>
+			<div id="Layer2"><img src="/static/img/HOTL/Layer2.png"></div>
+			<div id="participant"><img src="/static/img/HOTL/160PARTICIPANTS32qui.png"></div>
+			<div id="Shape1"><img src="/static/img/HOTL/Shape1.png"></div>
+			<div id="dates"><img src="/static/img/HOTL/2728JUIN2015.png"></div>
+			<div id="cole4296boulevardbes"><img src="/static/img/HOTL/cole4296boulevardbes.png"></div>
+			<div id="Shape1copy2"><img src="/static/img/HOTL/Shape1copy2.png"></div>
+			<div id="CASTPARKELZOETFOUZ"><img src="/static/img/HOTL/CASTPARKELZOETFOUZ.png"></div>
+			<div id="Shape1copy3"><img src="/static/img/HOTL/Shape1copy3.png"></div>
+			<div id="cashprize"><img src="/static/img/HOTL/1000DECASHPRIZE.png"></div>
+			<div id="Rectangle1"><a href="tournaments/HOTL"><img src="/static/img/HOTL/Rectangle1.png"></a></div>
+			<div id="VOUSINSCRIRE"><a href="tournaments/HOTL"><img src="/static/img/HOTL/VOUSINSCRIRE.png"></a></div>
+            <div id="VENIRVISITEUR"><a href="https://docs.google.com/forms/d/1w5cxcr8eVHhbTHmU2XTI__g6kvsVqrJZTaZKSyNOBF4/viewform?c=0&w=1"><img src="/static/img/HOTL/VENIRVISITEUR.png"></a></div>
+			<div id="Shape1copy"><img src="/static/img/HOTL/Shape1copy.png"></div>
+			<div id="Rectangle2"><iframe width="560" height="315" src="https://www.youtube.com/embed/BOknjfJDG04" frameborder="0" allowfullscreen></iframe></div>
+			<div id="INFORMATIONSPRATIQUE"><img src="/static/img/HOTL/INFORMATIONSPRATIQUE.png"></div>
+			<div id="infospratique"><img src="/static/img/HOTL/infospratique.png"></div>
+			<div id="Rectangle3"><img src="/static/img/HOTL/Rectangle3.png">
+				<div id="Calque3"><img src="/static/img/HOTL/Calque3.png"></div>
+				<div id="logements"><img src="/static/img/HOTL/logements.png"></div>
+				<div id="Calque4"><img src="/static/img/HOTL/Calque4.png"></div>
+				<div id="Calque5"><img src="/static/img/HOTL/Calque5.png"></div>
+				<div id="Calque6"><img src="/static/img/HOTL/Calque6.png"></div>
+			</div>
+            <div id="logo"><img class="image" src="/static/img/HOTL/G_cyan.png" height=100px>
+                <img class="image" src="/static/img/HOTL/HeroesOne-Vertical.png" height=100px>
+                <img class="image" src="/static/img/HOTL/logoesport42zys5WMc.png" height=100px>
+                <img class="image" src="/static/img/HOTL/logo_42_papier.png" height=100px>
+                <img class="image" src="/static/img/HOTL/Heroes-of-the-Storm-Logo.png" height=100px>
+                <img class="image" src="/static/img/HOTL/logo%20gamersorigin.png" height=100px>
+
+
+            </div>
+		</div>
+    </div>
+</body>
+</html>
+

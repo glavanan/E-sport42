@@ -16,21 +16,34 @@
      ng-controller="NavbarController as vm">
     <div class="container-fluid">
         <div class="navbar-header">
-            <a class="navbar-brand" href="/">
+            <a class="navbar-brand" ui-sref="home">
                 {% load staticfiles %}
                 <img alt="Brand" src="{% static 'img/site/logo_esport42.png' %}" height="100%"></a>
         </div>
         <div class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                        Tournois<span class="caret"></span></a>
+                    <ul class="dropdown-menu" role="menu">
+                        {% verbatim %}
+                        <li ng-repeat="tournament in vm.tournaments">
+                            <a ui-sref="tournament-detail({tournamentName: tournament.tag, tournament: tournament})">{{ tournament.name }}</a>
+                        </li>
+                        {% endverbatim %}
+                    </ul>
+                </li>
+            </ul>
             <ul class="nav navbar-nav navbar-right">
                 {% if user.is_admin %}
-                    <li><a href="/test">Page de test</a></li>
-                    <li><a href="/post">Créer un article</a></li>
+                    <li><a ui-sref="test">Page de test</a></li>
+                    <li><a ui-sref="newPost">Créer un article</a></li>
                 {% endif %}
                 {% if not user.is_authenticated %}
-                    <li><a href="/register">Créer un compte</a></li>
-                    <li><a href="/login">Se connecter</a></li>
+                    <li><a ui-sref="register">Créer un compte</a></li>
+                    <li><a ui-sref="login">Se connecter</a></li>
                 {% else %}
-                    <li><a href="#" ng-click="vm.logout()">Se déconnecter</a></li>
+                    <li><a ng-click="vm.logout()">Se déconnecter</a></li>
                     <li><p class="navbar-text">Salut {{ user.username }}</p></li>
                 {% endif %}
             </ul>
@@ -39,7 +52,7 @@
 </nav>
 
 <div class="content">
-    <ng-view></ng-view>
+    <ui-view></ui-view>
 </div>
 </body>
 </html>

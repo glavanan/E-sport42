@@ -21,6 +21,27 @@
             "author": Authentication.getAuthenticatedAccount().username
         };
 
+        var upload = function (file) {
+            if (file) {
+                Upload.upload({
+                    url: 'http://localhost:8000/api/v1/posts',
+                    fields: {
+                        'title': vm.form.title,
+                        'resume': vm.form.summary,
+                        'text': vm.form.text
+                    },
+                    file: file,
+                    fileFormDataName: 'image'
+                }).progress(function (evt) {
+                    var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
+                    console.log('progress: ' + progressPercentage + '% ' + evt.config.file.name);
+                }).success(function (data, status, headers, config) {
+                    $location.path('/');
+                }).error(function (data, status, headers, config) {
+                    console.log("An error happened at the upload...: ", data);
+                });
+            }
+        };
 
         function post(form) {
             if (form.$valid && vm.form && vm.file && (vm.displayed || confirm("Avez vous bien regardé l'apercu d'abord ? :)"))) {

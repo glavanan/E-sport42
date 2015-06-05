@@ -6,6 +6,12 @@ from tournoi.models import Teams
 from tournoi.models import Tournament
 
 
+class LimitedMyUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = MyUser
+        fields = ('id', 'username', 'nationality', 'created_at')
+        read_only_fields = ('id', 'username', 'nationality', 'created_at')
+
 class MyUserSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True, required=True)
     password_confirm = serializers.CharField(write_only=True, required=True)
@@ -26,7 +32,6 @@ class MyUserSerializer(serializers.ModelSerializer):
         instance.last_name = validated_data.get('last_name', instance.last_name)
         instance.nationality = validated_data.get('nationality', instance.nationality)
         instance.save()
-
         password = validated_data.get('password', None)
         password_confirm = validated_data.get('password_confirm', None)
 
@@ -36,6 +41,11 @@ class MyUserSerializer(serializers.ModelSerializer):
 
         update_session_auth_hash(self.context.get('request'), instance)
         return instance
+
+    def exclude_fields(self, fields_to_exclude=None):
+        if isinstance(fields_to_exclude, list):
+            for f in fields_to_exclude:
+                f in self.fields.fields and self.fields.fields.pop(f) or next()
 
 class LoginSerializer(serializers.Serializer):
     username = serializers.CharField(write_only=True, required=True)

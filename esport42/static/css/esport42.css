@@ -24,7 +24,7 @@
     border-top-left-radius: 50px;
     border-bottom-left-radius: 50px;
     width: 100%;
-    word-wrap:break-word;
+    word-wrap: break-word;
 }
 
 .post-area {
@@ -68,11 +68,11 @@
 }
 
 html, body {
-  background: url("../img/site/logo_esport42.png") no-repeat center center fixed;
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-  background-size: cover;
+    background: url("../img/site/logo_esport42.png") no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
     height: 100%;
 }
 
@@ -87,23 +87,59 @@ html, body {
 }
 
 .post-thumbnail img {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  height: 100%;
-  width: auto;
-  -webkit-transform: translate(-50%, -50%);
-  -ms-transform: translate(-50%, -50%);
-  transform: translate(-50%, -50%);
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    height: 100%;
+    width: auto;
+    -webkit-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
 }
 
 .post-thumbnail img.portrait {
-  width: 100%;
-  height: auto;
+    width: 100%;
+    height: auto;
 }
 
-.color-primary-0 { color: #6C756E }	/* Main Primary color */
-.color-primary-1 { color: #749179 }
-.color-primary-2 { color: #5D695F }
-.color-primary-3 { color: #4F5E52 }
-.color-primary-4 { color: #425245 }
+.color-primary-0 {
+    color: #6C756E
+}
+
+/* Main Primary color */
+.color-primary-1 {
+    color: #749179
+}
+
+.color-primary-2 {
+    color: #5D695F
+}
+
+.color-primary-3 {
+    color: #4F5E52
+}
+
+.color-primary-4 {
+    color: #425245
+}
+
+.tournament {
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 20px;
+    width: auto;
+    height: auto;
+    margin-left: 20px;
+    margin-right: 20px;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-bottom: 20px;
+}
+
+.tournament-title {
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+.tournament-infos {
+    margin-left: 20px;
+}

@@ -101,11 +101,10 @@
                     <!-- SECOND PART OF THE FORM -->
                     <form role="form" name="registerOptional" ng-submit="vm.registerOptional(registerOptional.$valid)"
                           ng-if="vm.next">
-
                         <div class="form-group"
                              ng-class="{'has-success': registerOptional.firstName.$dirty && registerOptional.firstName.$valid,
                                     'has-error': registerOptional.firstName.$dirty && registerOptional.firstName.$invalid}">
-                            <label for="register__firstName">Prénom</label>
+                            <label for="register__firstName">Prénom<small>*</small></label>
                             <input type="text"
                                    focus-on="FocusFirstName"
                                    name="firstName"
@@ -124,7 +123,7 @@
                         <div class="form-group"
                              ng-class="{'has-success': registerOptional.lastName.$dirty && registerOptional.lastName.$valid,
                                     'has-error': registerOptional.lastName.$dirty && registerOptional.lastName.$invalid}">
-                            <label for="register__lastName">Nom de famille</label>
+                            <label for="register__lastName">Nom de famille<small>*</small></label>
                             <input type="text"
                                    name="lastName"
                                    class="form-control"
@@ -142,7 +141,7 @@
                         <div class="form-group"
                              ng-class="{'has-success': registerOptional.address.$dirty && registerOptional.address.$valid,
                                     'has-error': registerOptional.address.$dirty && registerOptional.address.$invalid}">
-                            <label for="register__address">Addresse</label>
+                            <label for="register__address">Addresse<small>*</small></label>
                             <input type="text"
                                    name="address"
                                    class="form-control"
@@ -155,7 +154,7 @@
                         <div class="form-group"
                              ng-class="{'has-success': registerOptional.nationality.$dirty && registerOptional.nationality.$valid,
                                     'has-error': registerOptional.nationality.$dirty && registerOptional.nationality.$invalid}">
-                            <label for="register__nationality">Nationalité</label>
+                            <label for="register__nationality">Nationalité<small>*</small></label>
                             <select name="country" ng-model="vm.form.nationality">
                                 <option value="FR">Country...</option>
                                 <option value="AF">Afghanistan</option>
@@ -411,7 +410,7 @@
                         <div class="form-group"
                              ng-class="{'has-success': registerOptional.birthDate.$dirty && registerOptional.birthDate.$valid,
                                     'has-error': registerOptional.birthDate.$dirty && registerOptional.birthDate.$invalid}">
-                            <label for="register__birthDate">Date de naissance</label>
+                            <label for="register__birthDate">Date de naissance<small>*</small></label>
 
                             <input type="date"
                                    name="birthDate"
@@ -424,7 +423,7 @@
                         <div class="form-group"
                              ng-class="{'has-success': registerOptional.phone.$dirty && registerOptional.phone.$valid,
                                     'has-error': registerOptional.phone.$dirty && registerOptional.phone.$invalid}">
-                            <label for="register__phone">Numéro de téléphone</label>
+                            <label for="register__phone">Numéro de téléphone<small>*</small></label>
                             <input type="text"
                                    name="phone"
                                    class="form-control"
@@ -437,6 +436,7 @@
 
 
                         <div class="form-group">
+                            <p class="text-warning">* : Donnée facultative</p>
                             <button type="submit" class="btn btn-primary">Ajoute moi ces infos-là !</button>
                             <button type="button" class="btn btn-primary" ng-click="vm.next = !vm.next">Précédent
                             </button>

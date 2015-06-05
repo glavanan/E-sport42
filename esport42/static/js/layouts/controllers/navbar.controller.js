@@ -9,17 +9,24 @@
         .module('esport42.layouts.controllers')
         .controller('NavbarController', NavbarController);
 
-    NavbarController.$inject = ['$scope', 'Authentication'];
+    NavbarController.$inject = ['$scope', 'Authentication', 'Tournaments'];
 
-    function NavbarController($scope, Authentication) {
+    function NavbarController($scope, Authentication, Tournaments) {
         var vm = this;
 
         vm.logout = logout;
+        vm.goHomeYoureDrunk = home;
 
         activate();
 
         function activate() {
             $scope.$watch(function (scope) {return scope.userIsAuthenticated}, onUserChange);
+            Tournaments.all()
+                .then(function (data, status) {
+                    vm.tournaments = data;
+                }, function (data, status) {
+                    console.log("Get tournaments failed in NavBarController: ", data);
+                })
         }
 
         function logout() {
@@ -31,6 +38,10 @@
         function onUserChange(newValue) {
             if (newValue === false)
                 Authentication.unauthenticate();
+        }
+
+        function home() {
+            window.location = '/home';
         }
     }
 })();

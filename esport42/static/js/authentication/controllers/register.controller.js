@@ -43,8 +43,10 @@
                 vm.form.birth_date = $filter('date')(vm.date, "yyyy-MM-dd");
             Authentication.register(vm.form).then(
                 function (data, status, headers, config) {
-                    window.location.href = '/';
-                    alert('Vous etes maintenant inscrits !');
+                    Authentication.login(vm.form.username, vm.form.password).then(function(d) {
+                        window.location.href = '/';
+                    });
+                    //alert('Vous etes maintenant inscrits !');
                 },
                 function (data, status, headers, config) {
                 });

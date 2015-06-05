@@ -7,10 +7,11 @@
     angular
         .module('esport42.config')
         .config(config);
-    config.$inject = ['$locationProvider'];
+    config.$inject = ['$locationProvider', 'uiSelectConfig'];
 
-    function config($locationProvider) {
+    function config($locationProvider, uiSelectConfig) {
         $locationProvider.html5Mode(true);
         $locationProvider.hashPrefix('!');
+        //uiSelectConfig.theme = 'bootstrap';
     }
 })();

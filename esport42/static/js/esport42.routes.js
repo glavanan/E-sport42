@@ -7,35 +7,73 @@
         .module('esport42.routes')
         .config(config);
 
-    config.$inject = ['$routeProvider'];
+    config.$inject = ['$stateProvider', '$urlRouterProvider'];
 
-    function config($routeProvider) {
-        $routeProvider
-            .when('/register', {
+    function config($stateProvider, $urlRouterProvider) {
+        $urlRouterProvider.otherwise('/');
+        $stateProvider
+            .state('register', {
+                url: '/register',
                 controller: 'RegisterController',
                 controllerAs: 'vm',
                 templateUrl: '/static/templates/authentication/register.html'
             })
-            .when('/login', {
+            .state('login', {
+                url: "/login",
                 controller: 'LoginController',
                 controllerAs: 'vm',
                 templateUrl: '/static/templates/authentication/login.html'
             })
-            .when('/', {
+            .state('home', {
+                url: "/home",
                 controller: 'IndexController',
                 controllerAs: 'vm',
                 templateUrl: '/static/templates/layouts/index.html'
             })
-            .when('/post', {
+            .state('newPost', {
+                url: "/post",
                 controller: 'PostController',
                 controllerAs: 'vm',
                 templateUrl: '/static/templates/post/post.html'
             })
-            .when('/test', {
+            .state('test', {
+                url: "/test",
                 controller: 'TestController',
                 controllerAs: 'vm',
-                templateUrl: '/static/templates/test/test-post.html'
+                templateUrl: '/static/templates/test/test-ui-select.html'
             })
-            .otherwise('/');
+            .state('tournament-detail', {
+                url: "/tournaments/:tournamentName",
+                templateUrl: '/static/templates/tournaments/tournament-detail.html',
+                resolve: {
+                    tournament: ['Tournaments', '$stateParams', function (Tournaments, $stateParams) {
+                        return Tournaments.getTournamentByTag($stateParams.tournamentName);
+                    }]
+                },
+                controller: 'TournamentDetailController',
+                controllerAs: 'vm'
+            })
+            .state('tournament-detail.register', {
+                url: "/register",
+                templateUrl: '/static/templates/tournaments/tournament-detail-register.html',
+                controller: 'TournamentDetailRegisterController',
+                controllerAs: 'vm'
+            })
+            .state('tournament-detail.register-cancel', {
+                url: "/register-cancel",
+                templateUrl: '/static/templates/tournaments/tournament-detail-register-cancel.html',
+                controller: ['tournament', '$scope', function (tournament, $scope) {
+                    $scope.tournament = tournament;
+                }]
+            })
+            .state('tournament-detail.register-success', {
+                url: "/register-success?teamName",
+                templateUrl: '/static/templates/tournaments/tournament-detail-register-success.html',
+                controller: ['tournament', '$scope', '$stateParams', function (tournament, $scope, $stateParams) {
+                    $scope.tournament = tournament;
+                    $scope.teamName = $stateParams['teamName'];
+                    console.log($scope.teamName);
+                }]
+            });
     }
 })();
