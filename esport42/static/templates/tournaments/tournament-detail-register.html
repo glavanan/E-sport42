@@ -127,7 +127,7 @@
 
                         <div class="form-group">
                             <label>
-                                <input type="checkbox" name="rules" required ng-model="vm.readRules">
+                                <input type="checkbox" ng-model="vm.readRules">
                                 Merci de lire le reglement <strong><a href="{{ vm.tournament.rules }}" target="_blank" ng-click="vm.readRules = true">ici</a></strong>
                             </label>
                             <div ng-if="vm.readRules === false">
