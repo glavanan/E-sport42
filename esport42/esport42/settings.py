@@ -125,3 +125,4 @@ STATIC_URL = '/static/'
 
 from local_settings import *
 
+LOGGING['handlers']['file']['filename'] = LOGGING_FILE

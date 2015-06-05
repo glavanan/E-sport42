@@ -24,7 +24,6 @@
             Tournaments.all()
                 .then(function (data, status) {
                     vm.tournaments = data;
-                    var test = window.encodeURIComponent(data[0].name);
                 }, function (data, status) {
                     console.log("Get tournaments failed in NavBarController: ", data);
                 })
@@ -42,8 +41,7 @@
         }
 
         function home() {
-                                window.location = '/home';
-
+            window.location = '/home';
         }
     }
 })();
