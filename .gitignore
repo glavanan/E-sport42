@@ -6,3 +6,4 @@ ENV/
 db.sqlite3
 esport42/static/img/post/
 esport42/static/bower_components
+esport42/static/tournament/
