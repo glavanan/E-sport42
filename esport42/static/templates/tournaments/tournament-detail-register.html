@@ -46,7 +46,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="team__players">Composition de l'équipe</label>
+                            <label for="team__players">Composition de l'équipe (Membres du site)</label>
                             <ui-select multiple required ng-model="vm.form.members">
                                 <ui-select-match placeholder="Veuillez sélectionner les joueurs de l'équipe">
                                     {{ $item.username }}</ui-select-match>
@@ -55,6 +55,69 @@
                                     <div ng-bind-html="user.username | highlight: $select.search"></div>
                                 </ui-select-choices>
                             </ui-select>
+                            <div ng-if="vm.addNewPlayer == true" ng-init="vm.newUser = {}">
+                                <div class="form-group"
+                                     ng-class="{'has-success': registerForm.newUser_email.$valid,
+                                    'has-error': registerForm.newUser_email.$dirty && registerForm.newUser_email.$invalid}">
+                                    <label for="register__email">Email</label>
+                                    <input type="email"
+                                           name="newUser_email"
+                                           class="form-control"
+                                           id="register__email"
+                                           placeholder="example@example.com"
+                                           ng-model="vm.newUser.email"
+                                           ng-pattern="vm.EMAIL_REGEXP"
+                                           ng-model-options="{ updateOn: 'default blur', debounce: { default: 500, blur: 0 } }"
+                                           ng-required="true"
+                                           email-available autofocus/>
+
+                                    <div ng-if="registerForm.newUser_email.$pending">Email en cours de vérification...
+                                    </div>
+                                    <ng-messages ng-if="registerForm.newUser_email.$dirty"
+                                                 for="registerForm.newUser_email.$error"
+                                                 class="text-danger">
+                                        <ng-message when="required">L'email est requis pour l'inscription.</ng-message>
+                                        <ng-message when="pattern">L'email entré doit etre valide.</ng-message>
+                                        <ng-message when="emailAvailable">L'email entré est déjà pris.</ng-message>
+                                    </ng-messages>
+                                </div>
+                                <div class="form-group"
+                                     ng-class="{'has-success': registerForm.newUser_username.$valid,
+                                    'has-error': registerForm.newUser_username.$dirty && registerForm.newUser_username.$invalid}">
+                                    <label for="register__username">Pseudo</label>
+                                    <input type="text"
+                                           class="form-control"
+                                           id="register__username"
+                                           placeholder="XxKittyKatdu94xX"
+                                           name="newUser_username"
+                                           ng-model="vm.newUser.username"
+                                           ng-model-options="{ updateOn: 'default blur', debounce: { default: 500, blur: 0 } }"
+                                           minlength="3"
+                                           maxlength="30"
+                                           username-available
+                                           required/>
+
+                                    <div ng-if="registerForm.newUser_username.$pending">Checking username...</div>
+                                    <ng-messages ng-if="registerForm.newUser_username.$dirty" for="registerForm.newUser_username.$error"
+                                                 class="text-danger">
+                                        <ng-message when="required">Le pseudo est requis pour l'inscription.
+                                        </ng-message>
+                                        <ng-message when="minlength">Le pseudo est trop court.</ng-message>
+                                        <ng-message when="maxlength">Le pseudo est trop long.</ng-message>
+                                        <ng-message when="usernameAvailable">Le pseudo est déjà pris.</ng-message>
+                                    </ng-messages>
+                                </div>
+
+                                <button ng-disabled="!registerForm.newUser_email.$valid || !registerForm.newUser_username.$valid" type="button"
+                                        class="btn btn-primary" ng-click="vm.addNewUser(newUser)">Ajouter ce joueur au
+                                    site
+                                </button><button class="btn btn-primary" ng-click="vm.addNewPlayer = false">Annuler</button>
+                            </div>
+
+                            <button ng-if="vm.addNewPlayer !== true" type="button" class="btn btn-primary"
+                                    ng-click="vm.addNewPlayer = true">Inscrire des joueurs non membres
+                            </button>
+
                             <p class="text-warning">Attention, pensez à inclure les remplacants (s'il y en a).</p>
 
                             <p class="text-danger" ng-if="vm.form.members.length < vm.tournament.player_per_team">
@@ -69,6 +132,8 @@
                             </button>
                         </div>
                     </form>
+
+                    <!-- Submission du formulaire ok et inscription de la team ok-->
                     <div class="text-center" ng-if="vm.submitionOk">
                         <div>
                             <h2>Résumé de la réservation pour {{ vm.tournament.name }}</h2>
@@ -88,12 +153,14 @@
                             <input type="hidden" name="business" value="42.esport1@gmail.com">
                             <input type="hidden" name="item_name" value="tournoi_{{ vm.tournament.name }}">
                             <input type="hidden" name="quantity" value="1">
-                            <input type="hidden" name="amount" value="{{ vm.tournament.price * vm.tournament.player_per_team }}">
+                            <input type="hidden" name="amount"
+                                   value="{{ vm.tournament.price * vm.tournament.player_per_team }}">
                             <input type="hidden" name="currency_code" value="EUR">
                             <input type="hidden" name="shipping" value="0">
                             <input type="hidden" name="tax" value="0">
                             <input type="hidden" name="notify_url" value="{{ vm.paypalReturnUrl }}/api/v1/ipn">
-                            <input type="hidden" name="cancel_url" value="{{ vm.paypalReturnUrl }}/tournament/{{ vm.tournament.name }}/register-cancel">
+                            <input type="hidden" name="cancel_url"
+                                   value="{{ vm.paypalReturnUrl }}/tournament/{{ vm.tournament.name }}/register-cancel">
                             <input type="hidden" name="return" value="{{ vm.paypalReturnUrl }}/api/v1/ipn-return">
                             <input type="hidden" name="cmd" value="_xclick">
                             <input type="hidden" name="bn" value="JavaScriptButton_buynow">

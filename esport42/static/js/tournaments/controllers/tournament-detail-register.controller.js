@@ -23,6 +23,8 @@
         vm.form.members = [];
         vm.paypalReturnUrl = $sce.trustAsResourceUrl("http://danstonpi.eu");
         vm.paypalUrl = $sce.trustAsResourceUrl("https://www.sandbox.paypal.com/cgi-bin/webscr");
+        vm.addNewUser = addNewUser;
+        vm.EMAIL_REGEXP = /^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/i;
 
         activate();
 
@@ -48,6 +50,30 @@
                     vm.teamId = data['id'];
                 }, function (data, status, headers, config) {
 
+                });
+        }
+
+        function addNewUser() {
+            function randomPassword(length) {
+                var chars = "abcdefghijklmnopqrstuvwxyz!@#$%^&*()-+<>ABCDEFGHIJKLMNOP1234567890";
+                var pass = "";
+                for (var x = 0; x < length; x++) {
+                    var i = Math.floor(Math.random() * chars.length);
+                    pass += chars.charAt(i);
+                }
+                return pass;
+            }
+
+            var user = vm.newUser;
+            user.password = randomPassword(5);
+            user.password_confirm = user.password;
+            Authentication.register(user)
+                .then(function (data, status, headers, config) {
+                    vm.form.members.push(data);
+                    vm.newUser = {};
+                    vm.addNewPlayer = false;
+                }, function (data, status, headers, config) {
+                    console.log(data);
                 });
         }
     }

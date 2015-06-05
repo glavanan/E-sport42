@@ -13,21 +13,22 @@
         //    //console.log($stateParams);
         //});
 
-    TournamentDetailController.$inject = ['Tournaments', 'tournament', '$sce'];
+    TournamentDetailController.$inject = ['tournament', 'Authentication', '$state'];
 
-    function TournamentDetailController(Tournaments, tournament, $sce) {
+    function TournamentDetailController(tournament, Authentication, $state) {
         var vm = this;
-
-        vm.tournaments = [];
+        vm.me = null;
+        vm.register = register;
 
         activate();
 
         function activate() {
             vm.tournament = tournament;
-            //console.log(vm.tournament);
-            //console.log(vm.test);
-            //vm.test = $sce.trustAsHtml(vm.test);
-            //console.log(vm.test);
+            vm.me = Authentication.getAuthenticatedAccount();
+        }
+
+        function register () {
+            $state.go('tournament-detail.register');
         }
 
     }

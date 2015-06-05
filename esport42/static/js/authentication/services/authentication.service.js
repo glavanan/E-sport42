@@ -33,7 +33,7 @@
         function register (data) {
             return $http.post('/api/v1/accounts', data).then(registerSuccess, registerError);
             function registerSuccess(dataReceived, status, headers, config) {
-                return Authentication.login(data.username, data.password);
+                return dataReceived.data;
             }
             function registerError(dataReceived, status, headers, config) {
                 alert('Something was wrong. It should not have happend. Contact the administrator');

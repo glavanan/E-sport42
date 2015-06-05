@@ -47,9 +47,7 @@ class MyUserViewSet(viewsets.ModelViewSet):
         if serializer.is_valid():
             ret = MyUser.objects.create_user(**serializer.validated_data)
             Token.objects.create(user=ret)
-            print ret.email
-            print ret.username
-            print serializer.validated_data['password']
+            serializer.validated_data['id'] = ret.id
             msg = EmailMessage(subject="Inscription valide", from_email="noreply@esport.42.fr", to=[ret.email])
             msg.global_merge_vars={'NAME1' : ret.username, 'PASSWORD1' : serializer.validated_data['password']}
             msg.template_name="inscription-site-1"
