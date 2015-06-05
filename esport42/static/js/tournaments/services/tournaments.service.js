@@ -18,6 +18,7 @@
         var Tournaments = {
             all: all,
             getTournamentByName: getTournamentByName,
+            getTournamentByTag: getTournamentByTag,
             submitTeam: submitTeam
             //deletePost: deletePost
         };
@@ -36,12 +37,24 @@
                     return $q.reject(data);
                 });
         }
-        
+
         function getTournamentByName(tName) {
             return $http.get(tournaments_url)
                 .then(function (data, status) {
                     return transformTournament(_.find(data.data, function (data) {
                         return data.name === tName;
+                    }));
+                }, function (data, status) {
+                    console.log("Get Tournament Error in service: ", data);
+                    return $q.reject(data);
+                });
+        }
+
+        function getTournamentByTag(tName) {
+            return $http.get(tournaments_url)
+                .then(function (data, status) {
+                    return transformTournament(_.find(data.data, function (data) {
+                        return data.tag === tName;
                     }));
                 }, function (data, status) {
                     console.log("Get Tournament Error in service: ", data);

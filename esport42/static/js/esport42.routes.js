@@ -47,7 +47,7 @@
                 templateUrl: '/static/templates/tournaments/tournament-detail.html',
                 resolve: {
                     tournament: ['Tournaments', '$stateParams', function (Tournaments, $stateParams) {
-                        return Tournaments.getTournamentByName($stateParams.tournamentName);
+                        return Tournaments.getTournamentByTag($stateParams.tournamentName);
                     }]
                 },
                 controller: 'TournamentDetailController',

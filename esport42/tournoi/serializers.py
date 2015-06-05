@@ -6,7 +6,7 @@ class TournamentSerializer(serializers.ModelSerializer):
     type = serializers.ListField(child=serializers.CharField(max_length=20), write_only=True)
     class Meta:
         model = Tournament
-        fields = ('id', 'name', 'nbteams', 'template', 'type', 'player_per_team', 'max_player', 'admin', 'price', 'receiver_email', 'game_name')
+        fields = ('id', 'name', 'nbteams', 'template', 'type', 'player_per_team', 'max_player', 'admin', 'price', 'receiver_email', 'game_name', 'tag', 'place', 'rules')
         read_only_fields = ('id',)
 
 class TeamSerializer(serializers.ModelSerializer):

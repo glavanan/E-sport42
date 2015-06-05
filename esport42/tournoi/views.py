@@ -88,8 +88,10 @@ class TournamentViewSet(viewsets.ModelViewSet):
             for val in type:
                 tmp = Phase(tmp_name=val, tournament=tournoi)
                 tmp.save()
+            serializer.validated_data.pop('admin')
+            serializer.validated_data.pop('rules')
             # Je doit retourenr le validated data - User !!!
-            return Response({}, status=status.HTTP_201_CREATED)
+            return Response(serializer.validated_data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -118,8 +120,8 @@ class TeamsViewSet(viewsets.ModelViewSet):
         serial = self.serializer_class(data=request.data)
         tournoi = Tournament.objects.get(id=self.kwargs['parent_lookup_tournoi'])
         if serial.is_valid():
-            if len(serial.validated_data['members']) >= tournoi.player_per_team - 1 and len(
-                    serial.validated_data['members']) <= tournoi.max_player - 1:
+            if len(serial.validated_data['members']) >= tournoi.player_per_team and len(
+                    serial.validated_data['members']) <= tournoi.max_player:
                 serial.save(tournament=tournoi)
                 serial.validated_data['members'] = [user.id for user in serial.validated_data['members']]
                 serial.validated_data['admin'] = serial.validated_data['admin'].id
