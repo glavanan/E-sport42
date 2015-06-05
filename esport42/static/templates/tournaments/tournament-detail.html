@@ -15,8 +15,8 @@
             <dd>{{ vm.tournament.game_name }}</dd>
             <dt>Lieu du tournoi</dt>
             <dd>{{ vm.tournament.place }}</dd>
-            <dt>Reglement</dt>
-            <dd></dd>
+            <dt>Reglement (A lire impérativement)</dt>
+            <dd><a href="{{ vm.tournament.rules }}" target="_blank">Ici</a></dd>
         </dl>
         <div ui-view>
             <div ng-if="!vm.me">

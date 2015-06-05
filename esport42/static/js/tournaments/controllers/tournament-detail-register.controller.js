@@ -41,6 +41,9 @@
         }
 
         function register() {
+            if (vm.readRules !== true) {vm.readRules = false;
+                return;
+            }
             vm.toSend = angular.copy(vm.form);
             vm.form.members = _.pluck(vm.form.members, 'id');
             vm.form.admin = vm.me.id;
