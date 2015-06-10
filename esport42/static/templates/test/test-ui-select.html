@@ -1,11 +1,1 @@
-<ui-select multiple required ng-model="vm.selectedPeople" style="width: 300px;">
-    <ui-select-match placeholder="Veuillez sélectionner les joueurs de l'équipe">{{ $item.username }}</ui-select-match>
-    <ui-select-choices repeat="person in vm.users | filter: {$: $select.search}">
-      <div ng-bind-html="person.username | highlight: $select.search"></div>
-      <small>
-        email: {{person.email}}
-        age: <span ng-bind-html="''+person.phone | highlight: $select.search"></span>
-      </small>
-    </ui-select-choices>
-</ui-select>
-<p>{{ vm.selectedPeople }}</p>
+<div class="modal">Deconnection...</div>

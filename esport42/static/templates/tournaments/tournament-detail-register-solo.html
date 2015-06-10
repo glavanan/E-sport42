@@ -1,0 +1,58 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading"><h3>S'inscrire à {{ vm.tournament.name }}</h3></div>
+                <div class="panel-body">
+                    <form ng-if="!vm.submitionOk" role="form" name="registerForm" ng-submit="vm.register()">
+
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox" ng-model="vm.readRules">
+                                Merci de lire le reglement <strong><a href="{{ vm.tournament.rules }}" target="_blank" ng-click="vm.readRules = true">ici</a></strong>
+                            </label>
+                            <div ng-if="vm.readRules === false">
+                                <p class="text-danger">Vous devez avoir lu le reglement.</p>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <button type="submit"
+                                    ng-disabled="vm.readRules !== true" class="btn btn-primary">Enregistrer l'équipe
+                            </button>
+                            
+                        </div>
+                    </form>
+
+                    <!-- Submission du formulaire ok et inscription de la team ok-->
+                    <div class="text-center" ng-if="vm.submitionOk">
+                        <div>
+                            <h2>Résumé de la réservation pour {{ vm.tournament.name }} en solo</h2>
+                        </div>
+                        <form method="post" action="{{ vm.paypalUrl }}" class="paypal-button"
+                              target="_top" style="opacity: 1;">
+                            <div class="hide" id="errorBox"></div>
+                            <input type="hidden" name="button" value="buynow">
+                            <input type="hidden" name="business" value="42.esport1@gmail.com">
+                            <input type="hidden" name="item_name" value="tournoi_{{ vm.tournament.name }}">
+                            <input type="hidden" name="quantity" value="1">
+                            <input type="hidden" name="amount"
+                                   value="{{ vm.tournament.price }}">
+                            <input type="hidden" name="currency_code" value="EUR">
+                            <input type="hidden" name="shipping" value="0">
+                            <input type="hidden" name="tax" value="0">
+                            <input type="hidden" name="notify_url" value="{{ vm.paypalReturnUrl }}/api/v1/ipn">
+                            <input type="hidden" name="cancel_url"
+                                   value="{{ vm.paypalReturnUrl }}/tournament/{{ vm.tournament.name }}/register-cancel">
+                            <input type="hidden" name="return" value="{{ vm.paypalReturnUrl }}/api/v1/ipn-return">
+                            <input type="hidden" name="cmd" value="_xclick">
+                            <input type="hidden" name="bn" value="JavaScriptButton_buynow">
+                            <input type="hidden" name="custom" value="None"/>
+                            <button type="submit" class="paypal-button large">Buy Now</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

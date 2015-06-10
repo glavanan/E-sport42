@@ -53,10 +53,16 @@
                 controller: 'TournamentDetailController',
                 controllerAs: 'vm'
             })
-            .state('tournament-detail.register', {
+            .state('tournament-detail.register-team', {
                 url: "/register",
-                templateUrl: '/static/templates/tournaments/tournament-detail-register.html',
+                templateUrl: '/static/templates/tournaments/tournament-detail-register-team.html',
                 controller: 'TournamentDetailRegisterController',
+                controllerAs: 'vm'
+            })
+            .state('tournament-detail.register-solo', {
+                url: "/register-solo",
+                templateUrl: '/static/templates/tournaments/tournament-detail-register-solo.html',
+                controller: 'TournamentDetailRegisterSoloController',
                 controllerAs: 'vm'
             })
             .state('tournament-detail.register-cancel', {
