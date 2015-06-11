@@ -13,7 +13,6 @@ router.register(r'tournoi', TournamentViewSet).register(r'article', APostViewSet
 router.register(r'tournoi', TournamentViewSet).register(r'team', TeamsViewSet, base_name="team", parents_query_lookups=['tournoi'])
 router.register(r'posts', PostViewSet)
 
-
 urlpatterns = patterns('',
 					url(r'^api/v1/', include(router.urls)),
 					url(r'^api/ret/ipn', view = ipn),
