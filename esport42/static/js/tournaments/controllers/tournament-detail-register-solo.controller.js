@@ -13,6 +13,7 @@
 
     function TournamentDetailRegisterSoloController(tournament, Authentication) {
         var vm = this;
+        vm.register = register;
         vm.me = null;
 
         activate();
@@ -22,5 +23,19 @@
             vm.me = Authentication.getAuthenticatedAccount();
         }
 
+        function register() {
+            if (vm.readRules !== true) {
+                vm.readRules = false;
+                return;
+            }
+            var user = vm.me.id;
+            Tournaments.submitTeam(vm.tournament.id, vm.form)
+                .then(function (data, status, headers, config) {
+                    vm.submitionOk = true;
+                    vm.teamId = data['id'];
+                }, function (data, status, headers, config) {
+
+                });
+        }
     }
 })();

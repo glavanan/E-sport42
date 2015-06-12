@@ -6,6 +6,8 @@
                 <div class="panel-body">
                     <form ng-if="!vm.submitionOk" role="form" name="registerForm" ng-submit="vm.register()">
 
+                        <p class="text-warning">Attention, en vous inscrivant en solo, vous serez mis en équipe avec des inconnus le jour du tournoi.</p>
+
                         <div class="form-group">
                             <label>
                                 <input type="checkbox" ng-model="vm.readRules">
@@ -18,9 +20,9 @@
 
                         <div class="form-group">
                             <button type="submit"
-                                    ng-disabled="vm.readRules !== true" class="btn btn-primary">Enregistrer l'équipe
+                                    ng-disabled="vm.readRules !== true" class="btn btn-primary">S'enregistrer
                             </button>
-                            
+                            <a class="btn btn-primary" role="button" ui-sref="tournament-detail({tournament: vm.tournament})">Retour</a>
                         </div>
                     </form>
 
