@@ -9,9 +9,9 @@
         .module('esport42.tournaments.controllers')
         .controller('TournamentDetailRegisterSoloController', TournamentDetailRegisterSoloController);
 
-    TournamentDetailRegisterSoloController.$inject = ['tournament', 'Authentication'];
+    TournamentDetailRegisterSoloController.$inject = ['tournament', 'Authentication', 'Tournaments'];
 
-    function TournamentDetailRegisterSoloController(tournament, Authentication) {
+    function TournamentDetailRegisterSoloController(tournament, Authentication, Tournaments) {
         var vm = this;
         vm.register = register;
         vm.me = null;
@@ -29,10 +29,9 @@
                 return;
             }
             var user = vm.me.id;
-            Tournaments.submitTeam(vm.tournament.id, vm.form)
+            Tournaments.submitSolo(vm.tournament.id, user)
                 .then(function (data, status, headers, config) {
                     vm.submitionOk = true;
-                    vm.teamId = data['id'];
                 }, function (data, status, headers, config) {
 
                 });

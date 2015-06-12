@@ -19,7 +19,8 @@
             all: all,
             getTournamentByName: getTournamentByName,
             getTournamentByTag: getTournamentByTag,
-            submitTeam: submitTeam
+            submitTeam: submitTeam,
+            submitSolo: submitSolo
             //deletePost: deletePost
         };
 
@@ -68,6 +69,16 @@
                     return data.data;
                 }, function (data, status, headers, config) {
                     console.log("Team submit failed in service: ", data);
+                    return $q.reject(data);
+                });
+        }
+
+        function submitSolo(tournamentId, user) {
+            return $http.post(tournaments_url + "/" + tournamentId + "/addpool", {'pool': user})
+                .then(function (data, status, headers, config) {
+                    return data.data;
+                }, function (data, status, headers, config) {
+                    console.log("Solo registration failed in service: ", data);
                     return $q.reject(data);
                 });
         }
