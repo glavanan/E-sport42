@@ -16,6 +16,9 @@ from rest_framework.renderers import JSONRenderer
 import logging
 from django.core.mail import send_mail
 from django.core.mail import EmailMessage
+from rest_framework_extensions.decorators import action
+from rest_framework import viewsets
+from rest_framework import status
 
 logger = logging.getLogger(__name__)
 
@@ -39,6 +42,7 @@ class APostViewSet(viewsets.ModelViewSet):
         instance = serializer.save(author=self.request.user,
                                    tournament=Tournament.objects.get(id=self.kwargs['parent_lookup_tournoi']))
         return super(APostViewSet, self).perform_create(serializer)
+
 
 
 class TPostViewSet(viewsets.ModelViewSet):
@@ -93,6 +97,14 @@ class TournamentViewSet(viewsets.ModelViewSet):
             # Je doit retourenr le validated data - User !!!
             return Response(serializer.validated_data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    @detail_route(methods=['post'])
+    def addpool(self, request, id=None):
+        tournament = self.get_object()
+        tournament.pool.add(request.data['pool'])
+        serializer = self.serializer_class(data=tournament)
+        serializer.is_valid()
+        return Response({'id' : id, 'add' : request.data['pool']}, status=status.HTTP_200_OK)
 
 
 class TeamsViewSet(viewsets.ModelViewSet):
