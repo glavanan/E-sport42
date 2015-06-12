@@ -101,8 +101,10 @@ class TournamentViewSet(viewsets.ModelViewSet):
     @detail_route(methods=['post'])
     def addpool(self, request, id=None):
         tournament = self.get_object()
+        print request.data
         tournament.pool.add(request.data['pool'])
         serializer = self.serializer_class(data=tournament)
+        # A quoi sert le serializer.is_valid() en dessous ?...
         serializer.is_valid()
         return Response({'id' : id, 'add' : request.data['pool']}, status=status.HTTP_200_OK)
 

@@ -20,6 +20,7 @@ class Tournament(models.Model):
     admin = models.ManyToManyField(MyUser)
     place = models.CharField(max_length=256)
     rules = models.FileField(upload_to=RULES_PATH, blank=True)
+    # C'est pas explicite pool ? :3.s
     pool = models.ManyToManyField(MyUser, blank=True, related_name="pool")
 
 
