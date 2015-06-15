@@ -6,13 +6,26 @@
                 <div class="panel-body">
                     <form ng-if="!vm.submitionOk" role="form" name="registerForm" ng-submit="vm.register()">
 
-                        <p class="text-warning">Attention, en vous inscrivant en solo, vous serez mis en équipe avec des inconnus le jour du tournoi.</p>
+                        <p class="text-warning">L'inscription en solo est là pour vous aider à former une équipe si vous
+                            ne pouvez pas le faire vous-même. Si vous en avez la possibilité, nous vous recommandons
+                            fortement de faire une inscription en équipe car celle-ci est prioritaire.</p>
+
+                        <p class="text-warning">L'inscription est payable d'avance, si nous ne vous trouvons pas d'équipe, vous serez
+                            intégralement remboursé.</p>
+
+                        <p class="text-warning">Si vous souhaitez participer avec d'autre personnes inscrites au tournoi, précisez le dans
+                            les commentaires au moment de l'inscription.</p>
+
+                        <p class="text-warning">Vous serez contactés par mail avec les infos des autres membres quand une équipe vous sera
+                            attribuée.</p>
 
                         <div class="form-group">
                             <label>
                                 <input type="checkbox" ng-model="vm.readRules">
-                                Merci de lire le reglement <strong><a href="{{ vm.tournament.rules }}" target="_blank" ng-click="vm.readRules = true">ici</a></strong>
+                                Merci de lire le reglement <strong><a href="{{ vm.tournament.rules }}" target="_blank"
+                                                                      ng-click="vm.readRules = true">ici</a></strong>
                             </label>
+
                             <div ng-if="vm.readRules === false">
                                 <p class="text-danger">Vous devez avoir lu le reglement.</p>
                             </div>
@@ -22,7 +35,8 @@
                             <button type="submit"
                                     ng-disabled="vm.readRules !== true" class="btn btn-primary">S'enregistrer
                             </button>
-                            <a class="btn btn-primary" role="button" ui-sref="tournament-detail({tournament: vm.tournament})">Retour</a>
+                            <a class="btn btn-primary" role="button"
+                               ui-sref="tournament-detail({tournament: vm.tournament})">Retour</a>
                         </div>
                     </form>
 

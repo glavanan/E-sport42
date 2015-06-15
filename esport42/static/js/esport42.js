@@ -4,7 +4,7 @@
 (function () {
     angular
         .module('esport42', [
-            'ngAnimate', 'ngSanitize', 'textAngular', 'ngFileUpload', 'ui.router', 'ui.select',
+            'ngAnimate', 'ngSanitize', 'textAngular', 'ngFileUpload', 'ui.router', 'ui.select', 'ngDialog',
             'esport42.config',
             'esport42.routes',
             'esport42.utils',
