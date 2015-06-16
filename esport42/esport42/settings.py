@@ -22,6 +22,7 @@ INSTALLED_APPS = (
     'base',
     'post',
     'tournoi',
+    'match',
     'djangular',
     'rest_framework',
     'jsonify',

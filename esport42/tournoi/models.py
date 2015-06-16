@@ -25,7 +25,7 @@ class Tournament(models.Model):
 
 
 class Phase(models.Model):
-    tmp_name = models.CharField(default='Tree', max_length=50)
+    name = models.CharField(default='Tree', max_length=50)
     tournament = models.ForeignKey(Tournament)
 
 

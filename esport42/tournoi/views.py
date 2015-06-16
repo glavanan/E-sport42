@@ -44,7 +44,6 @@ class APostViewSet(viewsets.ModelViewSet):
         return super(APostViewSet, self).perform_create(serializer)
 
 
-
 class TPostViewSet(viewsets.ModelViewSet):
     queryset = TPost.objects.all()
     serializer_class = TPostSerializer
@@ -72,23 +71,20 @@ class TournamentViewSet(viewsets.ModelViewSet):
     lookup_field = 'id'
 
     def get_permissions(self):
-        url = self.request.build_absolute_uri()
-        part = url.split('/')
-        try:
-            int(part[-2])
-            return (IsTornamentOrAdmin(), )
-        except:
-            if self.request.method == 'GET':
-                return [permissions.AllowAny(), ]
-            elif self.request.method == 'POST':
-                return [permissions.IsAuthenticated(), ]
-            return [IsAdminOfSite(), ]
+        if self.request.method == 'GET':
+            return [permissions.AllowAny(), ]
+        elif self.request.method == 'POST':
+            return [permissions.IsAuthenticated(), ]
+        return [permissions.IsAdminUser(), ]
 
     def create(self, request, **kwargs):
+        type = request.data['type']
         serializer = self.serializer_class(data=request.data)
+        print type
         if serializer.is_valid():
-            type = serializer.validated_data.pop('type')
+            serializer.validated_data.pop('type')
             tournoi = serializer.save()
+            print type
             for val in type:
                 tmp = Phase(tmp_name=val, tournament=tournoi)
                 tmp.save()
@@ -106,7 +102,7 @@ class TournamentViewSet(viewsets.ModelViewSet):
         serializer = self.serializer_class(data=tournament)
         # A quoi sert le serializer.is_valid() en dessous ?...
         serializer.is_valid()
-        return Response({'id' : id, 'add' : request.data['pool']}, status=status.HTTP_200_OK)
+        return Response({'id': id, 'add': request.data['pool']}, status=status.HTTP_200_OK)
 
 
 class TeamsViewSet(viewsets.ModelViewSet):
@@ -164,9 +160,10 @@ def ipn(request):
                     team.verified = True
                     team.txn_id = data['txn_id']
                     team.save()
-                    msg = EmailMessage(subject="Inscription valide", from_email="noreply@esport.42.fr", to=[team.admin.email])
-                    msg.global_merge_vars={'NAME1' : team.admin.username, 'NAMETOURNOI' : team.tournament.name}
-                    msg.template_name="base"
+                    msg = EmailMessage(subject="Inscription valide", from_email="noreply@esport.42.fr",
+                                       to=[team.admin.email])
+                    msg.global_merge_vars = {'NAME1': team.admin.username, 'NAMETOURNOI': team.tournament.name}
+                    msg.template_name = "base"
                     msg.send()
                     return HttpResponse("team verified")
                 logger.debug("almost")
@@ -179,6 +176,7 @@ def ipn(request):
         return HttpResponse(
             '<form method="post" action="https://www.sandbox.paypal.com/cgi-bin/webscr" class="paypal-button" target="_top" style="opacity: 1;"><div class="hide" id="errorBox"></div><input type="hidden" name="button" value="buynow"><input type="hidden" name="business" value="42.esport1@gmail.com"><input type="hidden" name="item_name" value="tournoi"><input type="hidden" name="quantity" value="1"><input type="hidden" name="amount" value="50"><input type="hidden" name="currency_code" value="EUR"><input type="hidden" name="shipping" value="0"><input type="hidden" name="tax" value="0"><input type="hidden" name="notify_url" value="http://danstonpi.eu/api/ret/ipn"><input type="hidden" name="cancel_url" value="http://danstonpi.eu/cancel"><input type="hidden" name="return_url" value="http://danstonpi.eu/done"><input type="hidden" name="cmd" value="_xclick"><input type="hidden" name="bn" value="JavaScriptButton_buynow"><input type="hidden" name="custom" value="26"/><button type="submit" class="paypal-button large">Buy Now</button></form>')
 
+
 @csrf_exempt
 def ipn_return(request):
     if request.method == "POST":
@@ -187,12 +185,12 @@ def ipn_return(request):
             team = Teams.objects.get(id=int(team))
         else:
             return redirect(request.get_host())
-        return redirect("http://" + request.META['HTTP_HOST'] + "/tournaments/" + team.tournament.name + "/register-success?teamName=" + team.name)
+        return redirect("http://" + request.META[
+            'HTTP_HOST'] + "/tournaments/" + team.tournament.name + "/register-success?teamName=" + team.name)
     elif request.method == "GET":
         return HttpResponse(request.get_host())
     else:
         return redirect(request.get_host())
-
 
 
 class TeamExists(views.APIView):
