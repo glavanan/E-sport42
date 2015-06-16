@@ -224,6 +224,7 @@ def ipn_test(request):
                 msg.global_merge_vars={'NAME1' : team.admin.username, 'NAMETOURNOI' : tournament.name}
                 msg.template_name="base"
                 ret = msg.send()
+                logger.debug("It worked in teams !!!")
                 if ret != 1:
                     logger.debug("Message non envoye a: {} pour le tournoi: {}".format(team.admin.email, tournament.name))
                 return HttpResponse("Payment accepted")
