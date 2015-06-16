@@ -141,23 +141,12 @@ class TeamsViewSet(viewsets.ModelViewSet):
 @csrf_exempt
 def ipn(request):
     admins_mails = [admin[1] for admin in ADMINS]
-    # methods_funcs = {
-    #     "Tournament": {
-    #         "Teams": tournaments_pay_team,
-    #         "MyUser": tournaments_pay_user
-    #     }
-    # }
-
-    # def tournaments_pay_user(paypal_obj):
-
 
     if request.method == 'POST':
-        # paypal_obj = paypalget()
-        # methods_funcs[paypal_obj.type_event, paypal_obj.type_payer](paypal_obj)
         data = dict(request.POST)
         for k in data:
             data[k] = data[k][0].encode('utf-8')
-        tmp = urllib.urlopen("https://www.paypal.com/cgi_bin/websrc",
+        tmp = urllib.urlopen("https://www.sandbox.paypal.com/cgi_bin/websrc",
                              'cmd=_notify-validate&' + urllib.urlencode(data)).read()
         if tmp == 'VERIFIED':
             if data['payment_status'] == 'Completed' and 'custom' in data.keys() and data['custom']:
