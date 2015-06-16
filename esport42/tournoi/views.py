@@ -290,15 +290,15 @@ def ipn_return(request):
         }
     }
     if request.method == "POST":
-        payment = request.POST['custom']
-        if payment:
+        payment_id = request.POST['custom']
+        if payment_id:
             try:
-                payment = Payments.objects.get(id=int(payment))
+                payment = Payments.objects.get(id=int(payment_id))
                 if not payment.verified:
-                    team = Teams.objects.get(id=int(payment))
+                    team = Teams.objects.get(id=int(payment_id))
                     return tournament_return_team(None, team)
             except Payments.DoesNotExist as e:
-                logger.debug("{}\nId received: {}\nPOST data: {}".format(e, payment, request.POST))
+                logger.debug("{}\nId received: {}\nPOST data: {}".format(e, payment_id, request.POST))
                 team = Teams.objects.get(id=int(payment))
                 return tournament_return_team(None, team)
                 return redirect(request.get_host())
