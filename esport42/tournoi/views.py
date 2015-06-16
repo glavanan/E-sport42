@@ -284,8 +284,9 @@ def ipn_test(request):
 
 @csrf_exempt
 def ipn_return(request):
-    def tournament_return_team(paypal_object):
-        team = Teams.objects.get(id=paypal_object.id_payer)
+    def tournament_return_team(paypal_object, team=None):
+        if not team:
+            team = Teams.objects.get(id=paypal_object.id_payer)
         return redirect("http://" + request.META['HTTP_HOST'] + "/tournaments/" + team.tournament.tag + "/register-success?teamName=" + team.name)
 
     def tournament_return_solo(paypal_object):
@@ -306,6 +307,8 @@ def ipn_return(request):
                 payment = Payments.objects.get(id=int(payment))
             except Payments.DoesNotExist as e:
                 logger.debug("{}\nId received: {}\nPOST data: {}".format(e, payment, request.POST))
+                team = Teams.objects.get(id=int(payment))
+                return tournament_return_team(None,team)
                 return redirect(request.get_host())
         else:
             return redirect(request.get_host())
