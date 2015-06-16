@@ -281,7 +281,7 @@ def ipn_return(request):
     def tournament_return_solo(paypal_object):
         tournament = Tournament.objects.get(id=paypal_object.id_event)
         user = MyUser.objects.get(id=paypal_object.id_payer)
-        return redirect("http://" + request.META['HTTP_HOST'] + "/tournaments/" + tournament.name + "/register-success?teamName=" + user.username)
+        return redirect("http://" + request.META['HTTP_HOST'] + "/tournaments/" + tournament.tag + "/register-success?teamName=" + user.username)
 
     methods_funcs = {
         "Tournament": {
