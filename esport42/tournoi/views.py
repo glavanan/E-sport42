@@ -100,16 +100,6 @@ class TournamentViewSet(viewsets.ModelViewSet):
             return Response(serializer.validated_data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    @detail_route(methods=['post'])
-    def addpool(self, request, id=None):
-        tournament = self.get_object()
-        print request.data
-        tournament.pool.add(request.data['pool'])
-        serializer = self.serializer_class(data=tournament)
-        # A quoi sert le serializer.is_valid() en dessous ?...
-        serializer.is_valid()
-        return Response({'id' : id, 'add' : request.data['pool']}, status=status.HTTP_200_OK)
-
 
 class TeamsViewSet(viewsets.ModelViewSet):
     queryset = Teams.objects.all()
@@ -198,13 +188,15 @@ def ipn(request):
 def ipn_test(request):
     admins_mails = [admin[1] for admin in ADMINS]
 
-    def tournaments_pay_user(paypal_obj, data):
+    def tournaments_pay_user(paypal_object, data):
         tournament = Tournament.objects.get(id=paypal_object.id_event)
         user = MyUser.objects.get(id=paypal_object.id_payer)
         if tournament and user:
             if float(data['mc_gross']) == float(tournament.price) and data['mc_currency'] == "EUR":
                 paypal_object.txn_id = data['txn_id']
                 paypal_object.save()
+                tournament.pool.add(user)
+                tournament.save()
                 msg = EmailMessage(subject="Inscription valide", from_email="noreply@esport.42.fr", to=[user.email], bcc=admins_mails)
                 msg.global_merge_vars={'NAME1' : user.username, 'NAMETOURNOI' : tournament.name}
                 msg.template_name="base"
@@ -216,7 +208,7 @@ def ipn_test(request):
             logger.debug("No tournament ({}) or user({})".format(tournament, user))
         return HttpResponse("There was shit in da payment")
 
-    def tournaments_pay_team(paypal_obj, data):
+    def tournaments_pay_team(paypal_object, data):
         tournament = Tournament.objects.get(id=paypal_object.id_event)
         team = Teams.objects.get(id=paypal_object.id_payer)
         if tournament and team:

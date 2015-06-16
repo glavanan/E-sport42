@@ -73,9 +73,16 @@
                 });
         }
 
-        function submitSolo(tournamentId, user) {
-            return $http.post(tournaments_url + "/" + tournamentId + "/addpool", {'pool': user})
+        function submitSolo(tournamentId, user, paymentTo) {
+            return $http.post("/api/v1/payment", {
+                "id_event": tournamentId,
+                "id_payer": user,
+                "type_event": "Tournament",
+                "type_payer": "MyUser",
+                "payment_to": paymentTo
+            })
                 .then(function (data, status, headers, config) {
+                    console.log("In submit solo: ", data.data);
                     return data.data;
                 }, function (data, status, headers, config) {
                     console.log("Solo registration failed in service: ", data);
