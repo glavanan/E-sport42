@@ -294,10 +294,13 @@ def ipn_return(request):
         if payment:
             try:
                 payment = Payments.objects.get(id=int(payment))
+                if not payment.verified:
+                    team = Teams.objects.get(id=int(payment))
+                    return tournament_return_team(None, team)
             except Payments.DoesNotExist as e:
                 logger.debug("{}\nId received: {}\nPOST data: {}".format(e, payment, request.POST))
                 team = Teams.objects.get(id=int(payment))
-                return tournament_return_team(None,team)
+                return tournament_return_team(None, team)
                 return redirect(request.get_host())
         else:
             return redirect(request.get_host())
