@@ -16,6 +16,7 @@
         vm.register = register;
         vm.me = null;
         vm.paymentTo = "42.esport1@gmail.com";
+        vm.paypalUrl = "https://www.sandbox.paypal.com/cgi-bin/webscr";
         vm.paypalReturnUrl = "http://danstonpi.eu";
 
         activate();
