@@ -194,6 +194,7 @@ def ipn_test(request):
         if tournament and user:
             if float(data['mc_gross']) == float(tournament.price) and data['mc_currency'] == "EUR":
                 paypal_object.txn_id = data['txn_id']
+                paypal_object.verified = True
                 paypal_object.save()
                 tournament.pool.add(user)
                 tournament.save()
@@ -215,7 +216,9 @@ def ipn_test(request):
             if float(data['mc_gross']) == float(tournament.price) and data['mc_currency'] == "EUR":
                 paypal_object.txn_id = data['txn_id']
                 team.txn_id = data['txn_id']
+                paypal_object.verified = True
                 paypal_object.save()
+                team.save()
                 msg = EmailMessage(subject="Inscription valide", from_email="noreply@esport.42.fr", to=[team.admin.email], bcc=admins_mails)
                 msg.global_merge_vars={'NAME1' : team.admin.username, 'NAMETOURNOI' : tournament.name}
                 msg.template_name="base"
