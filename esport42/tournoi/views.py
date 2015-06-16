@@ -210,8 +210,8 @@ def ipn_test(request):
                 pp_obj.save()
                 team.save()
                 msg = EmailMessage(subject="Inscription valide", from_email="noreply@esport.42.fr", to=[team.admin.email], bcc=admins_mails)
-                msg.global_merge_vars={'NAME1' : team.admin.username, 'NAMETOURNOI' : tournament.name}
-                msg.template_name="base"
+                msg.global_merge_vars= {'NAME1': team.admin.username, 'NAMETOURNOI': tournament.name}
+                msg.template_name= "base"
                 ret = msg.send()
                 logger.debug("It worked in teams !!!")
                 if ret != 1:
@@ -296,13 +296,14 @@ def ipn_return(request):
             try:
                 payment = Payments.objects.get(id=int(payment_id))
                 if not payment.verified:
-                    team = Teams.objects.get(id=int(payment_id))
-                    return tournament_return_team(None, team)
+                    team = Teams.objects.filter(id=int(payment_id))
+                    if not team:
+                        return tournament_return_solo(payment)
+                    return tournament_return_team(None, team[0])
             except Payments.DoesNotExist as e:
                 logger.debug("{}\nId received: {}\nPOST data: {}".format(e, payment_id, request.POST))
-                team = Teams.objects.get(id=int(payment))
+                team = Teams.objects.get(id=int(payment_id))
                 return tournament_return_team(None, team)
-                return redirect(request.get_host())
         else:
             return redirect(request.get_host())
         return methods_funcs[payment.type_event][payment.type_payer](payment)
