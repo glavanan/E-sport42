@@ -202,6 +202,7 @@ def ipn_test(request):
                 msg.global_merge_vars={'NAME1' : user.username, 'NAMETOURNOI' : tournament.name}
                 msg.template_name="base"
                 ret = msg.send()
+                logger.debug("It worked !!!")
                 if ret != 1:
                     logger.debug("Message non envoye a: {} pour le tournoi: {}".format(user.email, tournament.name))
                 return HttpResponse("Payment accepted")
@@ -282,13 +283,32 @@ def ipn_test(request):
 
 @csrf_exempt
 def ipn_return(request):
+    def tournament_return_team(paypal_object):
+        team = Teams.objects.get(id=paypal_object.id_payer)
+        return redirect("http://" + request.META['HTTP_HOST'] + "/tournaments/" + team.tournament.name + "/register-success?teamName=" + team.name)
+
+    def tournament_return_solo(paypal_object):
+        tournament = Tournament.objects.get(id=paypal_object.id_event)
+        user = MyUser.objects.get(id=paypal_object.id_payer)
+        return redirect("http://" + request.META['HTTP_HOST'] + "/tournaments/" + tournament.name + "/register-success?teamName=" + user.username)
+
+    methods_funcs = {
+        "Tournament": {
+            "Teams": tournament_return_team,
+            "MyUser": tournament_return_solo
+        }
+    }
     if request.method == "POST":
-        team = request.POST['custom']
-        if team:
-            team = Teams.objects.get(id=int(team))
+        payment = request.POST['custom']
+        if payment:
+            try:
+                payment = Payments.objects.get(id=int(payment))
+            except Payments.DoesNotExist as e:
+                logger.debug("{}\nId received: {}\nPOST data: {}".format(e, payment, request.POST))
+                return redirect(request.get_host())
         else:
             return redirect(request.get_host())
-        return redirect("http://" + request.META['HTTP_HOST'] + "/tournaments/" + team.tournament.name + "/register-success?teamName=" + team.name)
+        return methods_funcs[payment.type_event][payment.type_payer](payment)
     elif request.method == "GET":
         return HttpResponse(request.get_host())
     else:
