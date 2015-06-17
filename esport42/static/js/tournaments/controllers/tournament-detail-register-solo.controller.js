@@ -9,12 +9,15 @@
         .module('esport42.tournaments.controllers')
         .controller('TournamentDetailRegisterSoloController', TournamentDetailRegisterSoloController);
 
-    TournamentDetailRegisterSoloController.$inject = ['tournament', 'Authentication', 'Tournaments'];
+    TournamentDetailRegisterSoloController.$inject = ['tournament', 'Authentication', 'Tournaments', '$sce'];
 
-    function TournamentDetailRegisterSoloController(tournament, Authentication, Tournaments) {
+    function TournamentDetailRegisterSoloController(tournament, Authentication, Tournaments, $sce) {
         var vm = this;
         vm.register = register;
         vm.me = null;
+        vm.paymentTo = "42.esport1@gmail.com";
+        vm.paypalUrl = $sce.trustAsResourceUrl("https://www.sandbox.paypal.com/cgi-bin/webscr");
+        vm.paypalReturnUrl = $sce.trustAsResourceUrl("http://danstonpi.eu");
 
         activate();
 
@@ -29,8 +32,9 @@
                 return;
             }
             var user = vm.me.id;
-            Tournaments.submitSolo(vm.tournament.id, user)
+            Tournaments.submitSolo(vm.tournament.id, user, vm.paymentTo)
                 .then(function (data, status, headers, config) {
+                    vm.customValue = data.id;
                     vm.submitionOk = true;
                 }, function (data, status, headers, config) {
 

@@ -2,7 +2,7 @@ from django.conf.urls import patterns, include, url
 from django.contrib import admin
 from rest_framework_nested import routers
 from base.views import MyUserViewSet, IndexView, HomeView
-from tournoi.views import TournamentViewSet, TeamsViewSet, TPostViewSet, APostViewSet, ipn, TeamExists
+from tournoi.views import TournamentViewSet, TeamsViewSet, TPostViewSet, APostViewSet, ipn, ipn_test
 from post.views import PostViewSet
 from match.views import MatchViewSet
 from rest_framework_extensions.routers import ExtendedSimpleRouter
