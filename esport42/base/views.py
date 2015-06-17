@@ -6,8 +6,9 @@ from django.forms import ModelForm
 from django import forms
 from django.contrib.auth import authenticate, login, logout
 from base.forms import UserCreationForm
-from base.models import MyUser
-from base.serializers import MyUserSerializer, LoginSerializer, LimitedMyUserSerializer
+from base.models import MyUser, Payments
+from tournoi.models import Teams, Tournament
+from base.serializers import MyUserSerializer, LoginSerializer, LimitedMyUserSerializer, PaymentsSerializer
 from tournoi.serializers import TournamentSerializer, TeamSerializer
 from base.permissions import IsAccountOwner, IsOwnerOrAdmin
 from rest_framework import permissions, viewsets, status, views, permissions
@@ -17,7 +18,7 @@ from rest_framework.authtoken.models import Token
 from rest_framework.renderers import JSONRenderer
 from django.core.mail import EmailMessage
 import logging
-
+from rest_framework.generics import CreateAPIView
 logger = logging.getLogger(__name__)
 
 class MyUserViewSet(viewsets.ModelViewSet):
@@ -98,6 +99,14 @@ class LoginView(views.APIView):
         data = dict(data)
         data['token'] = token.key
         return Response(data)
+
+class PaymentView(CreateAPIView):
+    permission_classes = (permissions.IsAuthenticated,)
+    queryset = Payments.objects.all()
+    serializer_class = PaymentsSerializer
+
+    # def perform_create(self, serializer):
+    #     serializer.g
 
 class LogoutView(views.APIView):
     permission_classes = (permissions.IsAuthenticated,)

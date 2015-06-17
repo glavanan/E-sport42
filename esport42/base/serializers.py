@@ -1,9 +1,10 @@
 from django.contrib.auth import update_session_auth_hash, authenticate
 
 from rest_framework import serializers
-from base.models import MyUser
-from tournoi.models import Teams
-from tournoi.models import Tournament
+from base.models import MyUser, Payments
+from tournoi.models import Teams, Tournament
+import logging
+logger = logging.getLogger(__name__)
 
 
 class LimitedMyUserSerializer(serializers.ModelSerializer):
@@ -61,3 +62,39 @@ class LoginSerializer(serializers.Serializer):
         if not user:
             raise serializers.ValidationError("Password don't match with this username")
         return attrs
+
+class PaymentsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Payments
+
+    def validate(self, data):
+        def verify_team(payer):
+            if not Teams.objects.filter(id=payer):
+                raise serializers.ValidationError({"id_payer": "Team does not exists"})
+        def verify_user(payer):
+            if not MyUser.objects.filter(id=payer):
+                raise serializers.ValidationError({"id_payer": "User does not exists"})
+
+        def verify_tournament(data):
+            if not Tournament.objects.filter(id=data["id_event"]):
+                raise serializers.ValidationError({"id_event": "Tournament does not exists"})
+            lookup = {
+                "Teams": verify_team,
+                "MyUser": verify_user
+            }
+            try:
+                lookup[data["type_payer"]](data["id_payer"])
+            except KeyError as e:
+                logger.debug("Bad keys for validation: {} and {} for data: {}".format(data["type_event"], data["type_payer"], data))
+                raise serializers.ValidationError({"type_payer" :"The type of of payer was incorrect"})
+
+        lookup = {
+            "Tournament": verify_tournament
+        }
+        try:
+            lookup[data["type_event"]](data)
+        except KeyError as e:
+            logger.debug("Bad keys for validation: {} and {} for data: {}".format(data["type_event"], data["type_payer"], data))
+            raise serializers.ValidationError({"type_event": "The type of event was incorrect"})
+        return data
+

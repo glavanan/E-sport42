@@ -19,7 +19,8 @@
             all: all,
             getTournamentByName: getTournamentByName,
             getTournamentByTag: getTournamentByTag,
-            submitTeam: submitTeam
+            submitTeam: submitTeam,
+            submitSolo: submitSolo
             //deletePost: deletePost
         };
 
@@ -68,6 +69,23 @@
                     return data.data;
                 }, function (data, status, headers, config) {
                     console.log("Team submit failed in service: ", data);
+                    return $q.reject(data);
+                });
+        }
+
+        function submitSolo(tournamentId, user, paymentTo) {
+            return $http.post("/api/v1/payment", {
+                "id_event": tournamentId,
+                "id_payer": user,
+                "type_event": "Tournament",
+                "type_payer": "MyUser",
+                "payment_to": paymentTo
+            })
+                .then(function (data, status, headers, config) {
+                    console.log("In submit solo: ", data.data);
+                    return data.data;
+                }, function (data, status, headers, config) {
+                    console.log("Solo registration failed in service: ", data);
                     return $q.reject(data);
                 });
         }

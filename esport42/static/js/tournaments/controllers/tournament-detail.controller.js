@@ -18,17 +18,12 @@
     function TournamentDetailController(tournament, Authentication, $state) {
         var vm = this;
         vm.me = null;
-        vm.register = register;
 
         activate();
 
         function activate() {
             vm.tournament = tournament;
             vm.me = Authentication.getAuthenticatedAccount();
-        }
-
-        function register () {
-            $state.go('tournament-detail.register');
         }
 
     }

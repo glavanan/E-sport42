@@ -9,6 +9,10 @@ class Tournament(models.Model):
     nbteams = models.IntegerField()
     player_per_team = models.IntegerField()
     max_player = models.IntegerField()
+    start_reg = models.DateField()
+    start_tou = models.DateField()
+    end_reg = models.DateField()
+    end_tou = models.DateField()
     template = models.IntegerField()
     price = models.IntegerField()
     game_name = models.CharField(max_length=40)
@@ -16,10 +20,12 @@ class Tournament(models.Model):
     admin = models.ManyToManyField(MyUser)
     place = models.CharField(max_length=256)
     rules = models.FileField(upload_to=RULES_PATH, blank=True)
+    # C'est pas explicite pool ? :3.s
+    pool = models.ManyToManyField(MyUser, blank=True, related_name="pool")
 
 
 class Phase(models.Model):
-    tmp_name = models.CharField(default='Tree', max_length=50)
+    name = models.CharField(default='Tree', max_length=50)
     tournament = models.ForeignKey(Tournament)
 
 
