@@ -41,8 +41,12 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('name', models.CharField(max_length=50)),
+                ('tag', models.CharField(max_length=5)),
                 ('txn_id', models.CharField(max_length=256, blank=True)),
                 ('verified', models.BooleanField(default=False)),
+                ('created_at', models.DateTimeField(auto_now_add=True)),
+                ('updated_at', models.DateTimeField(auto_now=True)),
+                ('admin', models.ForeignKey(related_name='team_admin', blank=True, to=settings.AUTH_USER_MODEL, null=True)),
                 ('members', models.ManyToManyField(to=settings.AUTH_USER_MODEL)),
             ],
             options={
@@ -53,12 +57,17 @@ class Migration(migrations.Migration):
             name='Tournament',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('name', models.CharField(max_length=50)),
+                ('name', models.CharField(unique=True, max_length=50)),
+                ('tag', models.CharField(unique=True, max_length=5)),
                 ('nbteams', models.IntegerField()),
                 ('player_per_team', models.IntegerField()),
+                ('max_player', models.IntegerField()),
                 ('template', models.IntegerField()),
                 ('price', models.IntegerField()),
+                ('game_name', models.CharField(max_length=40)),
                 ('receiver_email', models.CharField(max_length=256, blank=True)),
+                ('place', models.CharField(max_length=256)),
+                ('rules', models.FileField(upload_to=b'static/tournament/rules', blank=True)),
                 ('admin', models.ManyToManyField(to=settings.AUTH_USER_MODEL)),
             ],
             options={
