@@ -103,6 +103,7 @@ LOGGING = {
             'level': 'DEBUG',
             'class': 'logging.FileHandler',
             'filename': '/webapps/esport42/site/debug.log',
+            'formatter': 'verbose'
         },
     },
     'loggers': {

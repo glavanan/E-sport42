@@ -143,23 +143,12 @@ class TeamsViewSet(viewsets.ModelViewSet):
 @csrf_exempt
 def ipn(request):
     admins_mails = [admin[1] for admin in ADMINS]
-    # methods_funcs = {
-    #     "Tournament": {
-    #         "Teams": tournaments_pay_team,
-    #         "MyUser": tournaments_pay_user
-    #     }
-    # }
-
-    # def tournaments_pay_user(paypal_obj):
-
 
     if request.method == 'POST':
-        # paypal_obj = paypalget()
-        # methods_funcs[paypal_obj.type_event, paypal_obj.type_payer](paypal_obj)
         data = dict(request.POST)
         for k in data:
             data[k] = data[k][0].encode('utf-8')
-        tmp = urllib.urlopen("https://www.paypal.com/cgi_bin/websrc",
+        tmp = urllib.urlopen("https://www.sandbox.paypal.com/cgi_bin/websrc",
                              'cmd=_notify-validate&' + urllib.urlencode(data)).read()
         if tmp == 'VERIFIED':
             if data['payment_status'] == 'Completed' and 'custom' in data.keys() and data['custom']:
@@ -192,20 +181,21 @@ def ipn(request):
 def ipn_test(request):
     admins_mails = [admin[1] for admin in ADMINS]
 
-    def tournaments_pay_user(paypal_object, data):
-        tournament = Tournament.objects.get(id=paypal_object.id_event)
-        user = MyUser.objects.get(id=paypal_object.id_payer)
+    def tournaments_pay_user(pp_obj, data_post):
+        tournament = Tournament.objects.get(id=pp_obj.id_event)
+        user = MyUser.objects.get(id=pp_obj.id_payer)
         if tournament and user:
-            if float(data['mc_gross']) == float(tournament.price) and data['mc_currency'] == "EUR":
-                paypal_object.txn_id = data['txn_id']
-                paypal_object.verified = True
-                paypal_object.save()
+            if float(data_post['mc_gross']) == float(tournament.price) and data_post['mc_currency'] == "EUR":
+                pp_obj.txn_id = data_post['txn_id']
+                pp_obj.verified = True
+                pp_obj.save()
                 tournament.pool.add(user)
                 tournament.save()
                 msg = EmailMessage(subject="Inscription valide", from_email="noreply@esport.42.fr", to=[user.email], bcc=admins_mails)
                 msg.global_merge_vars={'NAME1' : user.username, 'NAMETOURNOI' : tournament.name}
                 msg.template_name="base"
                 ret = msg.send()
+                logger.debug("It worked !!!")
                 if ret != 1:
                     logger.debug("Message non envoye a: {} pour le tournoi: {}".format(user.email, tournament.name))
                 return HttpResponse("Payment accepted")
@@ -213,20 +203,21 @@ def ipn_test(request):
             logger.debug("No tournament ({}) or user({})".format(tournament, user))
         return HttpResponse("There was shit in da payment")
 
-    def tournaments_pay_team(paypal_object, data):
-        tournament = Tournament.objects.get(id=paypal_object.id_event)
-        team = Teams.objects.get(id=paypal_object.id_payer)
+    def tournaments_pay_team(pp_obj, data_post):
+        tournament = Tournament.objects.get(id=pp_obj.id_event)
+        team = Teams.objects.get(id=pp_obj.id_payer)
         if tournament and team:
-            if float(data['mc_gross']) == float(tournament.price) and data['mc_currency'] == "EUR":
-                paypal_object.txn_id = data['txn_id']
-                team.txn_id = data['txn_id']
-                paypal_object.verified = True
-                paypal_object.save()
+            if float(data_post['mc_gross']) == float(tournament.price) and data_post['mc_currency'] == "EUR":
+                pp_obj.txn_id = data_post['txn_id']
+                team.txn_id = data_post['txn_id']
+                pp_obj.verified = True
+                pp_obj.save()
                 team.save()
                 msg = EmailMessage(subject="Inscription valide", from_email="noreply@esport.42.fr", to=[team.admin.email], bcc=admins_mails)
-                msg.global_merge_vars={'NAME1' : team.admin.username, 'NAMETOURNOI' : tournament.name}
-                msg.template_name="base"
+                msg.global_merge_vars= {'NAME1': team.admin.username, 'NAMETOURNOI': tournament.name}
+                msg.template_name= "base"
                 ret = msg.send()
+                logger.debug("It worked in teams !!!")
                 if ret != 1:
                     logger.debug("Message non envoye a: {} pour le tournoi: {}".format(team.admin.email, tournament.name))
                 return HttpResponse("Payment accepted")
@@ -286,14 +277,45 @@ def ipn_test(request):
 
 @csrf_exempt
 def ipn_return(request):
+    def tournament_return_team(paypal_object, team=None):
+        if not team:
+            team = Teams.objects.get(id=paypal_object.id_payer)
+        return redirect("http://" + request.META['HTTP_HOST'] + "/tournaments/" + team.tournament.tag + "/register-success?teamName=" + team.name)
+
+    def tournament_return_solo(paypal_object):
+        tournament = Tournament.objects.get(id=paypal_object.id_event)
+        user = MyUser.objects.get(id=paypal_object.id_payer)
+        return redirect("http://" + request.META['HTTP_HOST'] + "/tournaments/" + tournament.tag + "/register-success?teamName=" + user.username)
+
+    methods_funcs = {
+        "Tournament": {
+            "Teams": tournament_return_team,
+            "MyUser": tournament_return_solo
+        }
+    }
     if request.method == "POST":
-        team = request.POST['custom']
-        if team:
-            team = Teams.objects.get(id=int(team))
+        payment_id = request.POST['custom']
+        if payment_id:
+            logger.debug("Ca fait du kaka tout partout ? :(")
+            try:
+                payment = Payments.objects.get(id=int(payment_id))
+                if not payment.verified:
+                    team = Teams.objects.filter(id=int(payment_id))
+                    if not team:
+                        return tournament_return_solo(payment)
+                    return tournament_return_team(None, team[0])
+            except Payments.DoesNotExist as e:
+                logger.debug("{}\nId received: {}\nPOST data: {}".format(e, payment_id, request.POST))
+                team = Teams.objects.get(id=int(payment_id))
+                return tournament_return_team(None, team)
         else:
             return redirect(request.get_host())
-        return redirect("http://" + request.META[
-            'HTTP_HOST'] + "/tournaments/" + team.tournament.name + "/register-success?teamName=" + team.name)
+#HEAD
+ #       return redirect("http://" + request.META[
+  #          'HTTP_HOST'] + "/tournaments/" + team.tournament.name + "/register-success?teamName=" + team.name)
+#=======
+        return methods_funcs[payment.type_event][payment.type_payer](payment)
+#>>>>>>> 45739ea4f161d5329fdacfda990937850e2836ac
     elif request.method == "GET":
         return HttpResponse(request.get_host())
     else:
