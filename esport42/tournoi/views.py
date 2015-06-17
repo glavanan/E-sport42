@@ -2,7 +2,8 @@ from django.shortcuts import render
 from base.models import Payments, MyUser
 from rest_framework.response import Response
 from tournoi.models import Tournament, Teams, Phase, TPost, APost
-from tournoi.serializers import TournamentSerializer, TeamSerializer, TPostSerializer, APostSerializer
+from match.models import Match
+from tournoi.serializers import TournamentSerializer, PhaseSerializer, TeamSerializer, TPostSerializer, APostSerializer
 from post.permissions import IsAdminOfSite, IsTornamentOrAdmin
 from rest_framework import permissions, viewsets, status, views, permissions
 import urllib
@@ -21,6 +22,7 @@ from rest_framework_extensions.decorators import action
 from rest_framework import viewsets
 from rest_framework import status
 from esport42.settings import ADMINS
+import math
 
 logger = logging.getLogger(__name__)
 
@@ -66,10 +68,49 @@ class TPostViewSet(viewsets.ModelViewSet):
                                    tournament=Tournament.objects.get(id=self.kwargs['parent_lookup_tournoi']))
         return super(TPostViewSet, self).perform_create(serializer)
 
+class PhaseViewSet(viewsets.ModelViewSet):
+    serializer_class = PhaseSerializer
+    queryset = Phase.objects.all()
+
+    def get_queryset(self):
+        return Phase.objects.filter(tournament=self.kwargs['parent_lookup_tournoi'])
+
+    def get_permissions(self):
+        if self.request.method == 'GET':
+            return [permissions.AllowAny(),]
+        else:
+            return [permissions.IsAdminUser(),]
+
 def create_match(phase, tournoi):
+    print "create match"
     if phase.name == 'DTree':
-        print "ok"
-        
+        print "entrance"
+        i = 0;
+        nb_match = tournoi.nbteams / 2
+        round = int(math.ceil(math.log(tournoi.nbteams, 2)))
+        print "round ="
+        print round
+        while i <= round:
+            print "i = "
+            print i
+            n = 0
+            while n < (nb_match * 2) / (2**(i + 1)):
+                m1 = Match(level=i, match_number=n, phase=phase, looser_braket=False)
+                m1.save()
+                if i != 0:
+                    m2 = Match(level=i, match_number=n, phase=phase, looser_braket=True)
+                    m2.save()
+                    if n < nb_match / (2**(i + 1)) or i == round - 1:
+                        m2 = Match(level=i + 0.5, match_number=n, phase=phase, looser_braket=True)
+                        m2.save()
+                elif n < nb_match / (2**(i + 1)):
+                    m2 = Match(level=i, match_number=n, phase=phase, looser_braket=True)
+                    m2.save()
+                n = n + 1
+            i = i + 1
+            m2 = Match(level=round, match_number=0, phase=phase, looser_braket=True)
+            m2.save()
+
 
 class TournamentViewSet(viewsets.ModelViewSet):
     queryset = Tournament.objects.all()
@@ -93,10 +134,9 @@ class TournamentViewSet(viewsets.ModelViewSet):
             serializer.validated_data.pop('type')
             tournoi = serializer.save()
             print type
-            for val in type:
-                tmp = Phase(tmp_name=val, tournament=tournoi)
-                tmp.save()
-                create_match(tmp, tournoi)
+            tmp = Phase(name=type, tournament=tournoi)
+            tmp.save()
+            create_match(tmp, tournoi)
             serializer.validated_data.pop('admin')
             serializer.validated_data.pop('rules')
             # Je doit retourenr le validated data - User !!!
@@ -195,7 +235,6 @@ def ipn_test(request):
                 msg.global_merge_vars={'NAME1' : user.username, 'NAMETOURNOI' : tournament.name}
                 msg.template_name="base"
                 ret = msg.send()
-                logger.debug("It worked !!!")
                 if ret != 1:
                     logger.debug("Message non envoye a: {} pour le tournoi: {}".format(user.email, tournament.name))
                 return HttpResponse("Payment accepted")
@@ -217,7 +256,6 @@ def ipn_test(request):
                 msg.global_merge_vars= {'NAME1': team.admin.username, 'NAMETOURNOI': tournament.name}
                 msg.template_name= "base"
                 ret = msg.send()
-                logger.debug("It worked in teams !!!")
                 if ret != 1:
                     logger.debug("Message non envoye a: {} pour le tournoi: {}".format(team.admin.email, tournament.name))
                 return HttpResponse("Payment accepted")
@@ -296,7 +334,6 @@ def ipn_return(request):
     if request.method == "POST":
         payment_id = request.POST['custom']
         if payment_id:
-            logger.debug("Ca fait du kaka tout partout ? :(")
             try:
                 payment = Payments.objects.get(id=int(payment_id))
                 if not payment.verified:
@@ -310,12 +347,7 @@ def ipn_return(request):
                 return tournament_return_team(None, team)
         else:
             return redirect(request.get_host())
-#HEAD
- #       return redirect("http://" + request.META[
-  #          'HTTP_HOST'] + "/tournaments/" + team.tournament.name + "/register-success?teamName=" + team.name)
-#=======
         return methods_funcs[payment.type_event][payment.type_payer](payment)
-#>>>>>>> 45739ea4f161d5329fdacfda990937850e2836ac
     elif request.method == "GET":
         return HttpResponse(request.get_host())
     else:

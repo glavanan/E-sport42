@@ -2,7 +2,7 @@ from django.conf.urls import patterns, include, url
 from django.contrib import admin
 from rest_framework_nested import routers
 from base.views import MyUserViewSet, IndexView, HomeView
-from tournoi.views import TournamentViewSet, TeamsViewSet, TPostViewSet, APostViewSet, ipn, ipn_test
+from tournoi.views import TournamentViewSet, TeamsViewSet, TPostViewSet, APostViewSet, PhaseViewSet, ipn, ipn_test
 from post.views import PostViewSet
 from match.views import MatchViewSet
 from rest_framework_extensions.routers import ExtendedSimpleRouter
@@ -12,6 +12,7 @@ router.register(r'accounts', MyUserViewSet)
 router.register(r'tournoi', TournamentViewSet).register(r'posts', TPostViewSet, base_name="TPost", parents_query_lookups=['tournoi'])
 router.register(r'tournoi', TournamentViewSet).register(r'article', APostViewSet, base_name="APost", parents_query_lookups=['tournoi'])
 router.register(r'tournoi', TournamentViewSet).register(r'team', TeamsViewSet, base_name="team", parents_query_lookups=['tournoi']).register(r'match', MatchViewSet, base_name='Match', parents_query_lookups=['tournoi', 'phase'])
+router.register(r'tournoi', TournamentViewSet).register(r'phase', PhaseViewSet, base_name="Phase", parents_query_lookups=['tournoi']).register(r'match', MatchViewSet, base_name='Match', parents_query_lookups=['tournoi', 'phase'])
 router.register(r'posts', PostViewSet)
 
 urlpatterns = patterns('',
