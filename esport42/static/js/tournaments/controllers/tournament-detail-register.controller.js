@@ -21,8 +21,8 @@
         vm.me = null;
         vm.form = {};
         vm.form.members = [];
-        vm.paypalReturnUrl = $sce.trustAsResourceUrl("http://danstonpi.eu");
-        vm.paypalUrl = $sce.trustAsResourceUrl("https://www.sandbox.paypal.com/cgi-bin/webscr");
+        vm.paypalReturnUrl = $sce.trustAsResourceUrl("http://esport.42.fr");
+        vm.paypalUrl = $sce.trustAsResourceUrl("https://www.paypal.com/cgi-bin/webscr");
         vm.addNewUser = addNewUser;
         vm.EMAIL_REGEXP = /^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/i;
 

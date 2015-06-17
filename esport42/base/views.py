@@ -105,8 +105,6 @@ class PaymentView(CreateAPIView):
     queryset = Payments.objects.all()
     serializer_class = PaymentsSerializer
 
-    # def perform_create(self, serializer):
-    #     serializer.g
 
 class LogoutView(views.APIView):
     permission_classes = (permissions.IsAuthenticated,)

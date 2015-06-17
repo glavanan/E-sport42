@@ -82,7 +82,6 @@
                 "payment_to": paymentTo
             })
                 .then(function (data, status, headers, config) {
-                    console.log("In submit solo: ", data.data);
                     return data.data;
                 }, function (data, status, headers, config) {
                     console.log("Solo registration failed in service: ", data);
