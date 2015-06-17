@@ -15,7 +15,7 @@
         var vm = this;
         vm.register = register;
         vm.me = null;
-        vm.paymentTo = "42.esport1@gmail.com";
+        vm.paymentTo = "42.esport@gmail.com";
         vm.paypalUrl = $sce.trustAsResourceUrl("https://www.paypal.com/cgi-bin/webscr");
         vm.paypalReturnUrl = $sce.trustAsResourceUrl("http://esport.42.fr");
 
