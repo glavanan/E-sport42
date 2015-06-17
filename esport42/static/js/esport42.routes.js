@@ -78,7 +78,6 @@
                 controller: ['tournament', '$scope', '$stateParams', function (tournament, $scope, $stateParams) {
                     $scope.tournament = tournament;
                     $scope.teamName = $stateParams['teamName'];
-                    console.log($scope.teamName);
                 }]
             });
     }
