@@ -25,6 +25,7 @@
             getAuthenticatedAccount: getAuthenticatedAccount,
             setAuthenticatedAccount: setAuthenticatedAccount,
             isAuthenticated: isAuthenticated,
+            isAdmin: isAdmin,
             unauthenticate: unauthenticate
         };
 
@@ -75,6 +76,10 @@
             return !!$cookies.authenticatedAccount;
         }
 
+        function isAdmin() {
+            var account = getAuthenticatedAccount();
+            return account.is_admin && account.is_staff;
+        }
         function unauthenticate() {
             delete $cookies.authenticatedAccount;
         }
