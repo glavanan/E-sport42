@@ -42,36 +42,17 @@
                     "requireAdmin"
                 ];
                 var go_funcs = [
-                    $state.go('login'),
-                    $state.go('home')
+                    function () {$state.go('login');},
+                    function () {$state.go('home');}
                 ];
                 angular.forEach(priority, function (value, key) {
                     if (value in toState.data) {
-                        return go_funcs[key];
+                        go_funcs[key]();
+                        event.preventDefault();
+                        return;
                     }
                 });
             }
-            console.log("sdkgndsngsdkg");
-            var shouldLogin = toState.data !== undefined
-                && toState.data.requireLogin
-                && !Authentication.isAuthenticated();
-
-            var shoudBeAdmin = toState.data !== undefined
-                && toState.data.requireAdmin
-                && !Authentication.isAdmin();
-
-            // NOT Authenticationenticated - wants any private stuff
-            if (shouldLogin) {
-                $state.go('login');
-                event.preventDefault();
-                return ;
-            }
-
-            if (shoudBeAdmin) {
-                $state.go('home');
-                event.preventDefault();
-            }
-
         });
     }
 })();

@@ -39,7 +39,7 @@
             })
             .state('test', {
                 url: "/test",
-                data: {requireLogin: true, requireAdmin: true},
+                data: {requireAdmin: true},
                 controller: 'TestController',
                 controllerAs: 'vm',
                 templateUrl: '/static/templates/test/test-ui-select.html'
