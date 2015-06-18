@@ -35,23 +35,28 @@
         $http.defaults.xsrfCookieName = 'csrftoken';
 
         $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState) {
-
             if (toState.data) {
-                var priority = [
-                    "requireLogin",
-                    "requireAdmin"
-                ];
-                var go_funcs = [
-                    function () {$state.go('login');},
-                    function () {$state.go('home');}
-                ];
-                angular.forEach(priority, function (value, key) {
-                    if (value in toState.data) {
-                        go_funcs[key]();
-                        event.preventDefault();
-                        return;
-                    }
-                });
+                var user = Authentication.getAuthenticatedAccount();
+                var shouldLog = !user && 'requireLogin' in toState.data;
+                var shouldBeAdmin = !user || (user && !(user.is_admin && user.is_staff)) && 'requireAdmin' in toState.data;
+
+                function go_to(state) {
+                    $state.go(state);
+                }
+                function redirect(state) {
+                    go_to(state);
+                    event.preventDefault();
+                    return;
+                }
+                if (shouldLog) {
+                    return redirect('login');
+                }
+                if (shouldBeAdmin) {
+                    if (!user)
+                        return redirect('login');
+                    else
+                        return redirect('home');
+                }
             }
         });
     }

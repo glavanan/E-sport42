@@ -23,6 +23,7 @@
                 $location.path('/');
         }
         function login() {
+            //vm.loginPending = true;
             vm.error = {};
             Authentication.login(vm.form.username, vm.form.password)
                 .then(

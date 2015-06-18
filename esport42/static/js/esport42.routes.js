@@ -26,6 +26,11 @@
             })
             .state('home', {
                 url: "/home",
+                resolve: {
+                    posts: ['Post', function (Post) {
+                        return Post.all();
+                    }]
+                },
                 controller: 'IndexController',
                 controllerAs: 'vm',
                 templateUrl: '/static/templates/layouts/index.html'
