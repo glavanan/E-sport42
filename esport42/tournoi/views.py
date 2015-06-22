@@ -23,6 +23,7 @@ from rest_framework import viewsets
 from rest_framework import status
 from esport42.settings import ADMINS
 import math
+import random
 
 logger = logging.getLogger(__name__)
 
@@ -110,6 +111,23 @@ def create_match(phase, tournoi):
             i = i + 1
             m2 = Match(level=round, match_number=0, phase=phase, looser_braket=True)
             m2.save()
+    elif phase.name == 'Pool':
+        nb_participant = 4
+        nb_poule = tournoi.nbteams / nb_participant
+        nb_match = nb_participant * (nb_participant + 1) / 2 - nb_participant
+        round = 0
+        while round < nb_poule:
+            match = 0
+            while match < nb_match:
+                m1 = Match(level=round, match_number=match, phase=phase)
+                m1.save()
+                match += 1
+            round += 1
+                
+
+
+
+
 
 
 class TournamentViewSet(viewsets.ModelViewSet):
