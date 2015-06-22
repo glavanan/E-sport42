@@ -254,6 +254,9 @@ def ipn_test(request):
             else:
                 logger.debug("Payment was not completed. Request data: {}".format(data))
                 return HttpResponse("Payment was not completed")
+        else:
+            logger.debug("Payment was not Paypal verified. tmp: {}, data: {}".format(tmp, data))
+            return HttpResponse("Paypal said no.")
     else:
         return HttpResponse("""<form action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post" target="_top">
 <input type="hidden" name="cmd" value="_xclick">
@@ -296,7 +299,6 @@ def ipn_return(request):
     if request.method == "POST":
         payment_id = request.POST['custom']
         if payment_id:
-            logger.debug("Ca fait du kaka tout partout ? :(")
             try:
                 payment = Payments.objects.get(id=int(payment_id))
                 if not payment.verified:
@@ -310,12 +312,7 @@ def ipn_return(request):
                 return tournament_return_team(None, team)
         else:
             return redirect(request.get_host())
-#HEAD
- #       return redirect("http://" + request.META[
-  #          'HTTP_HOST'] + "/tournaments/" + team.tournament.name + "/register-success?teamName=" + team.name)
-#=======
         return methods_funcs[payment.type_event][payment.type_payer](payment)
-#>>>>>>> 45739ea4f161d5329fdacfda990937850e2836ac
     elif request.method == "GET":
         return HttpResponse(request.get_host())
     else:
