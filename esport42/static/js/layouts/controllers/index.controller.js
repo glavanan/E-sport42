@@ -9,28 +9,17 @@
         .module('esport42.layouts.controllers')
         .controller('IndexController', IndexController);
 
-    IndexController.$inject = ['Post', 'Authentication'];
+    IndexController.$inject = ['Authentication', 'posts'];
 
-    function IndexController(Post, Authentication) {
+    function IndexController(Authentication, posts) {
         var vm = this;
 
-        vm.posts = [];
+        vm.posts = posts;
 
         activate();
 
         function activate() {
-
             vm.user = Authentication.getAuthenticatedAccount();
-            Post.all()
-                .then(PostSuccess, PostFailure);
-
-            function PostSuccess(data) {
-                vm.posts = data;
-            }
-
-            function PostFailure(data) {
-                console.log('Get Posts failed: ', data);
-            }
         }
 
     }

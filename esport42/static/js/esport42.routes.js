@@ -26,6 +26,11 @@
             })
             .state('home', {
                 url: "/home",
+                resolve: {
+                    posts: ['Post', function (Post) {
+                        return Post.all();
+                    }]
+                },
                 controller: 'IndexController',
                 controllerAs: 'vm',
                 templateUrl: '/static/templates/layouts/index.html'
@@ -33,11 +38,13 @@
             .state('newPost', {
                 url: "/post",
                 controller: 'PostController',
+                data: {requireLogin: true, requireAdmin: true},
                 controllerAs: 'vm',
                 templateUrl: '/static/templates/post/post.html'
             })
             .state('test', {
                 url: "/test",
+                data: {requireAdmin: true},
                 controller: 'TestController',
                 controllerAs: 'vm',
                 templateUrl: '/static/templates/test/test-ui-select.html'
@@ -56,12 +63,14 @@
             .state('tournament-detail.register-team', {
                 url: "/register",
                 templateUrl: '/static/templates/tournaments/tournament-detail-register-team.html',
+                data: {requireLogin: true},
                 controller: 'TournamentDetailRegisterController',
                 controllerAs: 'vm'
             })
             .state('tournament-detail.register-solo', {
                 url: "/register-solo",
                 templateUrl: '/static/templates/tournaments/tournament-detail-register-solo.html',
+                data: {requireLogin: true},
                 controller: 'TournamentDetailRegisterSoloController',
                 controllerAs: 'vm'
             })
@@ -78,7 +87,6 @@
                 controller: ['tournament', '$scope', '$stateParams', function (tournament, $scope, $stateParams) {
                     $scope.tournament = tournament;
                     $scope.teamName = $stateParams['teamName'];
-                    console.log($scope.teamName);
                 }]
             });
     }

@@ -29,9 +29,35 @@
         .module('esport42')
         .run(run);
 
-    run.$inject = ['$http'];
-    function run ($http) {
-          $http.defaults.xsrfHeaderName = 'X-CSRFToken';
-          $http.defaults.xsrfCookieName = 'csrftoken';
+    run.$inject = ['$http', '$rootScope', '$state', 'Authentication'];
+    function run ($http, $rootScope, $state, Authentication) {
+        $http.defaults.xsrfHeaderName = 'X-CSRFToken';
+        $http.defaults.xsrfCookieName = 'csrftoken';
+
+        $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState) {
+            if (toState.data) {
+                var user = Authentication.getAuthenticatedAccount();
+                var shouldLog = !user && 'requireLogin' in toState.data;
+                var shouldBeAdmin = !user || (user && !(user.is_admin && user.is_staff)) && 'requireAdmin' in toState.data;
+
+                function go_to(state) {
+                    $state.go(state);
+                }
+                function redirect(state) {
+                    go_to(state);
+                    event.preventDefault();
+                    return;
+                }
+                if (shouldLog) {
+                    return redirect('login');
+                }
+                if (shouldBeAdmin) {
+                    if (!user)
+                        return redirect('login');
+                    else
+                        return redirect('home');
+                }
+            }
+        });
     }
 })();

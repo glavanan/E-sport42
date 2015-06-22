@@ -24,6 +24,7 @@ class Tournament(models.Model):
     pool = models.ManyToManyField(MyUser, blank=True, related_name="pool")
 
 
+
 class Phase(models.Model):
     name = models.CharField(default='Tree', max_length=50)
     tournament = models.ForeignKey(Tournament)

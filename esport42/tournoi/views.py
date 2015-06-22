@@ -206,7 +206,7 @@ def ipn(request):
         data = dict(request.POST)
         for k in data:
             data[k] = data[k][0].encode('utf-8')
-        tmp = urllib.urlopen("https://www.sandbox.paypal.com/cgi_bin/websrc",
+        tmp = urllib.urlopen("https://www.paypal.com/cgi_bin/websrc",
                              'cmd=_notify-validate&' + urllib.urlencode(data)).read()
         if tmp == 'VERIFIED':
             if data['payment_status'] == 'Completed' and 'custom' in data.keys() and data['custom']:
@@ -292,7 +292,7 @@ def ipn_test(request):
         data = dict(request.POST)
         for k in data:
             data[k] = data[k][0].encode('utf-8')
-        tmp = urllib.urlopen("https://www.sandbox.paypal.com/fr/cgi-bin/webscr",
+        tmp = urllib.urlopen("https://www.paypal.com/fr/cgi-bin/webscr",
                              'cmd=_notify-validate&' + urllib.urlencode(data)).read()
         if tmp == "VERIFIED":
             if data['payment_status'] == 'Completed' and 'custom' in data.keys() and data['custom']:
@@ -310,6 +310,9 @@ def ipn_test(request):
             else:
                 logger.debug("Payment was not completed. Request data: {}".format(data))
                 return HttpResponse("Payment was not completed")
+        else:
+            logger.debug("Payment was not Paypal verified. tmp: {}, data: {}".format(tmp, data))
+            return HttpResponse("Paypal said no.")
     else:
         return HttpResponse("""<form action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post" target="_top">
 <input type="hidden" name="cmd" value="_xclick">

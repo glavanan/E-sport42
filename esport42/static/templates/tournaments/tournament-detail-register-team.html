@@ -160,7 +160,7 @@
                               target="_top" style="opacity: 1;">
                             <div class="hide" id="errorBox"></div>
                             <input type="hidden" name="button" value="buynow">
-                            <input type="hidden" name="business" value="42.esport1@gmail.com">
+                            <input type="hidden" name="business" value="42.esport@gmail.com">
                             <input type="hidden" name="item_name" value="tournoi_{{ vm.tournament.name }}">
                             <input type="hidden" name="quantity" value="1">
                             <input type="hidden" name="amount"
@@ -170,7 +170,7 @@
                             <input type="hidden" name="tax" value="0">
                             <input type="hidden" name="notify_url" value="{{ vm.paypalReturnUrl }}/api/v1/ipn">
                             <input type="hidden" name="cancel_url"
-                                   value="{{ vm.paypalReturnUrl }}/tournament/{{ vm.tournament.name }}/register-cancel">
+                                   value="{{ vm.paypalReturnUrl }}/tournament/{{ vm.tournament.tag }}/register-cancel">
                             <input type="hidden" name="return" value="{{ vm.paypalReturnUrl }}/api/v1/ipn-return">
                             <input type="hidden" name="cmd" value="_xclick">
                             <input type="hidden" name="bn" value="JavaScriptButton_buynow">

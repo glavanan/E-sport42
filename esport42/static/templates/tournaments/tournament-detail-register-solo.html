@@ -13,8 +13,10 @@
                         <p class="text-warning">L'inscription est payable d'avance, si nous ne vous trouvons pas d'équipe, vous serez
                             intégralement remboursé.</p>
 
-                        <p class="text-warning">Vous serez contactés par mail avec les infos des autres membres quand une équipe vous sera
-                            attribuée.</p>
+                        <p class="text-warning">
+                            Vous recevrez un mail 2 jours avant le tournoi vous demandant si vous avez des préférences de partenaires.<br/>
+                            Dans le cas échéant vous serez contactés par mail avec les infos des autres membres quand une équipe vous sera attribuée.
+                        </p>
 
                         <div class="form-group">
                             <label>
@@ -56,7 +58,7 @@
                             <input type="hidden" name="tax" value="0">
                             <input type="hidden" name="notify_url" value="{{ vm.paypalReturnUrl }}/api/v1/ipn-test">
                             <input type="hidden" name="cancel_url"
-                                   value="{{ vm.paypalReturnUrl }}/tournament/{{ vm.tournament.name }}/register-cancel">
+                                   value="{{ vm.paypalReturnUrl }}/tournament/{{ vm.tournament.tag }}/register-cancel">
                             <input type="hidden" name="return" value="{{ vm.paypalReturnUrl }}/api/v1/ipn-return">
                             <input type="hidden" name="cmd" value="_xclick">
                             <input type="hidden" name="bn" value="JavaScriptButton_buynow">
