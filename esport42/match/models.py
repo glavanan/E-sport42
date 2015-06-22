@@ -10,5 +10,5 @@ class Match(models.Model):
     score_t2 = models.IntegerField(default=0, null=True)
     end = models.BooleanField(default=False)
     looser_braket=models.BooleanField(default=False)
-    level = models.IntegerField(default=0)
+    level = models.FloatField(default=0)
     match_number = models.IntegerField(default=0)

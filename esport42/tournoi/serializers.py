@@ -1,4 +1,4 @@
-from tournoi.models import Tournament, Teams, TPost, APost
+from tournoi.models import Tournament, Teams, TPost, APost, Phase
 from base.serializers import MyUserSerializer
 from rest_framework import serializers
 
@@ -8,6 +8,12 @@ class TournamentSerializer(serializers.ModelSerializer):
         model = Tournament
         fields = ('id', 'name', 'nbteams', 'template', 'type', 'player_per_team', 'max_player', 'start_reg', 'end_reg', 'start_tou', 'end_tou', 'admin', 'price', 'receiver_email', 'game_name', 'tag', 'place', 'rules', 'pool')
         read_only_fields = ('id',)
+
+class PhaseSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Phase
+        fields = ('id', 'name', 'tournament')
+        read_only_fields = ('id', 'name', 'tournament')
 
 class TeamSerializer(serializers.ModelSerializer):
 #Hey pede tu a pas reussis a resoudre le probleme regarde si il y a pas un serializer.ququechose, cadeau :
