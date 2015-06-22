@@ -23,7 +23,7 @@
                 $location.path('/');
         }
         function login() {
-            //vm.loginPending = true;
+            vm.loginPending = true;
             vm.error = {};
             Authentication.login(vm.form.username, vm.form.password)
                 .then(
@@ -37,7 +37,7 @@
                     if (data.non_field_errors)
                         vm.error.non_field_errors = data.non_field_errors;
                 }
-            );
+            ).finally(function () {vm.loginPending = false;});
         }
     }
 })();

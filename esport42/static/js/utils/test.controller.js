@@ -13,9 +13,8 @@
         activate();
 
         function activate() {
-            ngDialog.open({
-                    template: 'firstDialogId',
-                    className: 'ngdialog-theme-plain'
+            Users.all().finally(function (data) {
+                console.log('kaka');
             });
         }
     }
