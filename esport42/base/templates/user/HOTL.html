@@ -46,7 +46,7 @@
                     <li><a ui-sref="login">Se connecter</a></li>
                 {% else %}
                     <li><a ng-click="vm.logout()">Se déconnecter</a></li>
-                    <li><p class="navbar-text">Salut {{ user.username }}</p></li>
+                    <li><p class="navbar-text"><a ui-sref="profile" class="deco-none">Salut {{ user.username }}</a></p></li>
                 {% endif %}
             </ul>
         </div>

@@ -192,3 +192,17 @@ html, body {
 .center-container {
     position: relative;
 }
+
+a.deco-none {
+    color:inherit !important;
+    text-decoration:none;
+}
+
+.bg-menu:hover {
+    background-color:#0079C1;
+    color:#FFFFFF;
+}
+
+.clickable {
+    cursor:pointer;
+}

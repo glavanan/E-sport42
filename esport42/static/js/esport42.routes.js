@@ -35,6 +35,18 @@
                 controllerAs: 'vm',
                 templateUrl: '/static/templates/layouts/index.html'
             })
+            .state('profile', {
+                url: "/profile",
+                data: {requireLogin: true},
+                resolve: {
+                    user: ['Authentication', function (Authentication) {
+                        return Authentication.getAuthenticatedAccount();
+                    }]
+                },
+                controller: "ProfileController",
+                controllerAs: 'vm',
+                templateUrl: '/static/templates/authentication/profile.html'
+            })
             .state('newPost', {
                 url: "/post",
                 controller: 'PostController',

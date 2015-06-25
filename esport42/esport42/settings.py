@@ -26,7 +26,8 @@ INSTALLED_APPS = (
     'djangular',
     'rest_framework',
     'jsonify',
-    'djrill'
+    'djrill',
+    'django_extensions'
 )
 
 REST_FRAMEWORK = {
@@ -126,7 +127,6 @@ LOGGING = {
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
-
 
 FRONT_POST = 'static/post/img'
 

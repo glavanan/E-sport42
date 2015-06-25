@@ -59,14 +59,16 @@ class MyUserViewSet(viewsets.ModelViewSet):
 
     def update(self, request, *args, **kwargs):
         partial = False
-        user = MyUser.objects.get(id=request.data['id'])
+        print self.get_object()
+        user = self.get_object()
         if 'PATCH' in request.method:
             partial = True
         instance = self.get_object()
+        for d, j in request.data.iteritems():
+            print d, j, request.data[d]
         request.data['username'] = user.username
         request.data['id'] = user.id
-        serializer = self.get_serializer_class()
-        serializer = serializer(instance, data=request.data, context={'request': request}, partial=partial)
+        serializer = self.get_serializer(instance, data=request.data, context={'request': request}, partial=partial)
         if 'password' in request.data and not request.data['password']:
             serializer.exclude_fields(['password'])
         if 'password_confirm' in request.data and not request.data['password_confirm']:
@@ -76,15 +78,6 @@ class MyUserViewSet(viewsets.ModelViewSet):
         serializer.save()
         return Response(serializer.validated_data, status=status.HTTP_202_ACCEPTED)
 
-        # instance = self.get_object()
-        # serializer = self.serializer_class(instance, data=request.data, context={'request': request})
-        # if serializer.is_valid():
-        #     serializer.update(instance, serializer.validated_data)
-        #     return Response(serializer.validated_data, status=status.HTTP_202_ACCEPTED)
-        # return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-    def patch(self, request, *args, **kwargs):
-        return self.partially_update(request, *args, **kwargs)
 
 class LoginView(views.APIView):
     def post(self, request, format=None):

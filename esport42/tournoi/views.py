@@ -292,7 +292,7 @@ def ipn_test(request):
         data = dict(request.POST)
         for k in data:
             data[k] = data[k][0].encode('utf-8')
-        tmp = urllib.urlopen("https://www.paypal.com/fr/cgi-bin/webscr",
+        tmp = urllib.urlopen("https://www.paypal.com/cgi_bin/websrc",
                              'cmd=_notify-validate&' + urllib.urlencode(data)).read()
         if tmp == "VERIFIED":
             if data['payment_status'] == 'Completed' and 'custom' in data.keys() and data['custom']:

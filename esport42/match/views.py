@@ -78,7 +78,7 @@ class MatchViewSet(viewsets.ModelViewSet):
                 else:
                     next_match_w.team1=match.team1 if match.score_t1 > match.score_t2 else match.team2
                 next_match_w.save()
-        elif match.phase.name == 'Pool':
+        # elif match.phase.name == 'Pool':
 
         match.save()
         return Response({"Match" : "ok"}, status.HTTP_200_OK)
