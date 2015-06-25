@@ -82,6 +82,9 @@ class PhaseViewSet(viewsets.ModelViewSet):
         else:
             return [permissions.IsAdminUser(),]
 
+    @detail_route(methods=['post'])
+    def fill_phase(self, request, pk=None, parent_lookup_tournoi=None):
+        phase = Phase.objects.filter(tournament=parent_lookup_tournoi)
 def create_match(phase, tournoi):
     print "create match"
     if phase.name == 'DTree':
@@ -143,7 +146,6 @@ class TournamentViewSet(viewsets.ModelViewSet):
         return [permissions.IsAdminUser(), ]
 
 
-
     def create(self, request, **kwargs):
         type = request.data['type']
         serializer = self.serializer_class(data=request.data)
@@ -152,7 +154,8 @@ class TournamentViewSet(viewsets.ModelViewSet):
             serializer.validated_data.pop('type')
             tournoi = serializer.save()
             print type
-            tmp = Phase(name=type, tournament=tournoi)
+            number = 0
+            tmp = Phase(name=type, tournament=tournoi, order=number)
             tmp.save()
             create_match(tmp, tournoi)
             serializer.validated_data.pop('admin')

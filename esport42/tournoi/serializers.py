@@ -12,7 +12,7 @@ class TournamentSerializer(serializers.ModelSerializer):
 class PhaseSerializer(serializers.ModelSerializer):
     class Meta:
         model = Phase
-        fields = ('id', 'name', 'tournament')
+        fields = ('id', 'name', 'tournament', )
         read_only_fields = ('id', 'name', 'tournament')
 
 class TeamSerializer(serializers.ModelSerializer):

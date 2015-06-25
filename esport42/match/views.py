@@ -70,7 +70,7 @@ class MatchViewSet(viewsets.ModelViewSet):
                     n_winner = match.match_number
                     l_winner = match.level + 0.5
                 else:
-                    n_winner = (match.match_number - match.match_number%2)/2
+                    n_winner = (match.match_number - match.match_number % 2)/2
                     l_winner = match.level + 0.5
                 next_match_w = Match.objects.get(match_number=n_winner, level=l_winner, phase=match.phase, looser_braket=True)
                 if match.level % 1 != 0 or (match.match_number % 2 != 0) or match.level == 0:
@@ -79,6 +79,12 @@ class MatchViewSet(viewsets.ModelViewSet):
                     next_match_w.team1=match.team1 if match.score_t1 > match.score_t2 else match.team2
                 next_match_w.save()
         elif match.phase.name == 'Pool':
-
+            if match.score_t1 > match.score_t2:
+                match.team1.score += 3
+            elif match.score_t2 > match.score_t1:
+                match.team2.score += 3
+            else:
+                match.team2.score += 1
+                match.team1.score += 1
         match.save()
         return Response({"Match" : "ok"}, status.HTTP_200_OK)

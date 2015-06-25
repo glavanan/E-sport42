@@ -28,6 +28,10 @@ class Tournament(models.Model):
 class Phase(models.Model):
     name = models.CharField(default='Tree', max_length=50)
     tournament = models.ForeignKey(Tournament)
+    order = models.IntegerField()
+    end = models.BooleanField(default=False)
+    filled = models.BooleanField(default=False)
+
 
 
 class Teams(models.Model):
