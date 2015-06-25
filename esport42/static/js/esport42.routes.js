@@ -63,14 +63,14 @@
             .state('tournament-detail.register-team', {
                 url: "/register",
                 templateUrl: '/static/templates/tournaments/tournament-detail-register-team.html',
-                data: {requireLogin: true},
+                data: {requireLogin: true, beforeRegistrationEnd: true},
                 controller: 'TournamentDetailRegisterController',
                 controllerAs: 'vm'
             })
             .state('tournament-detail.register-solo', {
                 url: "/register-solo",
                 templateUrl: '/static/templates/tournaments/tournament-detail-register-solo.html',
-                data: {requireLogin: true},
+                data: {requireLogin: true, beforeRegistrationEnd: true},
                 controller: 'TournamentDetailRegisterSoloController',
                 controllerAs: 'vm'
             })

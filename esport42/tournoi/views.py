@@ -94,7 +94,7 @@ class TournamentViewSet(viewsets.ModelViewSet):
             tournoi = serializer.save()
             print type
             for val in type:
-                tmp = Phase(tmp_name=val, tournament=tournoi)
+                tmp = Phase(name=val, tournament=tournoi)
                 tmp.save()
                 create_match(tmp, tournoi)
             serializer.validated_data.pop('admin')

@@ -19,6 +19,7 @@
             <dd></dd>
         </dl>
         <div ui-view>
+            <div ng-if="vm.tournament.end_reg > vm.time_now">
             <div ng-if="!vm.me">
                 <h4 ng-if="!vm.me" class="text-warning">Vous devez etre connecté pour inscrire une équipe</h4>
                 <a ui-sref="login" class="btn btn-default btn-lg" role="button"> Se connecter </a>
@@ -26,6 +27,10 @@
             <div ng-if="vm.me">
                 <a ui-sref="tournament-detail.register-team" class="btn btn-default btn-lg" role="button">Inscrire une équipe</a>
                 <a ui-sref="tournament-detail.register-solo" class="btn btn-default btn-lg" role="button">S'inscrire en solo</a>
+            </div>
+            </div>
+            <div ng-if="vm.tournament.end_reg < vm.time_now">
+                <h2>Les inscriptions sont finies...</h2>
             </div>
         </div>
     </div>

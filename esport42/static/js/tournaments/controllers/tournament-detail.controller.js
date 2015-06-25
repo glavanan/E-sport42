@@ -24,7 +24,8 @@
         function activate() {
             vm.tournament = tournament;
             vm.me = Authentication.getAuthenticatedAccount();
+            vm.time_now = Date.now();
+            vm.tournament.end_reg = new Date(tournament.end_reg);
         }
-
     }
 })();
