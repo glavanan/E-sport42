@@ -5,6 +5,7 @@ from tournoi.models import Tournament, Teams, Phase, TPost, APost
 from match.models import Match
 from tournoi.serializers import TournamentSerializer, PhaseSerializer, TeamSerializer, TPostSerializer, APostSerializer
 from post.permissions import IsAdminOfSite, IsTornamentOrAdmin
+from match.permissions import IsAdminTournament
 from rest_framework import permissions, viewsets, status, views, permissions
 import urllib
 import requests
@@ -77,14 +78,52 @@ class PhaseViewSet(viewsets.ModelViewSet):
         return Phase.objects.filter(tournament=self.kwargs['parent_lookup_tournoi'])
 
     def get_permissions(self):
+        self.request.ID = self.kwargs['parent_lookup_tournoi']
         if self.request.method == 'GET':
             return [permissions.AllowAny(),]
-        else:
-            return [permissions.IsAdminUser(),]
+        if self.request.method == 'POST':
+            return [IsAdminTournament(), ]
+        return [permissions.IsAdminUser(), ]
 
     @detail_route(methods=['post'])
     def fill_phase(self, request, pk=None, parent_lookup_tournoi=None):
-        phase = Phase.objects.filter(tournament=parent_lookup_tournoi)
+        phase = Phase.objects.get(id=pk)
+        tournoi = Tournament.objects.get(id=parent_lookup_tournoi)
+        print pk
+        print parent_lookup_tournoi
+        print phase.order
+        teams = list(Teams.objects.filter(verified=True, tournament=parent_lookup_tournoi).order_by("score"))
+        matchs = list(Match.objects.filter(phase=pk).order_by("level", "match_number"))
+        if phase.name == "Pool":
+            number = 0
+            turn = 0
+            for team in teams:
+                if number == 0:
+                    matchs[0 + (turn * 4)](team1=team)
+                    matchs[2 + (turn * 4)](team1=team)
+                    matchs[4 + (turn * 4)](team1=team)
+                if number == 1:
+                    matchs[0 + (turn * 4)](team2=team)
+                    matchs[3 + (turn * 4)](team1=team)
+                    matchs[5 + (turn * 4)](team1=team)
+                if number == 2:
+                    matchs[1 + (turn * 4)](team1=team)
+                    matchs[2 + (turn * 4)](team2=team)
+                    matchs[5 + (turn * 4)](team2=team)
+                if number == 3:
+                    matchs[1 + (turn * 4)](team2=team)
+                    matchs[3 + (turn * 4)](team2=team)
+                    matchs[4 + (turn * 4)](team2=team)
+                if number < 3:
+                    number += 1
+                else:
+                    number = 0
+                    turn += 1
+        elif phase.name == "DTree":
+            print "tree"
+
+
+
 def create_match(phase, tournoi):
     print "create match"
     if phase.name == 'DTree':

@@ -44,6 +44,7 @@ class Teams(models.Model):
     verified = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    score = models.IntegerField(default = 0)
 
 
 class TPost(models.Model):
