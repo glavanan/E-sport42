@@ -21,8 +21,8 @@ class TeamSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Teams
-        fields = ('id', 'verified', 'name', 'members', 'tournament', 'txn_id', 'created_at', 'updated_at', 'admin', 'tag')
-        read_only_fields = ('id', 'verified', 'tournament', 'txn_id', 'created_at', 'updated_at')
+        fields = ('id', 'verified', 'name', 'members', 'tournament', 'txn_id', 'created_at', 'updated_at', 'admin', 'tag', 'score')
+        read_only_fields = ('id', 'verified', 'tournament', 'txn_id', 'created_at', 'updated_at', 'score')
 
     def create(self, validated_data):
         users = validated_data.pop('members')

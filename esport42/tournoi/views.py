@@ -95,6 +95,8 @@ class PhaseViewSet(viewsets.ModelViewSet):
         teams = list(Teams.objects.filter(verified=True, tournament=parent_lookup_tournoi).order_by("score"))
         matchs = list(Match.objects.filter(phase=pk).order_by("level", "match_number"))
         if phase.name == "Pool":
+            matchs = list(Match.objects.filter(phase=pk).order_by("level", "match_number"))
+
             number = 0
             turn = 0
             for team in teams:
@@ -120,7 +122,37 @@ class PhaseViewSet(viewsets.ModelViewSet):
                     number = 0
                     turn += 1
         elif phase.name == "DTree":
+            matchs = list(Match.objects.filter(phase=pk, level=0.0, looser_braket=False).order_by("level", "match_number"))
             print "tree"
+            nb_matchs = tournoi.nbteams / 2
+            match_per_pool = nb_matchs / 4
+            number_match = 0
+            i = 0
+            for item in matchs:
+                print item.id
+            print matchs[0].id
+            for team in teams:
+                if i % 4 == 0 or i % 4 == 3:
+                    number_match = (i * match_per_pool)
+                elif i % 4 == 1:
+                    number_match = ((i + 1) * match_per_pool)
+                else:
+                    number_match = ((i - 1) * match_per_pool)
+                print number_match
+                if (i / 4) % 2 == 0:
+                    while matchs[number_match].team1:
+                        number_match += 1
+                    matchs[number_match].team1 = team
+                    matchs[number_match].team2 = teams[-i - 1]
+                    matchs[number_match].save()
+                else:
+                    number_match += match_per_pool - 1
+                    while matchs[number_match].team1:
+                        number_match -= 1
+                    matchs[number_match].team1 = team
+                    matchs[number_match].team2 = teams[-i - 1]
+                    matchs[number_match].save()
+                i += 1
 
 
 
