@@ -5,6 +5,7 @@ from tournoi.models import Tournament, Teams, Phase, TPost, APost
 from match.models import Match
 from tournoi.serializers import TournamentSerializer, PhaseSerializer, TeamSerializer, TPostSerializer, APostSerializer
 from post.permissions import IsAdminOfSite, IsTornamentOrAdmin
+from match.permissions import IsAdminTournament
 from rest_framework import permissions, viewsets, status, views, permissions
 import urllib
 import requests
@@ -77,10 +78,83 @@ class PhaseViewSet(viewsets.ModelViewSet):
         return Phase.objects.filter(tournament=self.kwargs['parent_lookup_tournoi'])
 
     def get_permissions(self):
+        self.request.ID = self.kwargs['parent_lookup_tournoi']
         if self.request.method == 'GET':
             return [permissions.AllowAny(),]
-        else:
-            return [permissions.IsAdminUser(),]
+        if self.request.method == 'POST':
+            return [IsAdminTournament(), ]
+        return [permissions.IsAdminUser(), ]
+
+    @detail_route(methods=['post'])
+    def fill_phase(self, request, pk=None, parent_lookup_tournoi=None):
+        phase = Phase.objects.get(id=pk)
+        tournoi = Tournament.objects.get(id=parent_lookup_tournoi)
+        print pk
+        print parent_lookup_tournoi
+        print phase.order
+        teams = list(Teams.objects.filter(verified=True, tournament=parent_lookup_tournoi).order_by("score"))
+        matchs = list(Match.objects.filter(phase=pk).order_by("level", "match_number"))
+        if phase.name == "Pool":
+            matchs = list(Match.objects.filter(phase=pk).order_by("level", "match_number"))
+
+            number = 0
+            turn = 0
+            for team in teams:
+                if number == 0:
+                    matchs[0 + (turn * 4)](team1=team)
+                    matchs[2 + (turn * 4)](team1=team)
+                    matchs[4 + (turn * 4)](team1=team)
+                if number == 1:
+                    matchs[0 + (turn * 4)](team2=team)
+                    matchs[3 + (turn * 4)](team1=team)
+                    matchs[5 + (turn * 4)](team1=team)
+                if number == 2:
+                    matchs[1 + (turn * 4)](team1=team)
+                    matchs[2 + (turn * 4)](team2=team)
+                    matchs[5 + (turn * 4)](team2=team)
+                if number == 3:
+                    matchs[1 + (turn * 4)](team2=team)
+                    matchs[3 + (turn * 4)](team2=team)
+                    matchs[4 + (turn * 4)](team2=team)
+                if number < 3:
+                    number += 1
+                else:
+                    number = 0
+                    turn += 1
+        elif phase.name == "DTree":
+            matchs = list(Match.objects.filter(phase=pk, level=0.0, looser_braket=False).order_by("level", "match_number"))
+            print "tree"
+            nb_matchs = tournoi.nbteams / 2
+            match_per_pool = nb_matchs / 4
+            number_match = 0
+            i = 0
+            for item in matchs:
+                print item.id
+            print matchs[0].id
+            for team in teams:
+                if i % 4 == 0 or i % 4 == 3:
+                    number_match = (i * match_per_pool)
+                elif i % 4 == 1:
+                    number_match = ((i + 1) * match_per_pool)
+                else:
+                    number_match = ((i - 1) * match_per_pool)
+                print number_match
+                if (i / 4) % 2 == 0:
+                    while matchs[number_match].team1:
+                        number_match += 1
+                    matchs[number_match].team1 = team
+                    matchs[number_match].team2 = teams[-i - 1]
+                    matchs[number_match].save()
+                else:
+                    number_match += match_per_pool - 1
+                    while matchs[number_match].team1:
+                        number_match -= 1
+                    matchs[number_match].team1 = team
+                    matchs[number_match].team2 = teams[-i - 1]
+                    matchs[number_match].save()
+                i += 1
+
+
 
 def create_match(phase, tournoi):
     print "create match"
@@ -143,7 +217,6 @@ class TournamentViewSet(viewsets.ModelViewSet):
         return [permissions.IsAdminUser(), ]
 
 
-
     def create(self, request, **kwargs):
         type = request.data['type']
         serializer = self.serializer_class(data=request.data)
@@ -152,7 +225,8 @@ class TournamentViewSet(viewsets.ModelViewSet):
             serializer.validated_data.pop('type')
             tournoi = serializer.save()
             print type
-            tmp = Phase(name=type, tournament=tournoi)
+            number = 0
+            tmp = Phase(name=type, tournament=tournoi, order=number)
             tmp.save()
             create_match(tmp, tournoi)
             serializer.validated_data.pop('admin')

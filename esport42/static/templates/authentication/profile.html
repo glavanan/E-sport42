@@ -4,7 +4,7 @@
             <div class="panel panel-default login-box">
                 <div class="panel-heading"><h3>Modifier son compte</h3></div>
                 <div class="panel-body">
-                    <form role="form" name="registerForm" ng-submit="vm.registerMandatory(registerForm.$valid)"
+                    <form role="form" name="registerForm" ng-submit="vm.updateProfile()"
                           ng-if="!vm.next">
                         <div class="form-group"
                              ng-class="{'has-success': registerForm.email.$valid,
@@ -90,16 +90,7 @@
                             </div>
                         </div>
 
-                        <div class="form-group">
-                            <button type="submit" ng-disabled="registerForm.$invalid" class="btn btn-primary">Crée-moi
-                                un compte !
-                            </button>
-                        </div>
-                    </form>
 
-                    <!-- SECOND PART OF THE FORM -->
-                    <form role="form" name="registerOptional" ng-submit="vm.registerOptional(registerOptional.$valid)"
-                          ng-if="vm.next">
                         <div class="form-group"
                              ng-class="{'has-success': registerOptional.firstName.$dirty && registerOptional.firstName.$valid,
                                     'has-error': registerOptional.firstName.$dirty && registerOptional.firstName.$invalid}">
@@ -433,11 +424,9 @@
                                    ng-model-options="{ updateOn: 'default blur', debounce: { default: 500, blur: 0 } }"/>
                         </div>
 
-
                         <div class="form-group">
                             <p class="text-warning">* : Donnée facultative</p>
-                            <button type="submit" class="btn btn-primary">Ajoute moi ces infos-là !</button>
-                            <button type="button" class="btn btn-primary" ng-click="vm.next = !vm.next">Précédent
+                            <button type="submit" class="btn btn-primary">Mettre à jour
                             </button>
                         </div>
                     </form>

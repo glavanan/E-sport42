@@ -22,6 +22,7 @@
             register : register,
             login: login,
             logout: logout,
+            update: update,
             getAuthenticatedAccount: getAuthenticatedAccount,
             setAuthenticatedAccount: setAuthenticatedAccount,
             isAuthenticated: isAuthenticated,
@@ -62,6 +63,18 @@
                     alert('We were unable to logout you. Please contact the administrator');
             });
         }
+
+        function update(user) {
+            return $http.put('api/v1/accounts/' + user.id)
+                .then(function (data, status, headers, config) {
+                    console.log(data);
+                    return data;
+                }, function (data, status, headers, config) {
+                    console.log('Update profile failed in Authentication service: ', data);
+                    return $q.reject(data.data);
+                });
+        }
+
         function getAuthenticatedAccount() {
             if (!$cookies.authenticatedAccount)
                 return ;

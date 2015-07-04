@@ -21,7 +21,7 @@ html, body{
 	 position: relative; 
 	 margin-left: auto; 
 	 margin-right: auto; 
-	 height: 2500px;
+	 height: 2900px;
 	 overflow: hidden;
 	 z-index:0;
 	} 
@@ -45,7 +45,17 @@ html, body{
 	 width: 529px;
 	 height: 358px;
 	 z-index:2;
-} 
+}
+  #cancel
+{
+	 margin-left: auto;
+	margin-right:auto;
+	 position: relative;
+      top:-410px;
+	 width: 529px;
+	 height: 358px;
+	 z-index:3;
+}
  #participant 
 { 
 	 margin-left: auto;

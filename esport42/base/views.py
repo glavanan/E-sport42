@@ -37,7 +37,6 @@ class MyUserViewSet(viewsets.ModelViewSet):
             else:
                 return MyUserSerializer
 
-
     def get_permissions(self):
         return ((permissions.AllowAny() if self.request.method == 'POST'
                 else IsOwnerOrAdmin()),)
@@ -56,15 +55,14 @@ class MyUserViewSet(viewsets.ModelViewSet):
             return Response(serializer.validated_data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
     def update(self, request, *args, **kwargs):
         partial = False
-        print self.get_object()
         user = self.get_object()
         if 'PATCH' in request.method:
             partial = True
         instance = self.get_object()
         for d, j in request.data.iteritems():
+            
             print d, j, request.data[d]
         request.data['username'] = user.username
         request.data['id'] = user.id
