@@ -61,16 +61,20 @@ class MyUserViewSet(viewsets.ModelViewSet):
         if 'PATCH' in request.method:
             partial = True
         instance = self.get_object()
+        updated_infos = instance
+        print "instance", instance["id"]
         for d, j in request.data.iteritems():
-            
-            print d, j, request.data[d]
-        request.data['username'] = user.username
-        request.data['id'] = user.id
-        serializer = self.get_serializer(instance, data=request.data, context={'request': request}, partial=partial)
-        if 'password' in request.data and not request.data['password']:
-            serializer.exclude_fields(['password'])
-        if 'password_confirm' in request.data and not request.data['password_confirm']:
-            serializer.exclude_fields(['password_confirm'])
+            if j and instance[d] != j:
+                print d, j
+                updated_infos[d] = j
+        # request.data['username'] = user.username
+        # request.data['id'] = user.id
+        serializer = self.get_serializer(instance)
+        print serializer
+        # if 'password' in request.data and not request.data['password']:
+        #     serializer.exclude_fields(['password'])
+        # if 'password_confirm' in request.data and not request.data['password_confirm']:
+        #     serializer.exclude_fields(['password_confirm'])
         if not serializer.is_valid():
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         serializer.save()

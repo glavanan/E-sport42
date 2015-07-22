@@ -65,7 +65,7 @@
         }
 
         function update(user) {
-            return $http.put('api/v1/accounts/' + user.id)
+            return $http.put('api/v1/accounts/' + user.id, user)
                 .then(function (data, status, headers, config) {
                     console.log(data);
                     return data;

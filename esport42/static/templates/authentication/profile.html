@@ -72,7 +72,7 @@
                                 <ng-message when="required">Le mot de passe est requis pour l'inscription.</ng-message>
                                 <ng-message when="minlength">Le mot de passe est trop court.</ng-message>
                             </ng-messages>
-                            <div ng-if="registerForm.password.$valid && registerForm.password.$dirty">
+                            <div ng-if="registerForm.password.$valid && registerForm.password.$dirty && vm.form.password">
                                 <input type="password"
                                        class="form-control"
                                        placeholder="Confirmation du mot de passe"
@@ -80,7 +80,7 @@
                                        ng-model="vm.form.password_confirm"
                                        ng-model-options="{ updateOn: 'default blur', debounce: { default: 500, blur: 0 } }"
                                        equals="{{ vm.form.password }}"
-                                       required/>
+                                       ng-required="vm.form.password != ''"/>
                                 <ng-messages ng-if="registerForm.passwordConfirm.$dirty"
                                              for="registerForm.passwordConfirm.$error" class="text-danger">
                                     <ng-message when="required">Le mot de passe est requis pour l'inscription.
