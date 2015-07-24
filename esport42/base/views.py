@@ -66,7 +66,8 @@ class MyUserViewSet(viewsets.ModelViewSet):
         for d, j in request.data.iteritems():
             if j and instance[d] != j:
                 print d, j
-                updated_infos[d] = j
+                setattr(updated_infos, d, j)
+                # setattr(updated_infos, d) = j
         # request.data['username'] = user.username
         # request.data['id'] = user.id
         serializer = self.get_serializer(instance)

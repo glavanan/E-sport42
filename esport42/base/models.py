@@ -46,7 +46,7 @@ class MyUser(AbstractBaseUser):
     objects = AccountManager()
 
     def __unicode__(self):
-        return self.username
+        return unicode(self.username)
 
     def get_full_name(self):
         return ' '.join([self.first_name, self.last_name])
@@ -54,6 +54,14 @@ class MyUser(AbstractBaseUser):
     def get_short_name(self):
         return self.first_name
 
+    def __getitem__(self, item):
+        datas = {
+            "username": self.username,
+            "email": self.email,
+            "first_name": self.first_name,
+            "last_name": self.last_name
+        }
+        return getattr(self, item)
 
 class Payments(models.Model):
     EVENTS_CHOICES = (
