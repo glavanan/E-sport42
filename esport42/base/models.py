@@ -55,12 +55,6 @@ class MyUser(AbstractBaseUser):
         return self.first_name
 
     def __getitem__(self, item):
-        datas = {
-            "username": self.username,
-            "email": self.email,
-            "first_name": self.first_name,
-            "last_name": self.last_name
-        }
         return getattr(self, item)
 
 class Payments(models.Model):

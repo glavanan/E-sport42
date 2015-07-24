@@ -32,6 +32,8 @@ class MyUserSerializer(serializers.ModelSerializer):
         instance.first_name = validated_data.get('first_name', instance.first_name)
         instance.last_name = validated_data.get('last_name', instance.last_name)
         instance.nationality = validated_data.get('nationality', instance.nationality)
+        instance.username = validated_data.get('username', instance.username)
+        instance.birth_date = validated_data.get('birth_date', instance.birth_date)
         instance.save()
         password = validated_data.get('password', None)
         password_confirm = validated_data.get('password_confirm', None)
